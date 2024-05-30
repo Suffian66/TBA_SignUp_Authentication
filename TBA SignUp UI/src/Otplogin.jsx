@@ -1,10 +1,12 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { useUserloginMutation } from './services/Login';
+import { useUserlogin2FAMutation } from './services/Otplogin';
+
 
 const Otplogin = () => {
-  const [userlogin, { data, error, isLoading }] = useUserloginMutation; 
+  const [userlogin2FA, { data, error, isLoading }] = useUserlogin2FAMutation; 
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -15,15 +17,19 @@ const Otplogin = () => {
   });
 
   const onSubmit = async (formData) => {
-      try {
-        const updatedFormData = { ...formData};
-  
-        await userlogin(updatedFormData);
-        console.log("login data sent", updatedFormData);
-        
-      } catch (err) {
-        console.error("Failed to login:", err);
+    try {
+      const updatedFormData = { ...formData };
+      const response = await userlogin2FA(updatedFormData);
+
+      if (response.data && response.data.Status === "Success") {
+        console.log("Login successful, OTP sent");
+        navigate('/otplogin'); // Redirect to the OTP login page
+      } else {
+        console.error("Login failed or OTP not sent");
       }
+    } catch (err) {
+      console.error("Failed to login:", err);
+    }
   }; 
 
   return (

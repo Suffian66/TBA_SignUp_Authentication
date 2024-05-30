@@ -5,12 +5,9 @@ import { Link } from 'react-router-dom';
 
 const SignIn = () => {
   const [userlogin, { data, error, isLoading }] = useUserloginMutation(); 
+  const navigate = useNavigate();
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm({
+  const {handleSubmit, register, formState: { errors }} = useForm({
    
   });
 
@@ -19,9 +16,12 @@ const SignIn = () => {
         const updatedFormData = { ...formData};
         const response = await userlogin(updatedFormData);
   
-        
-        console.log("login data sent", updatedFormData);
-        
+        if (response.data && response.data.Status === "Success") {
+          console.log("Login successful, OTP sent");
+          navigate('/otp-login'); // Redirect to the OTP login page
+        } else {
+          console.error("Login failed or OTP not sent");
+        }
       } catch (err) {
         console.error("Failed to login:", err);
       }

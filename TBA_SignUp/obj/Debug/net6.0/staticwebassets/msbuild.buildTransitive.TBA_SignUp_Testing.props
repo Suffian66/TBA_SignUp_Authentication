@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\TBA_SignUp_Testing.props" />
+</Project>

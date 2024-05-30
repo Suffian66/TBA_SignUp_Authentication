@@ -1,0 +1,11 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Name": "TBA_SignUp\\TBA_SignUp.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

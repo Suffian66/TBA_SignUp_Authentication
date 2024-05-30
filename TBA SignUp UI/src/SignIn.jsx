@@ -72,7 +72,7 @@ const SignIn = () => {
           </button>
 
           <div className="text-end">
-            <Link to="/forgetpassword">Forget Password</Link>
+            <Link to="/forgot-password">Forget Password</Link>
             <Link to="/signup" className="mx-4">
               Sign Up
             </Link>

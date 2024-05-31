@@ -142,7 +142,7 @@ namespace User.Management.API.Controllers
             if (loginOtpResponse.Response!=null)
             {
                 var user = loginOtpResponse.Response.User;
-                if (user.TwoFactorEnabled)
+                if (user.TwoFactorEnabled && await _userManager.CheckPasswordAsync(user, loginModel.Password))
                 {
                     var token = loginOtpResponse.Response.Token;
                     var message = new Message(new string[] { user.Email! }, "OTP Confirmation", token);

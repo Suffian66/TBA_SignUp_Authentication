@@ -1,7 +1,7 @@
 import React from 'react'
 import { useUserloginMutation } from './services/Login';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
   const [userlogin, { data, error, isLoading }] = useUserloginMutation(); 
@@ -15,15 +15,19 @@ const SignIn = () => {
       try {
         const updatedFormData = { ...formData};
         const response = await userlogin(updatedFormData);
-  
-        if (response.data && response.data.Status === "Success") {
+        console.log("Full response from backend:", response);
+
+        if (response && response.data.isSuccess) {
           console.log("Login successful, OTP sent");
-          navigate('/otp-login'); // Redirect to the OTP login page
+          navigate('/otplogin'); // Redirect to the OTP login page
+          alert("Login Successful. Enter your OTP sent to your email.");
         } else {
           console.error("Login failed or OTP not sent");
+          
         }
       } catch (err) {
         console.error("Failed to login:", err);
+        alert("Incorrect Email or Password. Please enter correct credentials!");
       }
   }; 
 

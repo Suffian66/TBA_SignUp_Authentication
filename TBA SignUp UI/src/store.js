@@ -17,9 +17,7 @@ const store = configureStore({
 
     middleware: (getDefaultMiddleware) =>
 
-    getDefaultMiddleware().concat(SignUpApi.middleware).concat(Login.middleware).concat(forgotPasswordApi.middleware)
-
-    getDefaultMiddleware().concat(SignUpApi.middleware).concat(Login.middleware).concat(login2FA.middleware)
+    getDefaultMiddleware().concat(SignUpApi.middleware).concat(Login.middleware).concat(forgotPasswordApi.middleware).concat(login2FA.middleware)
 
 })
 

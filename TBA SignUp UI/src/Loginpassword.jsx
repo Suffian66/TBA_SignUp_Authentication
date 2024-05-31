@@ -4,6 +4,7 @@ import Home from "./Home.jsx";
 import SignIn from "./SignIn.jsx";
 import Otplogin from "./Otplogin.jsx";
 import ForgotPassword from "./ForgetPassword.jsx";
+import Dashboard from "./Dashboard.jsx";
 
 const Loginpassword = () => {
   return (
@@ -16,6 +17,9 @@ const Loginpassword = () => {
             <Route path="/signin" element ={<SignIn/>}/>
             <Route path="/otplogin" element ={<Otplogin/>}/>
             <Route path="/forgot-password" element= {<ForgotPassword/>}/>
+            <Route path="/dashboard" element= {<Dashboard/>}/>
+
+            
           </Routes>
         </div>
       </BrowserRouter>

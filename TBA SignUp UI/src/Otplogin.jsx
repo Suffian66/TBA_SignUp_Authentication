@@ -1,36 +1,30 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUserlogin2FAMutation } from './services/Otplogin';
 
 
 const Otplogin = () => {
-  const [userlogin2FA, { data, error, isLoading }] = useUserlogin2FAMutation; 
+  const [userlogin2FA, { data, error, isLoading }] = useUserlogin2FAMutation(); 
   const navigate = useNavigate();
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm({
-   
-  });
+  const { handleSubmit, register, formState: { errors } } = useForm();
 
   const onSubmit = async (formData) => {
     try {
-      const updatedFormData = { ...formData };
-      const response = await userlogin2FA(updatedFormData);
+      const response = await userlogin2FA(formData);
 
-      if (response.data && response.data.Status === "Success") {
-        console.log("Login successful, OTP sent");
-        navigate('/otplogin'); // Redirect to the OTP login page
+      if (response.data) {
+        console.log("OTP verification successful, logging in");
+        // Handle successful login, e.g., store JWT token, redirect, etc.
+        navigate('/dashboard'); // Redirect to a protected route
       } else {
-        console.error("Login failed or OTP not sent");
+        console.error("OTP verification failed");
       }
     } catch (err) {
-      console.error("Failed to login:", err);
+      console.error("Failed to verify OTP:", err);
     }
-  }; 
+  };
 
   return (
     <div>
@@ -44,6 +38,20 @@ const Otplogin = () => {
 
           <div className="form-group">
             <label className="mt-4" htmlFor="email">
+              Enter your OTP Code:
+            </label>
+            <input
+              type="text"
+              className="form-control text-muted"
+              id="otp"
+              placeholder="OTP"
+              {...register("otp", { required: true })}
+           
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="mt-4" htmlFor="password">
               Enter your Email:
             </label>
             <input
@@ -52,20 +60,6 @@ const Otplogin = () => {
               id="email"
               placeholder="Email"
               {...register("email", { required: true })}
-           
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="mt-4" htmlFor="password">
-              Enter your Password:
-            </label>
-            <input
-              type="password"
-              className="form-control text-muted"
-              id="password"
-              placeholder="Password"
-              {...register("password", { required: true })}
             />
           </div>
           <button
@@ -75,13 +69,6 @@ const Otplogin = () => {
           >
             Sign In
           </button>
-
-          <div className="text-end">
-            <Link to="/forgetpassword">Forget Password</Link>
-            <Link to="/signup" className="mx-4">
-              Sign Up
-            </Link>
-          </div>
         </form>
         <div className="col"></div>
       </div>

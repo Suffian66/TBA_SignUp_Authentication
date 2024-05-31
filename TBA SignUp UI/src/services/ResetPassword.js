@@ -1,0 +1,18 @@
+
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+export const resetPasswordApi = createApi({
+  reducerPath: 'resetPasswordApi',
+  baseQuery: fetchBaseQuery({  baseUrl: 'https://localhost:7176/api/Authentication/' }),
+  endpoints: (builder) => ({
+    resetPassword: builder.mutation({
+      query: ({ token, email, password }) => ({
+        url: '/reset-password',
+        method: 'POST',
+        body: { token, email, password },
+      }),
+    }),
+  }),
+});
+
+export const { useResetPasswordMutation } = resetPasswordApi;

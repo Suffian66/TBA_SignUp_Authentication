@@ -70,7 +70,7 @@ const SignIn = () => {
           <button
             type="submit"
             className="btn btn-primary btn-sm rounded-pill px-5 py-2 my-5 text-uppercase"
-            // disabled={isLoading}
+            disabled={isLoading}
           >
             Sign In
           </button>

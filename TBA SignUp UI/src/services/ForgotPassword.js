@@ -5,13 +5,13 @@ export const forgotPasswordApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'https://localhost:7176/api/Authentication/' }),
   endpoints: (builder) => ({
     forgotPassword: builder.mutation({
-      query: (body) => ({
-        url: "forgot-password",
+      query: (data) => ({
+        url: `forgot-password?email=${data.email}`,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: body
+        
       })
     })
   })

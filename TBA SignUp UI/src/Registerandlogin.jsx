@@ -1,3 +1,4 @@
+import { Navigate } from "react-router-dom";
 import { useAddUserMutation } from "./services/SignUp";
 import { useForm } from "react-hook-form";
 
@@ -20,9 +21,14 @@ const Registerandlogin = () => {
 
       await addUser(updatedFormData);
       console.log("User added successfully:", updatedFormData);
+      alert("User added successfully:", updatedFormData);
+      // window.location.reload();
+      Navigate('/signin')
+
       
     } catch (err) {
       console.error("Failed to add user:", err);
+      alert("Failed to add user:", err)
     }
   };
 

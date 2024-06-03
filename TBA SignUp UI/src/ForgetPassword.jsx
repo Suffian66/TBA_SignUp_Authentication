@@ -21,7 +21,9 @@ const ForgotPassword = () => {
       console.error("Failed to send password reset link: ", err);
       alert("Failed to send password reset link Kindly check your Email Address");
     }
+    window.location.reload();
   };
+
 
   return (
     <div className="row justify-content-center">

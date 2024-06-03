@@ -6,10 +6,10 @@ export const resetPasswordApi = createApi({
   baseQuery: fetchBaseQuery({  baseUrl: 'https://localhost:7176/api/Authentication/' }),
   endpoints: (builder) => ({
     resetPassword: builder.mutation({
-      query: ({ token, email, password }) => ({
+      query: (body) => ({
         url: '/reset-password',
         method: 'POST',
-        body: { token, email, password },
+        body,
       }),
     }),
   }),

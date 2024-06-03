@@ -36,14 +36,19 @@ namespace User.Management.Service.Services
                     }
                 }
             }
-            return new ApiResponse<List<string>> { IsSuccess = true, StatusCode = 200, Message = "Role has been assigned"
-            ,Response = assignedRole
-        };
-    }
+            return new ApiResponse<List<string>>
+            {
+                IsSuccess = true,
+                StatusCode = 200,
+                Message = "Role has been assigned"
+            ,
+                Response = assignedRole
+            };
+        }
 
         public async Task<ApiResponse<CreateUserResponse>> CreateUserwithTokenAsync(RegisterUser registerUser)
         {
-            var userExist = await _userManager.FindByEmailAsync(registerUser.Email);    
+            var userExist = await _userManager.FindByEmailAsync(registerUser.Email);
             if (userExist != null)
             {
                 return new ApiResponse<CreateUserResponse> { IsSuccess = false, StatusCode = 403, Message = "User Already Exists" };
@@ -54,8 +59,8 @@ namespace User.Management.Service.Services
             {
                 Email = registerUser.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = registerUser.UserName,
                 Password = registerUser.Password,
+                UserName = registerUser.UserName,
                 FirstName = registerUser.FirstName,
                 MiddleName = registerUser.MiddleName,
                 LastName = registerUser.LastName,
@@ -63,16 +68,23 @@ namespace User.Management.Service.Services
                 NamePrefix = registerUser.NamePrefix,
                 DOB = registerUser.DOB,
                 CNIC = registerUser.CNIC,
-                TwoFactorEnabled = true                
+                TwoFactorEnabled = true
             };
             var result = await _userManager.CreateAsync(user, registerUser.Password);
             if (result.Succeeded)
             {
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                return new ApiResponse<CreateUserResponse> { Response = new CreateUserResponse() 
-                { 
-                    User = user, Token = token },
-                    IsSuccess = true, StatusCode = 201, Message = "User Created Successfully"};
+                return new ApiResponse<CreateUserResponse>
+                {
+                    Response = new CreateUserResponse()
+                    {
+                        User = user,
+                        Token = token
+                    },
+                    IsSuccess = true,
+                    StatusCode = 201,
+                    Message = "User Created Successfully"
+                };
             }
             else
             {
@@ -83,7 +95,7 @@ namespace User.Management.Service.Services
         public async Task<ApiResponse<LoginOtpResponse>> GetOtpByLoginAsync(LoginModel loginModel)
         {
             var user = await _userManager.FindByEmailAsync(loginModel.Email);
-            if(user != null)
+            if (user != null)
             {
                 await _signInManager.SignOutAsync();
                 await _signInManager.PasswordSignInAsync(user, loginModel.Password, false, true);
@@ -130,7 +142,7 @@ namespace User.Management.Service.Services
                 };
 
             }
-           
+
         }
     }
 }

@@ -23,7 +23,7 @@ const Registerandlogin = () => {
       console.log("User added successfully:", updatedFormData);
       alert("User added successfully:", updatedFormData);
       // window.location.reload();
-      Navigate('/signin')
+      // Navigate('/signin')
 
       
     } catch (err) {

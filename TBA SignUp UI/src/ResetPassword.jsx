@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useResetPasswordMutation } from "./services/ResetPassword";
+import { useSearchParams } from "react-router-dom";
 
-const ResetPassword = ({ token }) => {
+const ResetPassword = () => {
   const [resetPassword, { error, isLoading }] = useResetPasswordMutation();
-
+  let [searchParams] = useSearchParams();
   const {
     handleSubmit,
     register,
@@ -12,7 +13,10 @@ const ResetPassword = ({ token }) => {
 
   const onSubmit = async (formData) => {
     try {
-      await resetPassword({ token, ...formData }).unwrap();
+      const email = searchParams.get("email");
+      const token = searchParams.get("token");
+      console.log("Reset Password Form Data", {...formData, email, token});
+      await resetPassword({ token, email, ...formData }).unwrap();
       alert("Password has been reset successfully.");
     } catch (err) {
       console.error("Failed to reset password: ", err);
@@ -39,7 +43,7 @@ const ResetPassword = ({ token }) => {
           <input
             type="password"
             placeholder="Confirm Password"
-            {...register("confirmPassword", { required: true })}
+            {...register("ConfirmPassword", { required: true })}
           />
           {errors.confirmPassword && <span>Confirm Password is required</span>}
         </div>

@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useResetPasswordMutation } from "./services/ResetPassword";
-import { useSearchParams } from "react-router-dom";
+import { Link,  useSearchParams } from "react-router-dom";
 
 const ResetPassword = () => {
   const [resetPassword, { error, isLoading }] = useResetPasswordMutation();
@@ -18,6 +18,8 @@ const ResetPassword = () => {
       console.log("Reset Password Form Data", {...formData, email, token});
       await resetPassword({ token, email, ...formData }).unwrap();
       alert("Password has been reset successfully.");
+
+      window.location.reload();
     } catch (err) {
       console.error("Failed to reset password: ", err);
       alert("Failed to reset password. Please try again.");
@@ -25,7 +27,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="w-50 mx-5 my-5">
+    <div className="w-50 mx-5 my-5 card-center">
     <div className="card shadow py-5 my-5 text-center">
       <h2>Reset Password</h2>
       <form className="w-100 " onSubmit={handleSubmit(onSubmit)}>
@@ -53,6 +55,9 @@ const ResetPassword = () => {
       </form>
       {isLoading && <p>Loading...</p>}
       {error && <p>{error.message}</p>}
+        <div >
+          <Link to = '/signin' className="text-end">signin</Link>
+        </div>
     </div>
     </div>
   );

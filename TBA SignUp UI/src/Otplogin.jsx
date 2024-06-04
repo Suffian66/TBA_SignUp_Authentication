@@ -37,28 +37,28 @@ const Otplogin = () => {
           <div className="text-center"></div>
 
           <div className="form-group">
-            <label className="mt-4" htmlFor="email">
+            <label className="mt-4" htmlFor="code">
               Enter your OTP Code:
             </label>
             <input
               type="text"
               className="form-control text-muted"
-              id="otp"
+              id="code"
               placeholder="OTP"
-              {...register("otp", { required: true })}
+              {...register("code", { required: true })}
            
             />
           </div>
 
           <div className="form-group">
-            <label className="mt-4" htmlFor="password">
+            <label className="mt-4" htmlFor="email">
               Enter your Email:
             </label>
             <input
               type="email"
               className="form-control text-muted"
               id="email"
-              placeholder="Email"
+              placeholder="email"
               {...register("email", { required: true })}
             />
           </div>

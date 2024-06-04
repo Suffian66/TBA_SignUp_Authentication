@@ -3,33 +3,62 @@ import { useUserloginMutation } from './services/Login';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 
+// const SignIn = () => {
+//   const [userlogin, { data, error, isLoading }] = useUserloginMutation(); 
+//   const navigate = useNavigate();
+
+//   const {handleSubmit, register, formState: { errors }} = useForm({
+   
+//   });
+
+//   const onSubmit = async (formData) => {
+//       try {
+//         const updatedFormData = { ...formData};
+//         const response = await userlogin(updatedFormData);
+//         console.log("Full response from backend:", response);
+
+//         if (response && response.data.isSuccess) {
+//           console.log("Login successful, OTP sent");
+//           navigate('/otplogin'); // Redirect to the OTP login page
+//           alert("Login Successful. Enter your OTP sent to your email.");
+//         } else {
+//           console.error("Login failed or OTP not sent");
+          
+//         }
+//       } catch (err) {
+//         console.error("Failed to login:", err);
+//         alert("Incorrect Email or Password. Please enter correct credentials!");
+//       }
+//   }; 
+
 const SignIn = () => {
   const [userlogin, { data, error, isLoading }] = useUserloginMutation(); 
   const navigate = useNavigate();
 
-  const {handleSubmit, register, formState: { errors }} = useForm({
-   
-  });
+  const { handleSubmit, register, formState: { errors } } = useForm();
 
   const onSubmit = async (formData) => {
-      try {
-        const updatedFormData = { ...formData};
-        const response = await userlogin(updatedFormData);
-        console.log("Full response from backend:", response);
+    try {
+      const response = await userlogin(formData);
+      console.log("Full response from backend:", response);
 
-        if (response && response.data.isSuccess) {
-          console.log("Login successful, OTP sent");
-          navigate('/otplogin'); // Redirect to the OTP login page
-          alert("Login Successful. Enter your OTP sent to your email.");
-        } else {
-          console.error("Login failed or OTP not sent");
-          
-        }
-      } catch (err) {
-        console.error("Failed to login:", err);
-        alert("Incorrect Email or Password. Please enter correct credentials!");
+      if (response && response.data.token) {
+        console.log("Login successful");
+        // Store the token and expiration in localStorage or a context/state management library
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('tokenExpiration', response.data.expiration);
+        // Redirect to the dashboard or home page after successful login
+        navigate('/dashboard'); 
+        alert("Login Successful.");
+      } else {
+        console.error("Login failed");
+        alert("Login failed. Please check your credentials.");
       }
-  }; 
+    } catch (err) {
+      console.error("Failed to login:", err);
+      alert("Incorrect Email or Password. Please enter correct credentials!");
+    }
+  };
 
   return (
     <div>

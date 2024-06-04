@@ -13,9 +13,9 @@ const Loginpassword = () => {
       <BrowserRouter>
         <div>
           <Routes>
-            <Route path="/" element= {<Registerandlogin/>}/>
+            <Route path="/signup" element= {<Registerandlogin/>}/>
             <Route path="/home" element= {<Home/>}/>
-            <Route path="/signin" element ={<SignIn/>}/>
+            <Route path="/" element ={<SignIn/>}/>
             <Route path="/otplogin" element ={<Otplogin/>}/>
             <Route path="/forgot-password" element= {<ForgotPassword/>}/>
             <Route path="/dashboard" element= {<Dashboard/>}/>

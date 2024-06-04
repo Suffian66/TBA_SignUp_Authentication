@@ -4,7 +4,6 @@ import SignUpApi from "./services/SignUp";
 import { Login } from "./services/Login";
 import forgotPasswordApi from "./services/ForgotPassword";
 import login2FA from "./services/Otplogin";
-import ResetPassword from "./ResetPassword";
 import { resetPasswordApi } from "./services/ResetPassword";
 
 

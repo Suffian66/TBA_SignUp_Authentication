@@ -1,28 +1,37 @@
-import React from 'react'
+
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { useUserlogin2FAMutation } from './services/Otplogin';
 
-
 const Otplogin = () => {
-  const [userlogin2FA, { data, error, isLoading }] = useUserlogin2FAMutation(); 
+  const [userlogin2FA, { error, isLoading }] = useUserlogin2FAMutation();
   const navigate = useNavigate();
 
-  const { handleSubmit, register, formState: { errors } } = useForm();
+  const { handleSubmit, register, setError, formState: { errors } } = useForm();
 
   const onSubmit = async (formData) => {
     try {
       const response = await userlogin2FA(formData);
 
-      if (response.data) {
+      if (response && response.data) {
         console.log("OTP verification successful, logging in");
-        // Handle successful login, e.g., store JWT token, redirect, etc.
+        localStorage.setItem('token', response.data.token);
         navigate('/dashboard'); // Redirect to a protected route
       } else {
-        console.error("OTP verification failed");
+        // Handle the error response from the API
+        if (response.error && response.error.data && response.error.data.errors) {
+          const apiErrors = response.error.data.errors;
+          for (const field in apiErrors) {
+            setError(field.toLowerCase(), { type: 'manual', message: apiErrors[field].join(', ') });
+          }
+        } else {
+          console.error("OTP verification failed");
+          alert("OTP verification failed. Please try again.");
+        }
       }
     } catch (err) {
       console.error("Failed to verify OTP:", err);
+      alert("Failed to verify OTP. Please try again.");
     }
   };
 
@@ -31,27 +40,27 @@ const Otplogin = () => {
       <div className="row">
         <div className="col"></div>
         <form
-         onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onSubmit)}
           className="border rounded p-5 my-4 shadow-lg col-lg-6 col-md-8"
         >
           <div className="text-center"></div>
 
           <div className="form-group">
-            <label className="mt-4" htmlFor="email">
+            <label className="mt-4" htmlFor="code">
               Enter your OTP Code:
             </label>
             <input
               type="text"
               className="form-control text-muted"
-              id="otp"
+              id="code"
               placeholder="OTP"
-              {...register("otp", { required: true })}
-           
+              {...register("code", { required: "OTP code is required" })}
             />
+            {errors.code && <p className="text-danger">{errors.code.message}</p>}
           </div>
 
           <div className="form-group">
-            <label className="mt-4" htmlFor="password">
+            <label className="mt-4" htmlFor="email">
               Enter your Email:
             </label>
             <input
@@ -59,21 +68,22 @@ const Otplogin = () => {
               className="form-control text-muted"
               id="email"
               placeholder="Email"
-              {...register("email", { required: true })}
+              {...register("email", { required: "Email is required" })}
             />
+            {errors.Email && <p className="text-danger">{errors.Email.message}</p>}
           </div>
           <button
             type="submit"
             className="btn btn-primary btn-sm rounded-pill px-5 py-2 my-5 text-uppercase"
-            // disabled={isLoading}
+            disabled={isLoading}
           >
-            Sign In
+            Verify OTP
           </button>
         </form>
         <div className="col"></div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Otplogin;

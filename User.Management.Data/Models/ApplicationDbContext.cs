@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using User.Management.Data.Models.Sponsor;
 
 namespace User.Management.Data.Models
 {
@@ -11,10 +12,13 @@ namespace User.Management.Data.Models
         {   
         }
 
+         public DbSet<SponsorDetails> SponsorDetails { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             SeedRoles(builder);
+
         }
 
         private static void SeedRoles(ModelBuilder builder)

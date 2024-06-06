@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using User.Management.Data.Models;
-using User.Management.Service.Models;
 using User.Management.Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -55,7 +56,16 @@ builder.Services.AddAuthentication(options =>
     };
 });
 //JWT Till here.........
-
+//.AddCookie(options =>
+// {
+//     options.LoginPath = "/Account/Login";
+//     options.LogoutPath = "/Account/Logout";
+//     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+//     options.SlidingExpiration = true;
+//     options.Cookie.HttpOnly = true;
+//     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+//     options.Cookie.SameSite = SameSiteMode.Strict;
+// });
 //Add email config
 var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);

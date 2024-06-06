@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace User.Management.Service.Models
+namespace User.Management.Data.Models
 {
     public class ApiResponse<T>
     {

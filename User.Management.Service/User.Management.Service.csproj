@@ -20,4 +20,8 @@
     <ProjectReference Include="..\User.Management.Data\User.Management.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

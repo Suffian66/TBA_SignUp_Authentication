@@ -52,15 +52,16 @@ const Otplogin = () => {
             <input
               type="text"
               className="form-control text-muted"
-              id="otp"
+              id="code"
               placeholder="OTP"
               {...register("code", { required: "OTP code is required" })}
             />
+            {errors.code && <p className="text-danger">{errors.code.message}</p>}
           </div>
 
           <div className="form-group">
             <label className="mt-4" htmlFor="email">
-              Enter your Email:
+              Enter your Email
             </label>
             <input
               type="email"

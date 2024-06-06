@@ -4,7 +4,7 @@
 using MimeKit;
 using NETCore.MailKit.Core;
 using System.Net.Mail;
-using User.Management.Service.Models;
+using User.Management.Data.Models;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace User.Management.Service.Services

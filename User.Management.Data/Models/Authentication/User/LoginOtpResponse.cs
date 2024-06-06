@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using User.Management.Data.Models;
 
-namespace User.Management.Service.Models.Authentication.User
+namespace User.Management.Data.Models.Authentication.User
 {
     public class LoginOtpResponse
     {

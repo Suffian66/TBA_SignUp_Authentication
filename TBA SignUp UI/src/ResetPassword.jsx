@@ -56,7 +56,7 @@ const ResetPassword = () => {
       {isLoading && <p>Loading...</p>}
       {error && <p>{error.message}</p>}
         <div >
-          <Link to = '/' className="text-end">signin</Link>
+          <Link to = '/signin' className="text-end">signin</Link>
         </div>
     </div>
     </div>

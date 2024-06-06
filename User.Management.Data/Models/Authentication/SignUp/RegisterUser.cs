@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using User.Management.Data.Models;
 
-namespace User.Management.Service.Models.Authentication.SignUp
+namespace User.Management.Data.Models.Authentication.SignUp
 {
     public class RegisterUser
     {

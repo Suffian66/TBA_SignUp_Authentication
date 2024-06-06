@@ -1,6 +1,6 @@
 ﻿
 
-using User.Management.Service.Models;
+using User.Management.Data.Models;
 
 namespace User.Management.Service.Services
 {

@@ -4,19 +4,23 @@ export const login2FA = createApi({
     reducerPath: 'login2FA',
     baseQuery: fetchBaseQuery({ baseUrl: 'https://localhost:7176/api/Authentication/' }),
     endpoints: (builder) => ({
-        login2FA: builder.query({
-            query: () => "login-2FA",
-        }),
+        // login2FA: builder.query({
+        //     query: () => "login-2FA",
+        // }),
         userlogin2FA: builder.mutation({
-            query: (data) => ({
-                url: 'login-2FA',
+            query: (body) => {
+              const { email, code } = body;
+              return {
+                url: `login-2FA?email=${email}&code=${code}`,
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                  'Content-Type': 'application/json',
                 },
-                body: data,
-            }),
-        }),
+                body: JSON.stringify(body),
+                credentials: 'include',
+              };
+            },
+          }),
     }),
 });
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace User.Management.Service.Models.Authentication.SignUp
+namespace User.Management.Data.Models.Authentication.SignUp
 {
     public class ResetPassword
     {

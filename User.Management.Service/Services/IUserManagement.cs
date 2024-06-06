@@ -2,10 +2,10 @@
 
 using Microsoft.AspNetCore.Identity;
 using User.Management.Data.Models;
-using User.Management.Service.Models;
-using User.Management.Service.Models.Authentication.Login;
-using User.Management.Service.Models.Authentication.SignUp;
-using User.Management.Service.Models.Authentication.User;
+using User.Management.Data.Models;
+using User.Management.Data.Models.Authentication.Login;
+using User.Management.Data.Models.Authentication.SignUp;
+using User.Management.Data.Models.Authentication.User;
 
 namespace User.Management.Service.Services
 {

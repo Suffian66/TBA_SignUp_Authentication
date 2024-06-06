@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TBA_SignUp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+925c26bfa91f485ce41a107181501470c5d68367")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+03932d2274e5d4c43709ff274dde8bf8599f2fbf")]
 [assembly: System.Reflection.AssemblyProductAttribute("TBA_SignUp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TBA_SignUp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

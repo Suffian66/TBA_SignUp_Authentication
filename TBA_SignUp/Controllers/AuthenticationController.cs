@@ -6,11 +6,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using TBA_SignUp;
-using User.Management.Service.Models;
 using User.Management.Service.Services;
 using Microsoft.AspNetCore.Authorization;
-using User.Management.Service.Models.Authentication.SignUp;
-using User.Management.Service.Models.Authentication.Login;
 using User.Management.Data.Models;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Utilities;
@@ -18,6 +15,10 @@ using static System.Net.Mime.MediaTypeNames;
 using System.ComponentModel;
 using System.Drawing;
 using System;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using User.Management.Data.Models.Authentication.SignUp;
+using User.Management.Data.Models.Authentication.Login;
 
 namespace User.Management.API.Controllers
 {
@@ -119,7 +120,7 @@ namespace User.Management.API.Controllers
                 <div class='verification-box'>
                     <h1>Email Confirmed</h1>
                     <p>Your email has been successfully confirmed.</p>
-                    <p>Redirect to <a href='http://localhost:5173/signin'>login</a></p>
+                    <p>Redirect to <a href='http://localhost:5173/'>login</a></p>
                 </div>
             </body>
             </html>";
@@ -138,8 +139,8 @@ namespace User.Management.API.Controllers
         //[Route("login")]
         //public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
         //{
-        //    var loginOtpResponse=await _userManagement.GetOtpByLoginAsync(loginModel);
-        //    if (loginOtpResponse.Response!=null)
+        //    var loginOtpResponse = await _userManagement.GetOtpByLoginAsync(loginModel);
+        //    if (loginOtpResponse.Response != null)
         //    {
         //        var user = loginOtpResponse.Response.User;
         //        if (user.TwoFactorEnabled && await _userManager.CheckPasswordAsync(user, loginModel.Password))
@@ -149,7 +150,7 @@ namespace User.Management.API.Controllers
         //            _emailService.SendEmail(message);
 
         //            return StatusCode(StatusCodes.Status200OK,
-        //             new Response {IsSuccess=loginOtpResponse.IsSuccess, Status = "Success", Message = $"We have sent an OTP to your Email {user.Email}" });
+        //             new Response { IsSuccess = loginOtpResponse.IsSuccess, Status = "Success", Message = $"We have sent an OTP to your Email {user.Email}" });
         //        }
         //        if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
         //        {
@@ -164,8 +165,16 @@ namespace User.Management.API.Controllers
         //                authClaims.Add(new Claim(ClaimTypes.Role, role));
         //            }
 
-
         //            var jwtToken = GetToken(authClaims);
+
+        //            var claimsIdentity = new ClaimsIdentity(authClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+        //            var authProperties = new AuthenticationProperties
+        //            {
+        //                IsPersistent = true, // Keep the cookie beyond the session
+        //                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(60) // Set a proper expiration
+        //            };
+        //            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
 
         //            return Ok(new
         //            {
@@ -233,6 +242,20 @@ namespace User.Management.API.Controllers
                     }
 
                     var jwtToken = GetToken(authClaims);
+                    //var tokenString = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+
+                    //var cookieOptions = new CookieOptions
+                    //{
+                    //    HttpOnly = true,
+                    //    Secure = true, // Ensure this is true for HTTPS
+                    //    SameSite = SameSiteMode.Strict,
+                    //    Expires = jwtToken.ValidTo
+                    //};
+
+                    //Response.Cookies.Append("auth_token", tokenString, cookieOptions);
+
+                    // Set the authentication cookie
+                    
 
                     return Ok(new
                     {
@@ -240,7 +263,6 @@ namespace User.Management.API.Controllers
                         expiration = jwtToken.ValidTo
                     });
                     //returning the token...
-
                 }
             }
             return StatusCode(StatusCodes.Status404NotFound,

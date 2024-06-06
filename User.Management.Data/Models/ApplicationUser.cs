@@ -35,6 +35,8 @@ namespace User.Management.Data.Models
         [Required(ErrorMessage = "CNIC is required")]
         public string CNIC { get; set; }
 
+        public string? Occupation { get; set; }
+
         public DateTime? DateCreated { get; set; }
 
         public DateTime? DateUpdated { get; set; }

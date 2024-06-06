@@ -68,6 +68,7 @@ namespace User.Management.Service.Services
                 NamePrefix = registerUser.NamePrefix,
                 DOB = registerUser.DOB,
                 CNIC = registerUser.CNIC,
+                Occupation = registerUser.Occupation,
                 TwoFactorEnabled = true
             };
             var result = await _userManager.CreateAsync(user, registerUser.Password);

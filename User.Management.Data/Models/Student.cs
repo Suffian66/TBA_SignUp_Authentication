@@ -27,9 +27,9 @@ namespace User.Management.Data.Models
 
         public virtual Classes Classes { get; set; }
 
-        [ForeignKey("User")]
-        public int UserId { get; set; }
+        [ForeignKey("Id")]
+        public string Id { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual ApplicationUser Users { get; set; }
     }
 }

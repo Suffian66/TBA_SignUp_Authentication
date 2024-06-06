@@ -140,6 +140,17 @@ const Registerandlogin = () => {
                         {errors.cnic && <p>This field is required</p>}
                       </div>
                     </div>
+                    <div className="row">
+                      <div className="col-12 mb-4">
+                        <input
+                          type="text"
+                          className="form-control form-control-lg"
+                          placeholder="Occupation"
+                          {...register("occupation", { required: true })}
+                        />
+                        {errors.cnic && <p>This field is required</p>}
+                      </div>
+                    </div>
 
                     <div className="row">
                       <div className="col-12 mb-4">

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -6,19 +6,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using TBA_SignUp;
-using User.Management.Service.Services;
-using Microsoft.AspNetCore.Authorization;
 using User.Management.Data.Models;
-using Org.BouncyCastle.Asn1.X509;
-using Org.BouncyCastle.Utilities;
-using static System.Net.Mime.MediaTypeNames;
-using System.ComponentModel;
-using System.Drawing;
-using System;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using User.Management.Data.Models.Authentication.SignUp;
 using User.Management.Data.Models.Authentication.Login;
+using User.Management.Data.Models.Authentication.SignUp;
+using User.Management.Service.Services;
 
 namespace User.Management.API.Controllers
 {
@@ -34,7 +25,7 @@ namespace User.Management.API.Controllers
         private readonly IUserManagement _userManagement;
 
         public AuthenticationController(UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager, IEmailService emailService, 
+            RoleManager<IdentityRole> roleManager, IEmailService emailService,
             IUserManagement userManagement,
             SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
         {
@@ -53,7 +44,7 @@ namespace User.Management.API.Controllers
             var tokenResponse = await _userManagement.CreateUserwithTokenAsync(registerUser);
             if (tokenResponse.IsSuccess)
             {
-                await _userManagement.AssignRoleToUserAsync(registerUser.Roles,tokenResponse.Response.User);
+                await _userManagement.AssignRoleToUserAsync(registerUser.Roles, tokenResponse.Response.User);
                 var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { tokenResponse.Response.Token, email = registerUser.Email }, Request.Scheme);
                 var message = new Message(new string[] { registerUser.Email! }, "Confirmation Email Link", confirmationLink!);
                 _emailService.SendEmail(message);
@@ -255,7 +246,7 @@ namespace User.Management.API.Controllers
                     //Response.Cookies.Append("auth_token", tokenString, cookieOptions);
 
                     // Set the authentication cookie
-                    
+
 
                     return Ok(new
                     {
@@ -308,13 +299,13 @@ namespace User.Management.API.Controllers
             if (user != null)
             {
                 var resetPassResult = await _userManager.ResetPasswordAsync(user, resetPassword.Token, resetPassword.Password);
-                if(!resetPassResult.Succeeded) 
-                { 
+                if (!resetPassResult.Succeeded)
+                {
                     foreach (var error in resetPassResult.Errors)
                     {
                         ModelState.AddModelError(error.Code, error.Description);
                     }
-                return Ok(ModelState);
+                    return Ok(ModelState);
                 }
                 return StatusCode(StatusCodes.Status200OK,
                  new Response { Status = "Success", Message = $"Password has been changed." });

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using User.Management.Data.Models;
 
 namespace User.Management.Data.Models.Authentication.SignUp
 {
@@ -26,19 +25,20 @@ namespace User.Management.Data.Models.Authentication.SignUp
         public string Gender { get; set; }
 
         public string? NamePrefix { get; set; }
-        
+
         [Required(ErrorMessage = "DOB is required")]
         public string DOB { get; set; }
 
         [Required(ErrorMessage = "CNIC is required")]
         public string CNIC { get; set; }
+        public string? Occupation { get; set; }
 
         public DateTime? DateCreated { get; set; }
 
         public DateTime? DateUpdated { get; set; }
 
         public bool StatusInfo { get; set; }
-        
+
         public List<string>? Roles { get; set; }
 
     }

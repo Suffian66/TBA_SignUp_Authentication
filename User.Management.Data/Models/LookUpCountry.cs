@@ -2,10 +2,10 @@
 
 namespace User.Management.Data.Models
 {
-    public class LookUpCategory
+    public class LookUpCountry
     {
         [Key]
-        public int LookUpCtgId { get; set; }
+        public int LookUpCountryId { get; set; }
         public int Lang { get; set; }
 
         public string Title { get; set; }

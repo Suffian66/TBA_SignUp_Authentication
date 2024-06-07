@@ -25,6 +25,8 @@ namespace User.Management.Data.Models
         public DbSet<Subject> Subjects { get; set; }
 
         public DbSet<LookUpCategory> LookupsCategory { get; set; }
+        public DbSet<LookUpCategoryDetail> LookupsCategoryDetail { get; set; }
+        public DbSet<LookUpCountry> LookupsCountry { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

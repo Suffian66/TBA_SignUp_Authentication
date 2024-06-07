@@ -6,6 +6,7 @@ import Otplogin from "./Otplogin.jsx";
 import ForgotPassword from "./ForgetPassword.jsx";
 import Dashboard from "./Dashboard.jsx";
 import ResetPassword from "./ResetPassword.jsx";
+import Address from "./Address.jsx";
 
 const Loginpassword = () => {
   return (
@@ -20,6 +21,7 @@ const Loginpassword = () => {
             <Route path="/forgot-password" element= {<ForgotPassword/>}/>
             <Route path="/dashboard" element= {<Dashboard/>}/>
             <Route path="/reset-password" element= {<ResetPassword/>}/>
+            <Route path="/address" element= {<Address/>}/>
 
             
           </Routes>

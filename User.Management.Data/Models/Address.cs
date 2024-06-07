@@ -16,6 +16,7 @@ namespace User.Management.Data.Models
         public string PostalCode { get; set; }
         public string Country { get; set; }
 
+        public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public int UpdatedBy { get; set; }
         public DateTime UpdatedDate { get; set; }

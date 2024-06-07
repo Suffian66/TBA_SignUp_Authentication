@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using User.Management.Data.Models;
 using User.Management.Service.Services;
+using User.Management.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,7 +71,7 @@ builder.Services.AddSingleton(emailConfig);
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserManagement, UserManagementService>();
-
+builder.Services.AddHttpClient<ILookUpCategoryService, LookUpCategoryService>();
 
 // Add services to the container.
 
@@ -107,14 +106,16 @@ builder.Services.AddSwaggerGen(option =>
             new string[]{}
         }
     });
-    
+
 });
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }

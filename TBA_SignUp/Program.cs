@@ -71,6 +71,7 @@ builder.Services.AddSingleton(emailConfig);
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserManagement, UserManagementService>();
 builder.Services.AddScoped<ILookUpCountryService, LookUpCountryService>();
+builder.Services.AddScoped<ILookUpCategoryService, LookUpCategoryService>();
 
 // Add services to the container.
 

@@ -1,36 +1,28 @@
-﻿using Newtonsoft.Json;
-using User.Management.Service.Services;
+﻿using Microsoft.EntityFrameworkCore;
+using User.Management.Data.Models;
 
-namespace User.Management.Services
+namespace User.Management.Service.Services
 {
     public class LookUpCategoryService : ILookUpCategoryService
     {
-        private readonly HttpClient _httpClient;
+        private readonly ApplicationDbContext _context;
 
-        public LookUpCategoryService(HttpClient httpClient)
+        public LookUpCategoryService(ApplicationDbContext context)
         {
-            _httpClient = httpClient;
+            _context = context;
         }
 
-        public async Task<List<string>> GetCountriesAsync()
+        public async Task<IEnumerable<LookUpCategory>> GetAllLookUpCategoryAsync()
         {
-            var response = await _httpClient.GetAsync("https://restcountries.com/v3.1/all");
-            response.EnsureSuccessStatusCode();
-
-            var content = await response.Content.ReadAsStringAsync();
-            var countries = JsonConvert.DeserializeObject<List<Country>>(content);
-
-            return countries.Select(c => c.Name.Common).ToList();
-        }
-
-        private class Country
-        {
-            public Name Name { get; set; }
-        }
-
-        private class Name
-        {
-            public string Common { get; set; }
+            try
+            {
+                return await _context.LookupsCategory.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                // Handle exception (log it, rethrow it, etc.)
+                throw new ApplicationException("An error occurred while fetching categories.", ex);
+            }
         }
     }
 }

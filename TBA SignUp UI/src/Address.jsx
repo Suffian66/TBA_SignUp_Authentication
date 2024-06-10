@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useGetCountriesQuery } from "./services/Address";
+import { useGetCategoriesQuery, useGetCountriesQuery } from "./services/Address";
 
 const Address = () => {
   const {
@@ -8,9 +8,11 @@ const Address = () => {
     formState: { errors },
   } = useForm();
   const { data: countries, error, isLoading } = useGetCountriesQuery();
+  const { data: categories, error: categoriesError, isLoading: categoriesLoading } = useGetCategoriesQuery();
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching countries</div>;
+  if (categoriesError) return <div>Error fetching categories: {categoriesError.message}</div>;
   return (
     <>
       <div>
@@ -28,15 +30,17 @@ const Address = () => {
                       <div className="row">
                         <div className="col-md-12 mb-4">
                           <div className="form-outline">
-                            <select
-                              className="form-control form-control-lg"
-                              {...register("addressType", { required: true })}
-                            >
-                              <option value="">Select Address Type</option>
-                              <option value="home">Home</option>
-                              <option value="work">Work</option>
-                              <option value="other">Other</option>
-                            </select>
+                          <select
+                            className="form-control form-control-lg"
+                            {...register("addressType", { required: true })}
+                          >
+                            <option value="">Select Address Type</option>
+                            {categories && categories.map((category) => (
+                              <option key={category.lookUpCtgId} value={category.title}>
+                                {category.title}
+                              </option>
+                            ))}
+                          </select>
 
                             {errors.addressType && (
                               <p>This field is required</p>

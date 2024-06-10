@@ -1,26 +1,25 @@
-
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const AddressApi = createApi({
     reducerPath: 'AddressApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://localhost:7176/api/Address/' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://localhost:7176/api/LookUpCountry/' }),
     endpoints: (builder) => ({
-        register: builder.query({
+        getCountries: builder.query({
             query: () => "countries",
         }),
         addAddress: builder.mutation({
-            query: (data) => ({
+            query: (body) => ({
                 url: 'countries',
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: data,
+                body,
             }),
         }),
     }),
 });
 
-export const { useAddAddressMutation  } = AddressApi;
+export const { useGetCountriesQuery, useAddAddressMutation } = AddressApi;
 
 export default AddressApi;

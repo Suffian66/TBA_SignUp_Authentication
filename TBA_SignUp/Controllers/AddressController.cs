@@ -6,38 +6,29 @@ namespace User.Management.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AddressController : ControllerBase
+    public class LookUpCountryController : ControllerBase
     {
-        private readonly ILookUpCategoryService _lookUpCategoryService;
-        private readonly ApplicationDbContext _context;
+        private readonly ILookUpCountryService _lookUpCountryService;
 
-        public AddressController(ILookUpCategoryService lookUpCategoryService, ApplicationDbContext context)
+        public LookUpCountryController(ILookUpCountryService lookUpCountryService)
         {
-            _lookUpCategoryService = lookUpCategoryService;
-            _context = context;
+            _lookUpCountryService = lookUpCountryService;
         }
 
         [HttpGet("countries")]
-        public async Task<IActionResult> GetCountries()
+        public async Task<ActionResult<IEnumerable<LookUpCountry>>> GetAll()
         {
-            var countries = await _lookUpCategoryService.GetCountriesAsync();
-            return Ok(countries);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> PostAddress([FromBody] Address address)
-        {
-            if (address == null)
+            try
             {
-                return BadRequest();
+
+                var countries = await _lookUpCountryService.GetAllAsync();
+                return Ok(countries);
             }
+            catch (Exception ex)
+            {
 
-            _context.Address.Add(address);
-            await _context.SaveChangesAsync();
-
-            return Ok(address);
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
-
-        // Other CRUD actions for Address (Create, Read, Update, Delete)
     }
 }

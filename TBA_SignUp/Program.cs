@@ -6,7 +6,6 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using User.Management.Data.Models;
 using User.Management.Service.Services;
-using User.Management.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,7 +70,7 @@ builder.Services.AddSingleton(emailConfig);
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserManagement, UserManagementService>();
-builder.Services.AddHttpClient<ILookUpCategoryService, LookUpCategoryService>();
+builder.Services.AddScoped<ILookUpCountryService, LookUpCountryService>();
 
 // Add services to the container.
 

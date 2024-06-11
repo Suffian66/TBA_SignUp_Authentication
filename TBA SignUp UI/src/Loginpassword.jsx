@@ -7,6 +7,7 @@ import ForgotPassword from "./ForgetPassword.jsx";
 import Dashboard from "./Dashboard.jsx";
 import ResetPassword from "./ResetPassword.jsx";
 import Address from "./Address.jsx";
+import Studentlist from "./Studentlist.jsx";
 
 const Loginpassword = () => {
   return (
@@ -14,16 +15,15 @@ const Loginpassword = () => {
       <BrowserRouter>
         <div>
           <Routes>
-            <Route path="/signup" element= {<Registerandlogin/>}/>
+            <Route path="/" element= {<Registerandlogin/>}/>
             <Route path="/home" element= {<Home/>}/>
-            <Route path="/" element ={<SignIn/>}/>
+            <Route path="/signin" element ={<SignIn/>}/>
             <Route path="/otplogin" element ={<Otplogin/>}/>
             <Route path="/forgot-password" element= {<ForgotPassword/>}/>
             <Route path="/dashboard" element= {<Dashboard/>}/>
             <Route path="/reset-password" element= {<ResetPassword/>}/>
             <Route path="/address" element= {<Address/>}/>
-
-            
+            <Route path="/studentlist" element= {<Studentlist/>}/>
           </Routes>
         </div>
       </BrowserRouter>

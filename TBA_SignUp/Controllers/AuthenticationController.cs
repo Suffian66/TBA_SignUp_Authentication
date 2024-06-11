@@ -23,7 +23,7 @@ namespace User.Management.API.Controllers
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
         private readonly IUserManagement _userManagement;
-
+    
         public AuthenticationController(UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager, IEmailService emailService,
             IUserManagement userManagement,
@@ -314,9 +314,7 @@ namespace User.Management.API.Controllers
                  new Response { Status = "Errors", Message = $"Password couldn't be changed." });
         }
 
-
-
-
+        
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));

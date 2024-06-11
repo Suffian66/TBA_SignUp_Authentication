@@ -6,6 +6,8 @@ import forgotPasswordApi from "./services/ForgotPassword";
 import login2FA from "./services/Otplogin";
 import { resetPasswordApi } from "./services/ResetPassword";
 import AddressApi from "./services/Address";
+import Studentlist from "./services/Studentlist";
+
 
 
 const store = configureStore({
@@ -16,13 +18,14 @@ const store = configureStore({
         [login2FA.reducerPath] : login2FA.reducer,
         [resetPasswordApi.reducerPath] : resetPasswordApi.reducer,
         [AddressApi.reducerPath] : AddressApi.reducer,
+        [Studentlist.reducerPath] : Studentlist.reducer,
        
        
     },
 
     middleware: (getDefaultMiddleware) =>
 
-    getDefaultMiddleware().concat(SignUpApi.middleware).concat(Login.middleware).concat(forgotPasswordApi.middleware).concat(login2FA.middleware).concat(resetPasswordApi.middleware).concat(AddressApi.middleware),
+    getDefaultMiddleware().concat(SignUpApi.middleware).concat(Login.middleware).concat(forgotPasswordApi.middleware).concat(login2FA.middleware).concat(resetPasswordApi.middleware).concat(AddressApi.middleware).concat(Studentlist.middleware),
 
 })
 

@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using User.Management.Data.Models;
 using User.Management.Service.Services;
+using User.Management.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,6 +74,7 @@ builder.Services.AddScoped<IUserManagement, UserManagementService>();
 builder.Services.AddScoped<ILookUpCountryService, LookUpCountryService>();
 builder.Services.AddScoped<ILookUpCategoryService, LookUpCategoryService>();
 builder.Services.AddScoped<ILookUpCategoryDetailService, LookUpCategoryDetailService>();
+builder.Services.AddScoped<IStudent, StudentService>();
 
 // Add services to the container.
 

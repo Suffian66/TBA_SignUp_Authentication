@@ -16,13 +16,13 @@ namespace User.Management.Data.Models
         //public DbSet<SponsorDetails> SponsorDetails { get; set; }
 
         public DbSet<Address> Address { get; set; }
-        public DbSet<Classes> Classes { get; set; }
+        public DbSet<Class> Class { get; set; }
 
-        public DbSet<CourseDetail> Courses { get; set; }
+        //public DbSet<CourseDetail> Courses { get; set; }
 
         public DbSet<Student> Students { get; set; }
 
-        public DbSet<Subject> Subjects { get; set; }
+        //public DbSet<Subject> Subjects { get; set; }
 
         public DbSet<LookUpCategory> LookupsCategory { get; set; }
         public DbSet<LookUpCategoryDetail> LookupsCategoryDetail { get; set; }

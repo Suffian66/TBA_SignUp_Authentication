@@ -1,7 +1,9 @@
-﻿namespace User.Management.Service.Services
+﻿using User.Management.Data.Models;
+
+namespace User.Management.Service.Services
 {
     public interface ILookUpCategoryService
     {
-        Task<List<string>> GetCountriesAsync();
+        Task<IEnumerable<LookUpCategory>> GetAllLookUpCategoryAsync();
     }
 }

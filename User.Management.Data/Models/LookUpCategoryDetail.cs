@@ -17,7 +17,7 @@ namespace User.Management.Data.Models
         public DateTime UpdatedDate { get; set; }
         public bool IsActive { get; set; }
 
-        [ForeignKey("LookUpCtgId")]
+        [ForeignKey("LookUpCategory")]
         public int LookUpCtgId { get; set; }
         public virtual LookUpCategory LookUpCategory { get; set; }
 

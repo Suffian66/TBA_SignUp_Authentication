@@ -2,42 +2,66 @@
 using User.Management.Data.Models;
 using User.Management.Service.Services;
 
-namespace User.Management.Controllers
+namespace User.Management.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AddressController : ControllerBase
+    public class LookUpController : ControllerBase
     {
+        private readonly ILookUpCountryService _lookUpCountryService;
         private readonly ILookUpCategoryService _lookUpCategoryService;
-        private readonly ApplicationDbContext _context;
+        private readonly ILookUpCategoryDetailService _lookUpCategoryDetailService;
 
-        public AddressController(ILookUpCategoryService lookUpCategoryService, ApplicationDbContext context)
+        public LookUpController(ILookUpCountryService lookUpCountryService, ILookUpCategoryService lookUpCategoryService, ILookUpCategoryDetailService lookUpCategoryDetailService)
         {
+            _lookUpCountryService = lookUpCountryService;
             _lookUpCategoryService = lookUpCategoryService;
-            _context = context;
+            _lookUpCategoryDetailService = lookUpCategoryDetailService;
         }
 
         [HttpGet("countries")]
-        public async Task<IActionResult> GetCountries()
+        public async Task<ActionResult<IEnumerable<LookUpCountry>>> GetAllCountries()
         {
-            var countries = await _lookUpCategoryService.GetCountriesAsync();
-            return Ok(countries);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> PostAddress([FromBody] Address address)
-        {
-            if (address == null)
+            try
             {
-                return BadRequest();
+                var countries = await _lookUpCountryService.GetAllAsync();
+                return Ok(countries);
             }
-
-            _context.Address.Add(address);
-            await _context.SaveChangesAsync();
-
-            return Ok(address);
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
-        // Other CRUD actions for Address (Create, Read, Update, Delete)
+        [HttpGet("categories")]
+        public async Task<ActionResult<IEnumerable<LookUpCategory>>> GetAllCategories()
+        {
+            try
+            {
+                var categories = await _lookUpCategoryService.GetAllLookUpCategoryAsync();
+                return Ok(categories);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("categorydetail")]
+
+        public async Task<ActionResult<IEnumerable<LookUpCategoryDetail>>> GetAllLookUpCategoryDetailAsync()
+        {
+            try
+            {
+                var categoryDetail = await _lookUpCategoryDetailService.GetAllLookUpCategoryDetailAsync();
+                return Ok(categoryDetail);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, $"Internal Server error: {ex.Message}");
+            }
+        }
+
     }
 }

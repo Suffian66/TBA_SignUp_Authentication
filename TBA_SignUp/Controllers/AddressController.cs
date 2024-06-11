@@ -47,19 +47,63 @@ namespace User.Management.API.Controllers
             }
         }
 
-        [HttpGet("categorydetail")]
-
-        public async Task<ActionResult<IEnumerable<LookUpCategoryDetail>>> GetAllLookUpCategoryDetailAsync()
+        [HttpGet("Categoryid")]
+        public async Task<ActionResult<LookUpCategory>> GetLookUpCategoryById(int id)
         {
             try
             {
-                var categoryDetail = await _lookUpCategoryDetailService.GetAllLookUpCategoryDetailAsync();
+                var category = await _lookUpCategoryService.GetLookUpCategoryByIdAsync(id);
+                return Ok(category);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (ApplicationException ex)
+            {
+
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("categorydetail")]
+
+        public async Task<ActionResult<IEnumerable<LookUpCategoryDetail>>> GetAllLookUpCategoryDetailAsync([FromQuery] IEnumerable<string> filters)
+        {
+            try
+            {
+                IEnumerable<LookUpCategoryDetail> categoryDetail;
+
+                if (filters != null && filters.Count() > 0)
+                {
+                    categoryDetail = await _lookUpCategoryDetailService.GetFilteredCategoryDetailAsync(filters);
+                }
+                else
+                {
+                    categoryDetail = await _lookUpCategoryDetailService.GetAllCategoryDetailAsync();
+                }
+
                 return Ok(categoryDetail);
             }
             catch (Exception ex)
             {
 
                 return StatusCode(500, $"Internal Server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("categorydetail/{categoryId}")]
+        public async Task<ActionResult<IEnumerable<LookUpCategoryDetail>>> GetLookUpCategoryDetailsByCategoryId(int categoryId)
+        {
+            try
+            {
+                var details = await _lookUpCategoryDetailService.GetLookUpCategoryDetailsByCategoryIdAsync(categoryId);
+                return Ok(details);
+            }
+            catch (ApplicationException ex)
+            {
+
+                return StatusCode(500, ex.Message);
             }
         }
 

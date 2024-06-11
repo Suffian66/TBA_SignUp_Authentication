@@ -72,6 +72,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserManagement, UserManagementService>();
 builder.Services.AddScoped<ILookUpCountryService, LookUpCountryService>();
 builder.Services.AddScoped<ILookUpCategoryService, LookUpCategoryService>();
+builder.Services.AddScoped<ILookUpCategoryDetailService, LookUpCategoryDetailService>();
 
 // Add services to the container.
 

@@ -21,7 +21,7 @@ const Loginpassword = () => {
             <Route path="/forgot-password" element= {<ForgotPassword/>}/>
             <Route path="/dashboard" element= {<Dashboard/>}/>
             <Route path="/reset-password" element= {<ResetPassword/>}/>
-            <Route path="/address" element= {<Address/>}/>
+            <Route path="/address" element= {<Address />}/>
 
             
           </Routes>

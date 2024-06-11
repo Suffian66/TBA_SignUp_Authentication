@@ -7,13 +7,13 @@ export const AddressApi = createApi({
         getCountries: builder.query({
             query: () => "countries",
         }),
-        getCategories: builder.query({
-            query: () => "categories",
+        getCategoryDetail: builder.query({
+            query: () => `categorydetail`,
         }),
         addAddress: builder.mutation({
             query: (body) => ({
                 url: 'address',
-                method: 'GET',
+                method: 'GET', 
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -23,6 +23,6 @@ export const AddressApi = createApi({
     }),
 });
 
-export const { useGetCountriesQuery, useGetCategoriesQuery, useAddAddressMutation } = AddressApi;
+export const { useGetCountriesQuery, useGetCategoryDetailQuery, useAddAddressMutation } = AddressApi;
 
 export default AddressApi;

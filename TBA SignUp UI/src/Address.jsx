@@ -1,5 +1,8 @@
 import { useForm } from "react-hook-form";
-import { useGetCategoriesQuery, useGetCountriesQuery } from "./services/Address";
+import {
+  useGetCategoryDetailQuery,
+  useGetCountriesQuery,
+} from "./services/Address";
 
 const Address = () => {
   const {
@@ -8,11 +11,23 @@ const Address = () => {
     formState: { errors },
   } = useForm();
   const { data: countries, error, isLoading } = useGetCountriesQuery();
-  const { data: categories, error: categoriesError, isLoading: categoriesLoading } = useGetCategoriesQuery();
+  // const { data: categories, error: categoriesError, isLoading: categoriesLoading } = useGetCategoriesQuery();
+  const {
+    data,
+    error: categoryDetailError,
+    isLoading: categoryDetailLoading,
+    refetch: refetchCategoryDetail,
+  } = useGetCategoryDetailQuery();
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching countries</div>;
-  if (categoriesError) return <div>Error fetching categories: {categoriesError.message}</div>;
+  // if (categoriesError) return <div>Error fetching categories: {categoriesError.message}</div>;
+
+  const handleAddressTypeChange = async (e) => {
+    const selectedAddressTypeId = e.target.value;
+    // Fetch category details based on the selected address type ID
+    await refetchCategoryDetail({ filters: [selectedAddressTypeId] });
+  };
   return (
     <>
       <div>
@@ -30,17 +45,23 @@ const Address = () => {
                       <div className="row">
                         <div className="col-md-12 mb-4">
                           <div className="form-outline">
-                          <select
-                            className="form-control form-control-lg"
-                            {...register("addressType", { required: true })}
-                          >
-                            <option value="">Select Address Type</option>
-                            {categories && categories.map((category) => (
-                              <option key={category.lookUpCtgId} value={category.title}>
-                                {category.title}
-                              </option>
-                            ))}
-                          </select>
+                            <select
+                              className="form-control form-control-lg"
+                              {...register("addressType", { required: true })}
+                              onChange={handleAddressTypeChange}
+                            >
+                              <option value="">Select Address Type</option>
+                              {data
+                                .filter((type) => type.lookUpCtgId === 5) // Filter address types where lookUpCtgId is 5
+                                .map((type) => (
+                                  <option
+                                    key={type.lookUpCtgDetailId}
+                                    value={type.lookUpCtgDetailId}
+                                  >
+                                    {type.title}
+                                  </option>
+                                ))}
+                            </select>
 
                             {errors.addressType && (
                               <p>This field is required</p>

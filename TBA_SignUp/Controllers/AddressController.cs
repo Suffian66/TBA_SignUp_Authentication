@@ -10,11 +10,13 @@ namespace User.Management.API.Controllers
     {
         private readonly ILookUpCountryService _lookUpCountryService;
         private readonly ILookUpCategoryService _lookUpCategoryService;
+        private readonly ILookUpCategoryDetailService _lookUpCategoryDetailService;
 
-        public LookUpController(ILookUpCountryService lookUpCountryService, ILookUpCategoryService lookUpCategoryService)
+        public LookUpController(ILookUpCountryService lookUpCountryService, ILookUpCategoryService lookUpCategoryService, ILookUpCategoryDetailService lookUpCategoryDetailService)
         {
             _lookUpCountryService = lookUpCountryService;
             _lookUpCategoryService = lookUpCategoryService;
+            _lookUpCategoryDetailService = lookUpCategoryDetailService;
         }
 
         [HttpGet("countries")]
@@ -44,5 +46,22 @@ namespace User.Management.API.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpGet("categorydetail")]
+
+        public async Task<ActionResult<IEnumerable<LookUpCategoryDetail>>> GetAllLookUpCategoryDetailAsync()
+        {
+            try
+            {
+                var categoryDetail = await _lookUpCategoryDetailService.GetAllLookUpCategoryDetailAsync();
+                return Ok(categoryDetail);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, $"Internal Server error: {ex.Message}");
+            }
+        }
+
     }
 }

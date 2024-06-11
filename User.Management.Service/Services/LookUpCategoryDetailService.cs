@@ -3,20 +3,20 @@ using User.Management.Data.Models;
 
 namespace User.Management.Service.Services
 {
-    public class LookUpCategoryService : ILookUpCategoryService
+    public class LookUpCategoryDetailService : ILookUpCategoryDetailService
     {
         private readonly ApplicationDbContext _context;
 
-        public LookUpCategoryService(ApplicationDbContext context)
+        public LookUpCategoryDetailService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<LookUpCategory>> GetAllLookUpCategoryAsync()
+        public async Task<IEnumerable<LookUpCategoryDetail>> GetAllLookUpCategoryDetailAsync()
         {
             try
             {
-                return await _context.LookupsCategory.ToListAsync();
+                return await _context.LookupsCategoryDetail.ToListAsync();
             }
             catch (Exception ex)
             {

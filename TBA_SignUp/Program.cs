@@ -75,6 +75,8 @@ builder.Services.AddScoped<ILookUpCountryService, LookUpCountryService>();
 builder.Services.AddScoped<ILookUpCategoryService, LookUpCategoryService>();
 builder.Services.AddScoped<ILookUpCategoryDetailService, LookUpCategoryDetailService>();
 builder.Services.AddScoped<IStudent, StudentService>();
+builder.Services.AddScoped<ITeacherService, TeacherService>();
+builder.Services.AddScoped<IMapTeacherSubjectService, MapTeacherSubjectService>();
 
 // Add services to the container.
 

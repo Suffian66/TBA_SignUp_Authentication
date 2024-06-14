@@ -22,11 +22,17 @@ namespace User.Management.Data.Models
 
         public DbSet<Student> Students { get; set; }
 
-        //public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
 
         public DbSet<LookUpCategory> LookupsCategory { get; set; }
         public DbSet<LookUpCategoryDetail> LookupsCategoryDetail { get; set; }
         public DbSet<LookUpCountry> LookupsCountry { get; set; }
+
+        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<MapTeacherSubject> MapTeacherSubject { get; set; }
+
+
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

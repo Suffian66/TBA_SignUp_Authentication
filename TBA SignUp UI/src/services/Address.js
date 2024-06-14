@@ -6,6 +6,12 @@ export const AddressApi = createApi({
     endpoints: (builder) => ({
         getCountries: builder.query({
             query: () => "countries",
+            url:`countries`,
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            
         }),
         getCategoryDetail: builder.query({
             query: (filters) => ({
@@ -20,7 +26,7 @@ export const AddressApi = createApi({
         addAddress: builder.mutation({
             query: (body) => ({
                 url: 'address',
-                method: 'GET', 
+                method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json'
                 },

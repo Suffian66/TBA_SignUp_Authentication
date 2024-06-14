@@ -3,8 +3,11 @@ import {
   useGetCategoryDetailQuery,
   useGetCountriesQuery,
 } from "./services/Address";
+import { Link } from "react-router-dom";
+import { useAddUserMutation } from "./services/SignUp";
 
 const Address = () => {
+  const [addUser, { data, }] = useAddUserMutation();
   const {
     register,
     handleSubmit,
@@ -16,8 +19,7 @@ const Address = () => {
     error: categoryDetailError,
     isLoading: categoryDetailLoading,
     refetch: refetchCategoryDetail,
-  } = useGetCategoryDetailQuery(["address"], {
-  });
+  } = useGetCategoryDetailQuery(["address"], {});
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching countries</div>;
@@ -29,7 +31,22 @@ const Address = () => {
   //   const selectedAddressType = e.target.value;
   //   await refetchCategoryDetail([`address`]);
   // };
+  const onSubmit = async (formData) => {
+    try {
+      const updatedFormData = { ...formData, roles: ["teacher"] };
 
+      await addUser(updatedFormData);
+      console.log("User added successfully:", updatedFormData);
+      alert("User added successfully:", updatedFormData);
+      // window.location.reload();
+      // Navigate('/signin')
+
+      
+    } catch (err) {
+      console.error("Failed to add user:", err);
+      alert("Failed to add user:", err)
+    }
+  };
   return (
     <>
       <div>
@@ -42,15 +59,16 @@ const Address = () => {
                   style={{ borderRadius: "20px" }}
                 >
                   <div className="card-body p-4 p-md-5">
-                    <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">Address Form</h3>
-                    <form onSubmit={handleSubmit((data) => console.log(data))}>
+                    <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">
+                      Enter Your Address
+                    </h3>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                       <div className="row">
                         <div className="col-md-12 mb-4">
                           <div className="form-outline">
-                          <select
+                            <select
                               className="form-control form-control-lg"
                               {...register("addressType", { required: true })}
-                              // onChange={handleAddressTypeChange}
                             >
                               <option value="">Select Address Type</option>
                               {categoryDetails &&
@@ -70,15 +88,14 @@ const Address = () => {
                           </div>
                         </div>
                         <div className="col-md-12 mb-4">
-                          <input
-                            type="text"
-                            className="form-control form-control-lg"
-                            placeholder="Address Primary"
-                            {...register("addressPrimary", { required: true })}
-                          />
-                          {errors.addressPrimary && (
-                            <p>This field is required</p>
-                          )}
+                          <label className="form-check-label">
+                            <input
+                              type="checkbox"
+                              className="form-check-input"
+                              {...register("addressPrimary")}
+                            />
+                            Address Primary
+                          </label>
                         </div>
                         <div className="col-12 mb-4">
                           <input
@@ -157,7 +174,15 @@ const Address = () => {
                         >
                           {isLoading ? "Signing Up..." : "Sign Up"}
                         </button>
+
                         {error && <p>Failed to sign up. Please try again.</p>}
+                      </div>
+                      <div className=" text-end">
+                        <Link to="/">
+                          <button className="btn btn-primary btn-lg">
+                            Back
+                          </button>
+                        </Link>
                       </div>
                     </form>
                   </div>

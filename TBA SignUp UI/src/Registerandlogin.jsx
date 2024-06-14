@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAddUserMutation } from "./services/SignUp";
 import { useForm } from "react-hook-form";
 
@@ -17,7 +17,7 @@ const Registerandlogin = () => {
 
   const onSubmit = async (formData) => {
     try {
-      const updatedFormData = { ...formData, roles: ["sponsor"] };
+      const updatedFormData = { ...formData, roles: ["teacher"] };
 
       await addUser(updatedFormData);
       console.log("User added successfully:", updatedFormData);
@@ -165,14 +165,15 @@ const Registerandlogin = () => {
                     </div>
 
                     <div className="mt-4 pt-2">
+                      <Link to= '/address'>
                       <button
-                        className="btn btn-warning btn-lg"
+                        className="btn btn-primary btn-lg"
                         type="submit"
                         disabled={isLoading}
                       >
-                        {isLoading ? "Signing Up..." : "Sign Up"}
+                    Next
                       </button>
-                      {error && <p>Failed to sign up. Please try again.</p>}
+                      </Link>
                     </div>
 
                   </form>

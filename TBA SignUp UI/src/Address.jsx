@@ -11,23 +11,25 @@ const Address = () => {
     formState: { errors },
   } = useForm();
   const { data: countries, error, isLoading } = useGetCountriesQuery();
-  // const { data: categories, error: categoriesError, isLoading: categoriesLoading } = useGetCategoriesQuery();
   const {
-    data,
+    data: categoryDetails,
     error: categoryDetailError,
     isLoading: categoryDetailLoading,
     refetch: refetchCategoryDetail,
-  } = useGetCategoryDetailQuery();
+  } = useGetCategoryDetailQuery(["address"], {
+  });
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching countries</div>;
-  // if (categoriesError) return <div>Error fetching categories: {categoriesError.message}</div>;
+  if (categoryDetailLoading) return <div>Loading categories...</div>;
+  if (categoryDetailError)
+    return <div>Error fetching categories: {categoryDetailError.message}</div>;
 
-  const handleAddressTypeChange = async (e) => {
-    const selectedAddressTypeId = e.target.value;
-    // Fetch category details based on the selected address type ID
-    await refetchCategoryDetail({ filters: [selectedAddressTypeId] });
-  };
+  // const handleAddressTypeChange = async (e) => {
+  //   const selectedAddressType = e.target.value;
+  //   await refetchCategoryDetail([`address`]);
+  // };
+
   return (
     <>
       <div>
@@ -45,18 +47,17 @@ const Address = () => {
                       <div className="row">
                         <div className="col-md-12 mb-4">
                           <div className="form-outline">
-                            <select
+                          <select
                               className="form-control form-control-lg"
                               {...register("addressType", { required: true })}
-                              onChange={handleAddressTypeChange}
+                              // onChange={handleAddressTypeChange}
                             >
                               <option value="">Select Address Type</option>
-                              {data
-                                .filter((type) => type.lookUpCtgId === 5) // Filter address types where lookUpCtgId is 5
-                                .map((type) => (
+                              {categoryDetails &&
+                                categoryDetails.map((type) => (
                                   <option
                                     key={type.lookUpCtgDetailId}
-                                    value={type.lookUpCtgDetailId}
+                                    value={type.title}
                                   >
                                     {type.title}
                                   </option>

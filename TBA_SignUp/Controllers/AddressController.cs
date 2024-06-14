@@ -66,9 +66,9 @@ namespace User.Management.API.Controllers
             }
         }
 
-        [HttpGet("categorydetail")]
+        [HttpPost("categorydetail")]
 
-        public async Task<ActionResult<IEnumerable<LookUpCategoryDetail>>> GetAllLookUpCategoryDetailAsync([FromQuery] IEnumerable<string> filters)
+        public async Task<ActionResult<IEnumerable<LookUpCategoryDetail>>> GetAllLookUpCategoryDetailAsync([FromBody] IEnumerable<string> filters)
         {
             try
             {

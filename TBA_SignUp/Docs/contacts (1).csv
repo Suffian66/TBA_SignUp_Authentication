@@ -10,7 +10,7 @@ PK",aaaa,,,,karachi,,34432,PK,,,,,,,,,,,,,,,,,,,myContacts
 ,,,,,,,ID,Lang,Title,Discription ,"      ,[StatusInfo]","      ,[DateCreated]","      ,[DateUpdated]",,,,ID,Lang,Title,Discription ,"      ,[StatusInfo]","      ,[DateCreated]","      ,[DateUpdated]",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,users_fk,nvarchar(450),,,,,1,1,PhoneTypes,Types of Phone N,,,,,,,1,1,Pakistan,Types of Phone N,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,AddressType,string (10),"Home , Office , Other",,,,2,1,EmailType,,,,,,,,2,1,USA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,AddressPrimary,T/F,,,,,3,1,Address,,,,,,,,3,1,UK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,AddressPrimary,T/F,,,,,3,1,Address type,,,,,,,,3,1,UK,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,Address1,string (100),,,,,4,1,Country,,,,,,,,4,1,Spain,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,Address2,string (100),,,,,5,1,City,,,,,,,,5,1,Dxb,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,City,string (100),,,,,LKUP_Category_Detail,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

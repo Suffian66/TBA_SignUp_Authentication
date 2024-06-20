@@ -51,28 +51,28 @@ namespace User.Management.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fdc3c357-8216-46ab-8ae8-51e0d1ea97a1",
+                            Id = "7517b9f5-c844-439e-a777-10e84162e838",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "b51918d8-ea80-4280-8fd8-49c51a1fae3b",
+                            Id = "8a07caa2-58b7-4e35-b726-897823a5fd6d",
                             ConcurrencyStamp = "2",
                             Name = "Sponsor",
                             NormalizedName = "Sponsor"
                         },
                         new
                         {
-                            Id = "92f96e63-9128-49bb-80f3-97c634213a3b",
+                            Id = "0da9879e-5e55-49b3-b712-94b5459eda2f",
                             ConcurrencyStamp = "3",
                             Name = "Teacher",
                             NormalizedName = "Teacher"
                         },
                         new
                         {
-                            Id = "97035ef3-d8ae-4f7f-9f47-7b5770d2b337",
+                            Id = "b5dae939-0cff-4ae8-8a93-41f3f45a238e",
                             ConcurrencyStamp = "4",
                             Name = "Student",
                             NormalizedName = "Student"
@@ -457,9 +457,6 @@ namespace User.Management.Data.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LookUpCategoryLookUpCtgId")
-                        .HasColumnType("int");
-
                     b.Property<int>("LookUpCtgId")
                         .HasColumnType("int");
 
@@ -475,7 +472,7 @@ namespace User.Management.Data.Migrations
 
                     b.HasKey("LookUpCtgDetailId");
 
-                    b.HasIndex("LookUpCategoryLookUpCtgId");
+                    b.HasIndex("LookUpCtgId");
 
                     b.ToTable("LookupsCategoryDetail");
                 });
@@ -519,6 +516,78 @@ namespace User.Management.Data.Migrations
                     b.ToTable("LookupsCountry");
                 });
 
+            modelBuilder.Entity("User.Management.Data.Models.MapSponsorStudents", b =>
+                {
+                    b.Property<int>("MapSponsorStudentsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MapSponsorStudentsId"), 1L, 1);
+
+                    b.Property<int>("DonationAmount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DonationChannel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DonationDestinationAccount")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DonationFrequency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DonationSourceAccount")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DonationStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SponsorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StudentsReports")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MapSponsorStudentsId");
+
+                    b.HasIndex("SponsorId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("MapSponsorStudents");
+                });
+
+            modelBuilder.Entity("User.Management.Data.Models.Sponsor", b =>
+                {
+                    b.Property<int>("SponsorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SponsorId"), 1L, 1);
+
+                    b.Property<string>("Id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("SponsorId");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("Sponsors");
+                });
+
             modelBuilder.Entity("User.Management.Data.Models.Student", b =>
                 {
                     b.Property<int>("StudentId")
@@ -536,22 +605,18 @@ namespace User.Management.Data.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateOfAdmission")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("DateOfSchoolLeaving")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FatherIncome")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FatherName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FatherOccupation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("GR_No")
                         .HasColumnType("int");
+
+                    b.Property<string>("Id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -560,13 +625,6 @@ namespace User.Management.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MedicalNeeds")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameOfDependent")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StudentName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UpdatedBy")
@@ -579,7 +637,42 @@ namespace User.Management.Data.Migrations
 
                     b.HasIndex("ClassId");
 
+                    b.HasIndex("Id");
+
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("User.Management.Data.Models.StudentFamily", b =>
+                {
+                    b.Property<int>("StudentFamilyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentFamilyId"), 1L, 1);
+
+                    b.Property<string>("FamilyMemberName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FamilyRelation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PersonIncome")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PersonOccupation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentFamilyId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentFamily");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -654,11 +747,41 @@ namespace User.Management.Data.Migrations
                 {
                     b.HasOne("User.Management.Data.Models.LookUpCategory", "LookUpCategory")
                         .WithMany()
-                        .HasForeignKey("LookUpCategoryLookUpCtgId")
+                        .HasForeignKey("LookUpCtgId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LookUpCategory");
+                });
+
+            modelBuilder.Entity("User.Management.Data.Models.MapSponsorStudents", b =>
+                {
+                    b.HasOne("User.Management.Data.Models.Sponsor", "Sponsors")
+                        .WithMany()
+                        .HasForeignKey("SponsorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("User.Management.Data.Models.Student", "Students")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Sponsors");
+
+                    b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("User.Management.Data.Models.Sponsor", b =>
+                {
+                    b.HasOne("User.Management.Data.Models.ApplicationUser", "Users")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("User.Management.Data.Models.Student", b =>
@@ -669,7 +792,26 @@ namespace User.Management.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("User.Management.Data.Models.ApplicationUser", "Users")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Class");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("User.Management.Data.Models.StudentFamily", b =>
+                {
+                    b.HasOne("User.Management.Data.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
                 });
 #pragma warning restore 612, 618
         }

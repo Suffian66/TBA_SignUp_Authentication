@@ -42,6 +42,8 @@ namespace User.Management.Data.Models
         public DateTime? DateUpdated { get; set; }
 
         public bool StatusInfo { get; set; }
+        //public int StudentId { get; set; }
+        //public virtual Student Student { get; set; }
 
     }
 }

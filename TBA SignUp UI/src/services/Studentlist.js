@@ -7,9 +7,15 @@ export const Studentlist = createApi({
         getAllStudents: builder.query({
           query: () => 'GetAllStudents',
         }),
+
+        getStudentById:builder.query({
+          query: (studentId) => `GetStudentById?studentId=${studentId}`
+        })
       }),
+
+
 });
 
-export const { useGetAllStudentsQuery } = Studentlist;
+export const { useGetAllStudentsQuery, useGetStudentByIdQuery } = Studentlist;
 
 export default Studentlist;

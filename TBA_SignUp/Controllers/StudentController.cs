@@ -36,6 +36,24 @@ namespace TBA_SignUp.Controllers
             }
         }
 
+        [HttpGet("[action]")]
+        public async Task<ActionResult<StudentDto?>> GetStudentById(int studentId)
+        {
+            try
+            {
+                var student = _student.GetStudentById(studentId);
+                if(student == null){
+                    return NotFound();
+                }
+                return Ok(student);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details (ex) here for debugging purposes
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
         //[HttpPost]
         //[Route("add")]
         //public async Task<ActionResult> AddStudent(Student student)

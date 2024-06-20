@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace User.Management.Data.Models
 {
@@ -14,19 +15,20 @@ namespace User.Management.Data.Models
         }
 
         //public DbSet<SponsorDetails> SponsorDetails { get; set; }
-
         public DbSet<Address> Address { get; set; }
         public DbSet<Class> Class { get; set; }
-
         //public DbSet<CourseDetail> Courses { get; set; }
-
         public DbSet<Student> Students { get; set; }
 
         public DbSet<Subject> Subjects { get; set; }
 
+        public DbSet<StudentFamily> StudentFamily { get; set; }
+        //public DbSet<Subject> Subjects { get; set; }
         public DbSet<LookUpCategory> LookupsCategory { get; set; }
         public DbSet<LookUpCategoryDetail> LookupsCategoryDetail { get; set; }
         public DbSet<LookUpCountry> LookupsCountry { get; set; }
+        public DbSet<Sponsor> Sponsors { get; set; }
+        public DbSet<MapSponsorStudents> MapSponsorStudents { get; set; }
 
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<MapTeacherSubject> MapTeacherSubject { get; set; }
@@ -39,6 +41,19 @@ namespace User.Management.Data.Models
             base.OnModelCreating(builder);
             SeedRoles(builder);
 
+            builder.Entity<MapSponsorStudents>()
+               .HasOne(mss => mss.Students)
+               .WithMany()
+               .HasForeignKey(mss => mss.StudentId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<MapSponsorStudents>()
+                .HasOne(mss => mss.Sponsors)
+                .WithMany()
+                .HasForeignKey(mss => mss.SponsorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            base.OnModelCreating(builder);
 
         }
 
@@ -51,6 +66,8 @@ namespace User.Management.Data.Models
                     new IdentityRole() { Name = "Teacher", ConcurrencyStamp = "3", NormalizedName = "Teacher" },
                     new IdentityRole() { Name = "Student", ConcurrencyStamp = "4", NormalizedName = "Student" }
                 );
+
+
         }
     }
 }

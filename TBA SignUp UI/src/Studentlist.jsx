@@ -1,14 +1,16 @@
 import { Table } from 'react-bootstrap';
 // import Sidebar from '../components/Sidebar';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Cart } from 'react-bootstrap-icons';
-import { useGetAllStudentsQuery } from './services/Studentlist';
+import { useGetAllStudentsQuery, useGetStudentByIdQuery } from './services/Studentlist';
 
 const Studentlist = () => {
-    const { data: students, error, isLoading } = useGetAllStudentsQuery();
+    const { data: studentsArray, error, isLoading } = useGetAllStudentsQuery();
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
+
+    const students = studentsArray?.$values || []; 
 
     return (
         <>
@@ -21,34 +23,36 @@ const Studentlist = () => {
                                 <span><div className='myprofiletxt ms-3'><h2>My Student List</h2></div></span>
                             </div>
                         </div>
-                        <div className='me-5'>
-                            <Table striped bordered hover className='text-center tablefont'>
+                        <div className='me-5 table-div'>
+                            <Table striped bordered hover className='text-center tablefont' >
                                 <thead>
-                                    <tr style={{ height: '0px' }}>
+                                    <tr>
                                         <th className='col-1'>S.No</th>
-                                        <th className='col-2'>G.R #</th>
-                                        <th className='col-4'>Student Name</th>
-                                        <th className='col-4'>Father's Name</th>
-                                        <th className='col-2'>Class</th>
-                                        <th className='col-1'>Select</th>
+                                        <th className='col-1'>G.R #</th>
+                                        <th className='col-4' colSpan="3">Student Name</th>
+                                        {/* <th className='col-3'>Father's Name</th> */}
+                                        <th className='col-1'>Class</th>
+                                        <th className='col-2'>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {students?.map((student, index) => (
+                                {students.map((student, index) => (
                                     <tr key={student.id} style={{ height: '40px' }}>
                                         <td>{index + 1}</td>
                                         <td>{student.gR_No}</td>
-                                        <td>{student.studentName}</td>
-                                        <td>{student.fatherName}</td>
+                                        <td>{student.firstName}</td>
+                                        <td>{student.middleName}</td>
+                                        <td>{student.lastName}</td>
+                                        {/* <td>{student.fatherName}</td> */}
                                         <td>{student.className}</td>
-                                        <td>
-                                            <input type="checkbox" className='form-check-input me-2' />
-                                        </td>
+                                        <Link to={`/studentprofile/${student.studentId}`}>
+                                                <button className='btn btn-primary'>View Profile</button>
+                                        </Link>
                                     </tr>
                                 ))}
                             </tbody>
                         </Table>
-                        <button className='btn btn-primary btnstudent btn-color'>Save</button>
+                        {/* <button className='btn btn-primary btnstudent btn-color'>Save</button> */}
                     </div>
                 </div>
             </div>

@@ -6,7 +6,8 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using User.Management.Data.Models;
 using User.Management.Service.Services;
-using User.Management.Services;
+using User.Management.Service;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,10 +78,17 @@ builder.Services.AddScoped<ILookUpCategoryDetailService, LookUpCategoryDetailSer
 builder.Services.AddScoped<IStudent, StudentService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IMapTeacherSubjectService, MapTeacherSubjectService>();
+builder.Services.AddScoped<IMapSponsorStudent, MapSponsorService>();
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+
+.AddJsonOptions(options =>
+ {
+     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+     options.JsonSerializerOptions.MaxDepth = 64;  // Optionally increase max depth
+ });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 

@@ -1,9 +1,7 @@
-
 import { Table } from 'react-bootstrap';
 import { Cart } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { useFetchTeachersQuery } from './services/Teacher';
-
 
 const TeacherProfile = () => {
   const { data: teachersArray, error, isLoading } = useFetchTeachersQuery();
@@ -11,7 +9,7 @@ const TeacherProfile = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const teachers = teachersArray?.data || [];
+  const teachers = teachersArray?.$values || [];
 
   return (
     <div>
@@ -45,12 +43,12 @@ const TeacherProfile = () => {
                   {teachers.map((teacher, index) => (
                     <tr key={teacher.teacherId} style={{ height: '40px' }}>
                       <td>{index + 1}</td>
-                      <td colSpan="3">{`${teacher.firstName} ${teacher.lastName}`}</td>
+                      <td colSpan="3">{`${teacher.users.firstName} ${teacher.users.lastName}`}</td>
                       <td>{teacher.father_HusbandName}</td>
-                      <td>{teacher.className}</td>
+                      <td>{teacher.degreeQualification}</td> {/* Assuming "degreeQualification" is meant for class */}
                       <td>
                         <Link to={`/teacher/${teacher.teacherId}`}>
-                          <button className="btn btn-primary">Add Data</button>
+                          <button className="btn btn-primary">Veiw Profile</button>
                         </Link>
                       </td>
                     </tr>

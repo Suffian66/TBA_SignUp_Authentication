@@ -29,7 +29,7 @@ const Loginpassword = () => {
             <Route path="/studentlist" element= {<Studentlist/>}/>
             <Route path="/teacher" element= {<Teacher/>}/>
             <Route path="/studentprofile/:id " element= {<Studentprofile/>}/>
-            <Route path="/teacher-profile/:id" element= {<TeacherProfile/>}/>
+            <Route path="/teacher-list" element= {<TeacherProfile/>}/>
           </Routes>
         </div>
       </BrowserRouter>

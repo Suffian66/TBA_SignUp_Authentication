@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using User.Management.Data.Models;
+using User.Management.DTOs;
 using User.Management.Service.Services;
 
 namespace User.Management.API.Controllers
@@ -68,22 +69,49 @@ namespace User.Management.API.Controllers
 
         [HttpPost("categorydetail")]
 
-        public async Task<ActionResult<IEnumerable<LookUpCategoryDetail>>> GetAllLookUpCategoryDetailAsync([FromBody] IEnumerable<string> filters)
+        public async Task<ActionResult> GetAllLookUpCategoryDetailAsync([FromBody] IEnumerable<string> filters)
         {
             try
             {
-                IEnumerable<LookUpCategoryDetail> categoryDetail;
+                var lookupCategories = new List<LookupCategoryDto>();
 
                 if (filters != null && filters.Count() > 0)
                 {
-                    categoryDetail = await _lookUpCategoryDetailService.GetFilteredCategoryDetailAsync(filters);
+                    var filteredCategoryDetails = await _lookUpCategoryDetailService.GetFilteredCategoryDetailAsync(filters);
+
+                    var categoryDto = new LookupCategoryDto();
+                    var categoryDetailsList = new List<string>();
+
+                    foreach (var filteredCategoryDetail in filteredCategoryDetails)
+                    {
+
+                        categoryDetailsList.Add(filteredCategoryDetail.Title);
+                        categoryDto.Title = filteredCategoryDetail.LookUpCategory.Title;
+                        categoryDto.LookupCategoryDetail = categoryDetailsList;
+
+                    }
+
+                    lookupCategories.Add(categoryDto);
+
                 }
                 else
                 {
-                    categoryDetail = await _lookUpCategoryDetailService.GetAllCategoryDetailAsync();
+                    var allCategoriesDetails = await _lookUpCategoryDetailService.GetAllCategoryDetailAsync();
+
+                    foreach (var allCategoriesDetail in allCategoriesDetails)
+                    {
+                        var categoryDto = new LookupCategoryDto();
+                        var categoryDetailsList = new List<string>();
+
+                        categoryDto.Title = allCategoriesDetail.LookUpCategory.Title;
+
+                        categoryDetailsList.Add(allCategoriesDetail.Title);
+
+                        lookupCategories.Add(categoryDto);
+                    }
                 }
 
-                return Ok(categoryDetail);
+                return Ok(lookupCategories);
             }
             catch (Exception ex)
             {
@@ -106,6 +134,9 @@ namespace User.Management.API.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+
+
 
     }
 }

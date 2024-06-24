@@ -54,12 +54,12 @@ namespace User.Management.Service.Services
                 return new ApiResponse<CreateUserResponse> { IsSuccess = false, StatusCode = 403, Message = "User Already Exists" };
             }
 
+
             //Add the User in the database
             ApplicationUser user = new()
             {
                 Email = registerUser.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                Password = registerUser.Password,
                 UserName = registerUser.UserName,
                 FirstName = registerUser.FirstName,
                 MiddleName = registerUser.MiddleName,

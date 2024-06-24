@@ -14,18 +14,17 @@ namespace User.Management.Services
 
         public async Task<IEnumerable<Teacher>> GetAllTeachersAsync()
         {
-            return await _context.Teachers.ToListAsync();
+            return await _context.Teachers.Include(t => t.Users).ToListAsync();
         }
 
         public async Task<Teacher> GetTeacherByIdAsync(string teacherId)
         {
-            return await _context.Teachers.FindAsync(teacherId);
+            return await _context.Teachers.Include(t => t.Users).FirstOrDefaultAsync(t => t.TeacherId == teacherId);
         }
 
         public async Task<Teacher> CreateTeacherAsync(Teacher teacher)
         {
             _context.Teachers.Add(teacher);
-
             await _context.SaveChangesAsync();
             return teacher;
         }

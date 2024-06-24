@@ -10,6 +10,7 @@ import Address from "./Address.jsx";
 import Studentlist from "./Studentlist.jsx";
 import Teacher from "./Teacher.jsx";
 import Studentprofile from "./Components/Studentprofile.jsx";
+import TeacherProfile from "./TeacherProfile.jsx";
 
 const Loginpassword = () => {
   return (
@@ -26,6 +27,9 @@ const Loginpassword = () => {
             <Route path="/reset-password" element= {<ResetPassword/>}/>
             <Route path="/address" element= {<Address/>}/>
             <Route path="/studentlist" element= {<Studentlist/>}/>
+            <Route path="/teacher" element= {<Teacher/>}/>
+            <Route path="/studentprofile/:id " element= {<Studentprofile/>}/>
+            <Route path="/teacher-profile/:id" element= {<TeacherProfile/>}/>
           </Routes>
         </div>
       </BrowserRouter>

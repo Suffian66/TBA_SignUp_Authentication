@@ -14,8 +14,17 @@ export const TeacherApi = createApi({
         body: data,
       }),
     }),
+    fetchTeachers: builder.query({
+      query: () => 'Teacher',
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      
+    }),
   }),
+
 });
 
-export const { useCreateTeacherMutation } = TeacherApi;
+export const { useCreateTeacherMutation, useFetchTeachersQuery } = TeacherApi;
 export default TeacherApi;

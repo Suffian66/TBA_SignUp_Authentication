@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
 using User.Management.Data.Models;
 using User.Management.Service.Services;
-using User.Management.Service;
-using System.Text.Json.Serialization;
+using User.Management.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

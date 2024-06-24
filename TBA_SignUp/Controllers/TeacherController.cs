@@ -10,27 +10,16 @@ namespace User.Management.Controllers
     {
         private readonly ITeacherService _teacherService;
 
-
         public TeacherController(ITeacherService teacherService)
         {
             _teacherService = teacherService;
-
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Teacher>>> GetTeachers()
         {
-            try
-            {
-                var teachers = await _teacherService.GetAllTeachersAsync();
-                return Ok(teachers);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
+            var teachers = await _teacherService.GetAllTeachersAsync();
+            return Ok(teachers);
         }
 
         [HttpGet("{id}")]
@@ -47,16 +36,8 @@ namespace User.Management.Controllers
         [HttpPost]
         public async Task<ActionResult<Teacher>> CreateTeacher(Teacher teacher)
         {
-            try
-            {
-                var createdTeacher = await _teacherService.CreateTeacherAsync(teacher);
-                return CreatedAtAction(nameof(GetTeacher), new { id = createdTeacher.TeacherId }, createdTeacher);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            var createdTeacher = await _teacherService.CreateTeacherAsync(teacher);
+            return CreatedAtAction(nameof(GetTeacher), new { id = createdTeacher.TeacherId }, createdTeacher);
         }
 
         [HttpPut("{id}")]
@@ -64,7 +45,7 @@ namespace User.Management.Controllers
         {
             if (id != teacher.TeacherId)
             {
-                return BadRequest();
+                return BadRequest("Teacher ID mismatch");
             }
 
             await _teacherService.UpdateTeacherAsync(teacher);
@@ -77,8 +58,5 @@ namespace User.Management.Controllers
             await _teacherService.DeleteTeacherAsync(id);
             return NoContent();
         }
-
-
     }
 }
-

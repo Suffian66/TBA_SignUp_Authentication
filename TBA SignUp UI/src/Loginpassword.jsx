@@ -27,7 +27,7 @@ const Loginpassword = () => {
             <Route path="/reset-password" element= {<ResetPassword/>}/>
             <Route path="/address" element= {<Address/>}/>
             <Route path="/studentlist" element= {<Studentlist/>}/>
-            <Route path="/teacher" element= {<Teacher/>}/>
+            <Route path="/teacher-detail" element= {<Teacher/>}/>
             <Route path="/studentprofile/:id " element= {<Studentprofile/>}/>
             <Route path="/teacher-list" element= {<TeacherProfile/>}/>
           </Routes>

@@ -20,6 +20,6 @@ namespace User.Management.Data.Models
         [ForeignKey("LookUpCategory")]
         public int LookUpCtgId { get; set; }
         public virtual LookUpCategory LookUpCategory { get; set; }
-
+        public ICollection<MapClassSubjectTeacher> MapClassSubjectTeachers { get; set; }
     }
 }

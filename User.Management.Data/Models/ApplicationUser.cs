@@ -47,6 +47,6 @@ namespace User.Management.Data.Models
 
         //public int StudentId { get; set; }
         //public virtual Student Student { get; set; }
-
+        public ICollection<MapClassSubjectTeacher> MapClassSubjectTeachers { get; set; }
     }
 }

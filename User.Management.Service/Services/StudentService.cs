@@ -50,27 +50,27 @@ namespace User.Management.Service.Services
 
                 if (newUser != null && newClasses != null)
                 {
-                return new StudentDto
+                    return new StudentDto
 
-                {
-                    FirstName = student.Users.FirstName,
-                    LastName = student.Users.LastName,
-                    MiddleName = student.Users.MiddleName,
-                    Gender = student.Users.Gender,
-                    NamePrefix = student.Users.NamePrefix,
-                    DOB = student.Users.DOB,
-                    CNIC = student.Users.CNIC,
-                    Occupation = student.Users.Occupation,
-                    StudentId = student.StudentId,
-                    GR_No = student.GR_No,
-                    LastClassAttended = student.LastClassAttended,
-                    DateOfSchoolLeaving = student.DateOfSchoolLeaving,
-                    MedicalNeeds = student.MedicalNeeds,
-                    ClassName = student.Class.ClassName
-                };
-            }
-            return null;
-        }).Where(dto => dto != null).ToList();
+                    {
+                        FirstName = student.Users.FirstName,
+                        LastName = student.Users.LastName,
+                        MiddleName = student.Users.MiddleName,
+                        Gender = student.Users.Gender,
+                        NamePrefix = student.Users.NamePrefix,
+                        DOB = student.Users.DOB,
+                        CNIC = student.Users.CNIC,
+                        Occupation = student.Users.Occupation,
+                        StudentId = student.StudentId,
+                        GR_No = student.GR_No,
+                        LastClassAttended = student.LastClassAttended,
+                        DateOfSchoolLeaving = student.DateOfSchoolLeaving,
+                        MedicalNeeds = student.MedicalNeeds,
+                        ClassName = student.Class.ClassName
+                    };
+                }
+                return null;
+            }).Where(dto => dto != null).ToList();
             return result;
         }
 
@@ -82,30 +82,30 @@ namespace User.Management.Service.Services
             var studentsFamily = _context.StudentFamily.Where(x => x.StudentId == studentId).ToList();
 
             if (students != null && classes != null && users != null)
-                {
-                    var result = new StudentDto
+            {
+                var result = new StudentDto
 
-                    {                           
-                        FirstName = users.FirstName,
-                        LastName = users.LastName,
-                        MiddleName = users.MiddleName,
-                        Gender = users.Gender,
-                        NamePrefix = users.NamePrefix,
-                        DOB = users.DOB,
-                        CNIC = users.CNIC,
-                        Occupation = users.Occupation,
-                        StudentId = students.StudentId,
-                        GR_No = students.GR_No,
-                        DateOfAdmission = students.DateOfAdmission,
-                        LastClassAttended = students.LastClassAttended,
-                        DateOfSchoolLeaving = students.DateOfSchoolLeaving,
-                        MedicalNeeds = students.MedicalNeeds,
-                        ClassName = classes.ClassName,
-                        StudentFamilies = studentsFamily
-                    };
+                {
+                    FirstName = users.FirstName,
+                    LastName = users.LastName,
+                    MiddleName = users.MiddleName,
+                    Gender = users.Gender,
+                    NamePrefix = users.NamePrefix,
+                    DOB = users.DOB,
+                    CNIC = users.CNIC,
+                    Occupation = users.Occupation,
+                    StudentId = students.StudentId,
+                    GR_No = students.GR_No,
+                    DateOfAdmission = students.DateOfAdmission,
+                    LastClassAttended = students.LastClassAttended,
+                    DateOfSchoolLeaving = students.DateOfSchoolLeaving,
+                    MedicalNeeds = students.MedicalNeeds,
+                    ClassName = classes.ClassName,
+                    StudentFamilies = studentsFamily
+                };
                 return result;
-                }
-                return null;
+            }
+            return null;
         }
 
     }

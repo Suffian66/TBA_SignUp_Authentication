@@ -1,18 +1,17 @@
-import { Link, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAddUserMutation } from "./services/SignUp";
 import { useForm } from "react-hook-form";
 
 const Registerandlogin = () => {
   const [addUser, { data, error, isLoading }] = useAddUserMutation();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-     
-    },
+    defaultValues: {},
   });
 
   const onSubmit = async (formData) => {
@@ -22,13 +21,11 @@ const Registerandlogin = () => {
       await addUser(updatedFormData);
       console.log("User added successfully:", updatedFormData);
       alert("User added successfully:", updatedFormData);
-      // window.location.reload();
-      // Navigate('/signin')
-
+      navigate('/address');
       
     } catch (err) {
       console.error("Failed to add user:", err);
-      alert("Failed to add user:", err)
+      alert("Failed to add user:", err);
     }
   };
 
@@ -165,15 +162,13 @@ const Registerandlogin = () => {
                     </div>
 
                     <div className="mt-4 pt-2">
-                      <Link to= '/address'>
                       <button
                         className="btn btn-primary btn-lg"
                         type="submit"
                         disabled={isLoading}
                       >
-                    Next
+                        Next
                       </button>
-                      </Link>
                     </div>
 
                   </form>

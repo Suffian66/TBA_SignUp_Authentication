@@ -19,7 +19,7 @@ namespace User.Management.Data.Models
         //public DbSet<CourseDetail> Courses { get; set; }
         public DbSet<Student> Students { get; set; }
 
-        public DbSet<Subject> Subjects { get; set; }
+        //public DbSet<Subject> Subjects { get; set; }
 
         public DbSet<StudentFamily> StudentFamily { get; set; }
         //public DbSet<Subject> Subjects { get; set; }
@@ -31,6 +31,7 @@ namespace User.Management.Data.Models
 
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<MapTeacherSubject> MapTeacherSubject { get; set; }
+        public DbSet<MapClassSubjectTeacher> MapClassSubjectTeacher { get; set; }
 
 
 
@@ -52,7 +53,25 @@ namespace User.Management.Data.Models
                 .HasForeignKey(mss => mss.SponsorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+
+
             base.OnModelCreating(builder);
+
+            builder.Entity<MapClassSubjectTeacher>()
+            .HasOne(m => m.LookUpCategoryDetail)
+            .WithMany(l => l.MapClassSubjectTeachers)
+            .HasForeignKey(m => m.PeriodId)
+            .HasForeignKey(m => m.ClassId)
+            .HasForeignKey(m => m.SubjectId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<MapClassSubjectTeacher>()
+            .HasOne(m => m.User)
+            .WithMany(l => l.MapClassSubjectTeachers)
+            .HasForeignKey(m => m.TeacherId)
+            .HasForeignKey(m => m.TeacherAssistantId)
+            .OnDelete(DeleteBehavior.NoAction)
+            ;
 
         }
 

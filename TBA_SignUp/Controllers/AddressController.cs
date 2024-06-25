@@ -1,142 +1,85 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using User.Management.Data.Models;
-using User.Management.DTOs;
-using User.Management.Service.Services;
+using User.Management.Services;
 
-namespace User.Management.API.Controllers
+namespace User.Management.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
-    public class LookUpController : ControllerBase
+    [ApiController]
+    public class AddressController : ControllerBase
     {
-        private readonly ILookUpCountryService _lookUpCountryService;
-        private readonly ILookUpCategoryService _lookUpCategoryService;
-        private readonly ILookUpCategoryDetailService _lookUpCategoryDetailService;
+        private readonly IAddressService _addressService;
 
-        public LookUpController(ILookUpCountryService lookUpCountryService, ILookUpCategoryService lookUpCategoryService, ILookUpCategoryDetailService lookUpCategoryDetailService)
+        public AddressController(IAddressService addressService)
         {
-            _lookUpCountryService = lookUpCountryService;
-            _lookUpCategoryService = lookUpCategoryService;
-            _lookUpCategoryDetailService = lookUpCategoryDetailService;
+            _addressService = addressService;
         }
 
-        [HttpGet("countries")]
-        public async Task<ActionResult<IEnumerable<LookUpCountry>>> GetAllCountries()
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
         {
-            try
-            {
-                var countries = await _lookUpCountryService.GetAllAsync();
-                return Ok(countries);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
+            var addresses = await _addressService.GetAllAddressesAsync();
+            return Ok(addresses);
         }
 
-        [HttpGet("categories")]
-        public async Task<ActionResult<IEnumerable<LookUpCategory>>> GetAllCategories()
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Address>> GetAddress(int id)
         {
-            try
-            {
-                var categories = await _lookUpCategoryService.GetAllLookUpCategoryAsync();
-                return Ok(categories);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
+            var address = await _addressService.GetAddressByIdAsync(id);
 
-        [HttpGet("Categoryid")]
-        public async Task<ActionResult<LookUpCategory>> GetLookUpCategoryById(int id)
-        {
-            try
-            {
-                var category = await _lookUpCategoryService.GetLookUpCategoryByIdAsync(id);
-                return Ok(category);
-            }
-            catch (KeyNotFoundException)
+            if (address == null)
             {
                 return NotFound();
             }
-            catch (ApplicationException ex)
-            {
 
-                return StatusCode(500, ex.Message);
-            }
+            return Ok(address);
         }
 
-        [HttpPost("categorydetail")]
-
-        public async Task<ActionResult> GetAllLookUpCategoryDetailAsync([FromBody] IEnumerable<string> filters)
+        [HttpPost]
+        public async Task<ActionResult<Address>> CreateAddress(Address address)
         {
+            var createdAddress = await _addressService.CreateAddressAsync(address);
+            return CreatedAtAction(nameof(GetAddress), new { id = createdAddress.AddressId }, createdAddress);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAddress(int id, Address address)
+        {
+            if (id != address.AddressId)
+            {
+                return BadRequest();
+            }
+
             try
             {
-                var lookupCategories = new List<LookupCategoryDto>();
-
-                if (filters != null && filters.Count() > 0)
+                await _addressService.UpdateAddressAsync(address);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (await _addressService.GetAddressByIdAsync(id) == null)
                 {
-                    var filteredCategoryDetails = await _lookUpCategoryDetailService.GetFilteredCategoryDetailAsync(filters);
-
-                    var categoryDto = new LookupCategoryDto();
-                    var categoryDetailsList = new List<string>();
-
-                    foreach (var filteredCategoryDetail in filteredCategoryDetails)
-                    {
-
-                        categoryDetailsList.Add(filteredCategoryDetail.Title);
-                        categoryDto.Title = filteredCategoryDetail.LookUpCategory.Title;
-                        categoryDto.LookupCategoryDetail = categoryDetailsList;
-
-                    }
-
-                    lookupCategories.Add(categoryDto);
-
+                    return NotFound();
                 }
                 else
                 {
-                    var allCategoriesDetails = await _lookUpCategoryDetailService.GetAllCategoryDetailAsync();
-
-                    foreach (var allCategoriesDetail in allCategoriesDetails)
-                    {
-                        var categoryDto = new LookupCategoryDto();
-                        var categoryDetailsList = new List<string>();
-
-                        categoryDto.Title = allCategoriesDetail.LookUpCategory.Title;
-
-                        categoryDetailsList.Add(allCategoriesDetail.Title);
-
-                        lookupCategories.Add(categoryDto);
-                    }
+                    throw;
                 }
-
-                return Ok(lookupCategories);
             }
-            catch (Exception ex)
-            {
 
-                return StatusCode(500, $"Internal Server error: {ex.Message}");
-            }
+            return NoContent();
         }
 
-        [HttpGet("categorydetail/{categoryId}")]
-        public async Task<ActionResult<IEnumerable<LookUpCategoryDetail>>> GetLookUpCategoryDetailsByCategoryId(int categoryId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAddress(int id)
         {
-            try
+            var success = await _addressService.DeleteAddressAsync(id);
+            if (!success)
             {
-                var details = await _lookUpCategoryDetailService.GetLookUpCategoryDetailsByCategoryIdAsync(categoryId);
-                return Ok(details);
+                return NotFound();
             }
-            catch (ApplicationException ex)
-            {
 
-                return StatusCode(500, ex.Message);
-            }
+            return NoContent();
         }
-
-
-
-
     }
 }

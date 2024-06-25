@@ -17,13 +17,12 @@ const Registerandlogin = () => {
   const onSubmit = async (formData) => {
     try {
       const updatedFormData = { ...formData, roles: ["teacher"] };
-
       await addUser(updatedFormData);
-      console.log("User added successfully:", updatedFormData);
-      alert("User added successfully:", updatedFormData);
+      console.log("User added successfully:", updatedFormData);  
       navigate('/address');
-      
-    } catch (err) {
+
+    } 
+    catch (err) {
       console.error("Failed to add user:", err);
       alert("Failed to add user:", err);
     }

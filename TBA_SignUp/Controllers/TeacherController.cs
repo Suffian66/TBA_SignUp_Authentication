@@ -36,8 +36,17 @@ namespace User.Management.Controllers
         [HttpPost]
         public async Task<ActionResult<Teacher>> CreateTeacher(Teacher teacher)
         {
-            var createdTeacher = await _teacherService.CreateTeacherAsync(teacher);
-            return CreatedAtAction(nameof(GetTeacher), new { id = createdTeacher.TeacherId }, createdTeacher);
+            try
+            {
+                var createdTeacher = await _teacherService.CreateTeacherAsync(teacher);
+                return CreatedAtAction(nameof(GetTeacher), new { id = createdTeacher.TeacherId }, createdTeacher);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+
+            }
         }
 
         [HttpPut("{id}")]

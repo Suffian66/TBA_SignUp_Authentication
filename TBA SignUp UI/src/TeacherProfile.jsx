@@ -35,7 +35,7 @@ const TeacherProfile = () => {
                     <th className="col-1">S.No</th>
                     <th className="col-4" colSpan="3">Teacher Name</th>
                     <th className="col-3">Father's/Husband's Name</th>
-                    <th className="col-1">Class</th>
+                    <th className="col-1">Qualification</th>
                     <th className="col-2">Action</th>
                   </tr>
                 </thead>
@@ -45,7 +45,7 @@ const TeacherProfile = () => {
                       <td>{index + 1}</td>
                       <td colSpan="3">{`${teacher.users.firstName} ${teacher.users.lastName}`}</td>
                       <td>{teacher.father_HusbandName}</td>
-                      <td>{teacher.degreeQualification}</td> {/* Assuming "degreeQualification" is meant for class */}
+                      <td>{teacher.degreeQualification}</td> 
                       <td>
                         <Link to={`/teacher/${teacher.teacherId}`}>
                           <button className="btn btn-primary">Veiw Profile</button>

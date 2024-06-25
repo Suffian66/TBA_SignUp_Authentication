@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using User.Management.Data.Dto;
 using User.Management.Data.Models;
 using User.Management.Services;
 
@@ -37,10 +38,19 @@ namespace User.Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Address>> CreateAddress(Address address)
+        public async Task<ActionResult<AddressDto>> CreateAddress(AddressDto address)
         {
-            var createdAddress = await _addressService.CreateAddressAsync(address);
-            return CreatedAtAction(nameof(GetAddress), new { id = createdAddress.AddressId }, createdAddress);
+            try
+            {
+                var createdAddress = await _addressService.CreateAddressAsync(address);
+                return CreatedAtAction(nameof(GetAddress), createdAddress);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         [HttpPut("{id}")]

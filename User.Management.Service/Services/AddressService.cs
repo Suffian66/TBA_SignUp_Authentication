@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using User.Management.Data.Dto;
 using User.Management.Data.Models;
 
 namespace User.Management.Services
@@ -22,10 +23,26 @@ namespace User.Management.Services
             return await _context.Address.FindAsync(id);
         }
 
-        public async Task<Address> CreateAddressAsync(Address address)
+        public async Task<AddressDto> CreateAddressAsync(AddressDto address)
         {
-            _context.Address.Add(address);
+            var addressModel = new Address()
+            {
+                AddressType = address.AddressType.Title,
+                AddressPrimary = address.AddressPrimary,
+                Address1 = address.Address1,
+                Address2 = address.Address2,
+                Country = address.Country.Title,
+                City = address.City,
+                PostalCode = address.PostalCode,
+                State = address.State,
+
+
+
+            };
+
+            _context.Address.Add(addressModel);
             await _context.SaveChangesAsync();
+            address.AddressId = addressModel.AddressId;
             return address;
         }
 

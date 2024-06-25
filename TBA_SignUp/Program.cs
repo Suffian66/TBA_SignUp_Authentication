@@ -78,6 +78,8 @@ builder.Services.AddScoped<IStudent, StudentService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IMapTeacherSubjectService, MapTeacherSubjectService>();
 builder.Services.AddScoped<IMapSponsorStudent, MapSponsorService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
+
 
 // Add services to the container.
 

@@ -2,31 +2,12 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const AddressApi = createApi({
     reducerPath: 'AddressApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://localhost:7176/api/LookUp/' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://localhost:7176/api/' }),
     endpoints: (builder) => ({
-        getCountries: builder.query({
-            query: () => "countries",
-            url:`countries`,
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            
-        }),
-        getCategoryDetail: builder.query({
-            query: (filters) => ({
-                url: `categorydetail`,
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: filters
-            }),
-        }),
         addAddress: builder.mutation({
             query: (body) => ({
-                url: 'address',
-                method: 'POST', 
+                url: 'Address',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -36,6 +17,6 @@ export const AddressApi = createApi({
     }),
 });
 
-export const { useGetCountriesQuery, useGetCategoryDetailQuery , useAddAddressMutation } = AddressApi;
+export const { useAddAddressMutation } = AddressApi;
 
 export default AddressApi;

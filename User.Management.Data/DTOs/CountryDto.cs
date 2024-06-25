@@ -2,5 +2,6 @@
 {
     public class CountryDto
     {
+        public string Title { get; set; }
     }
 }

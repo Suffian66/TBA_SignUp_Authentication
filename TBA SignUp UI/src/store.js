@@ -8,6 +8,7 @@ import { resetPasswordApi } from "./services/ResetPassword";
 import AddressApi from "./services/Address";
 import Studentlist from "./services/Studentlist";
 import TeacherApi from "./services/Teacher";
+import LookUpApi from "./services/LookUp";
 
 
 
@@ -21,13 +22,15 @@ const store = configureStore({
         [AddressApi.reducerPath] : AddressApi.reducer,
         [Studentlist.reducerPath] : Studentlist.reducer,
         [TeacherApi.reducerPath]: TeacherApi.reducer,
+        [LookUpApi.reducerPath]: LookUpApi.reducer,
+
        
        
     },
 
     middleware: (getDefaultMiddleware) =>
 
-    getDefaultMiddleware().concat(SignUpApi.middleware).concat(Login.middleware).concat(forgotPasswordApi.middleware).concat(login2FA.middleware).concat(resetPasswordApi.middleware).concat(AddressApi.middleware).concat(Studentlist.middleware).concat(TeacherApi.middleware),
+    getDefaultMiddleware().concat(SignUpApi.middleware).concat(Login.middleware).concat(forgotPasswordApi.middleware).concat(login2FA.middleware).concat(resetPasswordApi.middleware).concat(AddressApi.middleware).concat(Studentlist.middleware).concat(TeacherApi.middleware).concat(LookUpApi.middleware),
 
 })
 

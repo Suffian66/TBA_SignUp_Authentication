@@ -6,6 +6,7 @@ namespace User.Management.Data.Models
     public class Address
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AddressId { get; set; }
         public string AddressType { get; set; }
         public bool AddressPrimary { get; set; }
@@ -24,8 +25,8 @@ namespace User.Management.Data.Models
 
 
 
-        [ForeignKey("Id")]
-        public string Id { get; set; }
+        [ForeignKey("UserId")]
+        public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
 
         [ForeignKey("LookUpCountry")]

@@ -1,4 +1,5 @@
-﻿using User.Management.Data.Models;
+﻿using User.Management.Data.Dto;
+using User.Management.Data.Models;
 
 namespace User.Management.Services
 {
@@ -6,7 +7,7 @@ namespace User.Management.Services
     {
         Task<IEnumerable<Address>> GetAllAddressesAsync();
         Task<Address> GetAddressByIdAsync(int id);
-        Task<Address> CreateAddressAsync(Address address);
+        Task<AddressDto> CreateAddressAsync(AddressDto address);
         Task<Address> UpdateAddressAsync(Address address);
         Task<bool> DeleteAddressAsync(int id);
     }

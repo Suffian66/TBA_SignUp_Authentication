@@ -82,7 +82,9 @@ namespace User.Management.Data.Models
                     new IdentityRole() { Name = "Admin", ConcurrencyStamp = "1", NormalizedName = "Admin" },
                     new IdentityRole() { Name = "Sponsor", ConcurrencyStamp = "2", NormalizedName = "Sponsor" },
                     new IdentityRole() { Name = "Teacher", ConcurrencyStamp = "3", NormalizedName = "Teacher" },
-                    new IdentityRole() { Name = "Student", ConcurrencyStamp = "4", NormalizedName = "Student" }
+                    new IdentityRole() { Name = "Student", ConcurrencyStamp = "4", NormalizedName = "Student" },
+                    new IdentityRole() { Name = "AssistanceTeacher", ConcurrencyStamp = "5", NormalizedName = "AssistantTeacher" }
+
                 );
 
 

@@ -8,6 +8,9 @@ import { resetPasswordApi } from "./services/ResetPassword";
 import AddressApi from "./services/Address";
 import Studentlist from "./services/Studentlist";
 import TeacherApi from "./services/Teacher";
+import MapSponsorApi from "./services/MapSponsor";
+import SponsorlistApi from "./services/Sponsorlist";
+import MapSponsorStudentApi from "./services/MapSponsorStudent";
 import LookUpApi from "./services/LookUp";
 
 
@@ -22,6 +25,9 @@ const store = configureStore({
         [AddressApi.reducerPath] : AddressApi.reducer,
         [Studentlist.reducerPath] : Studentlist.reducer,
         [TeacherApi.reducerPath]: TeacherApi.reducer,
+        [MapSponsorApi.reducerPath]: MapSponsorApi.reducer,
+        [SponsorlistApi.reducerPath]: SponsorlistApi.reducer,
+        [MapSponsorStudentApi.reducerPath]: MapSponsorStudentApi.reducer,
         [LookUpApi.reducerPath]: LookUpApi.reducer,
 
        
@@ -30,6 +36,7 @@ const store = configureStore({
 
     middleware: (getDefaultMiddleware) =>
 
+    getDefaultMiddleware().concat(SignUpApi.middleware).concat(Login.middleware).concat(forgotPasswordApi.middleware).concat(login2FA.middleware).concat(resetPasswordApi.middleware).concat(AddressApi.middleware).concat(Studentlist.middleware).concat(TeacherApi.middleware).concat(MapSponsorApi.middleware).concat(SponsorlistApi.middleware).concat(MapSponsorStudentApi.middleware),
     getDefaultMiddleware().concat(SignUpApi.middleware).concat(Login.middleware).concat(forgotPasswordApi.middleware).concat(login2FA.middleware).concat(resetPasswordApi.middleware).concat(AddressApi.middleware).concat(Studentlist.middleware).concat(TeacherApi.middleware).concat(LookUpApi.middleware),
 
 })

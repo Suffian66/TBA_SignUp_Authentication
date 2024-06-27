@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using User.Management.Data.Dto;
+using User.Management.Data.DTOs;
 using User.Management.Data.Models;
 
 
@@ -14,28 +15,6 @@ namespace User.Management.Service.Services
         {
             _context = context;
         }
-
-        //public void AddStudent(StudentDto student)
-        //{
-        //    //var newStudent = new StudentDto
-        //    //{
-        //    //    GR_No = student.GR_No,
-        //    //    StudentName = student.StudentName,
-        //    //    FatherName = student.FatherName,
-        //    //    LastClassAttended = student.LastClassAttended,
-        //    //    DateOfSchoolLeaving = student.DateOfSchoolLeaving,
-        //    //    MedicalNeeds = student.MedicalNeeds,
-        //    //    FatherOccupation = student.FatherOccupation,
-        //    //    FatherIncome = student.FatherIncome,
-        //    //    NameOfDependent = student.NameOfDependent,
-        //    //    ClassId = student.ClassId,
-        //    //    ClassName = student.ClassName,
-        //    //};
-
-        //    // Add the student to the context
-        //    //_context.Students.Add(newStudent);
-        //    //_context.SaveChanges();
-        //}
 
         public async Task<IEnumerable<StudentDto>> GetAllStudents()
         {
@@ -108,5 +87,57 @@ namespace User.Management.Service.Services
             return null;
         }
 
+        public async Task<AddStudentDto> CreateStudentAsync(AddStudentDto dto)
+        {
+            // Create a new student entity (assuming you save it in the database)
+            var newStudent = new Student
+            {
+                GR_No = dto.GR_No,
+                DateOfAdmission = dto.DateOfAdmission,
+                LastClassAttended = dto.LastClassAttended,
+                DateOfSchoolLeaving = dto.DateOfSchoolLeaving,
+                MedicalNeeds = dto.MedicalNeeds,
+                ClassId = _context.Class.FirstOrDefault(c => c.ClassName == dto.ClassName)?.ClassId ?? 0, // Resolve ClassId from ClassName
+            };
+
+            _context.Students.Add(newStudent);
+            await _context.SaveChangesAsync();
+
+            // For simplicity, assuming you have logic to save student family details here
+            foreach (var familyDto in dto.StudentFamily)
+            {
+                var studentFamily = new StudentFamily
+                {
+                    FamilyMemberName = familyDto.FamilyMemberName,
+                    FamilyRelation = familyDto.FamilyRelation,
+                    PersonOccupation = familyDto.PersonOccupation,
+                    PersonIncome = familyDto.PersonIncome,
+                    StudentId = newStudent.StudentId // Assign the newly created student's Id
+                };
+
+                _context.StudentFamily.Add(studentFamily);
+            }
+
+            await _context.SaveChangesAsync();
+
+            // Prepare the response DTO with necessary fields
+            var resultDto = new AddStudentDto
+            {
+                GR_No = newStudent.GR_No,
+                DateOfAdmission = newStudent.DateOfAdmission,
+                LastClassAttended = newStudent.LastClassAttended,
+                DateOfSchoolLeaving = newStudent.DateOfSchoolLeaving,
+                MedicalNeeds = newStudent.MedicalNeeds,
+                ClassName = dto.ClassName, // Use the input DTO's ClassName directly
+                StudentFamily = dto.StudentFamily // Use the input DTO's StudentFamily directly
+            };
+
+            return resultDto;
+        }
+
+        Task<Student> IStudent.CreateStudentAsync(AddStudentDto dto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

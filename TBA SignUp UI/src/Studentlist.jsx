@@ -5,12 +5,14 @@ import { Cart } from 'react-bootstrap-icons';
 import { useGetAllStudentsQuery, useGetStudentByIdQuery } from './services/Studentlist';
 
 const Studentlist = () => {
+    const { id: sponsorId } = useParams();
     const { data: studentsArray, error, isLoading } = useGetAllStudentsQuery();
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
 
-    const students = studentsArray?.$values || []; 
+    console.log(studentsArray);
+    // const students = studentsArray?.$values || []; 
 
     return (
         <>
@@ -36,8 +38,8 @@ const Studentlist = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {students.map((student, index) => (
-                                    <tr key={student.id} style={{ height: '40px' }}>
+                                {studentsArray.map((student, index) => (
+                                    <tr key={index} style={{ height: '40px' }}>
                                         <td>{index + 1}</td>
                                         <td>{student.gR_No}</td>
                                         <td>{student.firstName}</td>
@@ -45,14 +47,14 @@ const Studentlist = () => {
                                         <td>{student.lastName}</td>
                                         {/* <td>{student.fatherName}</td> */}
                                         <td>{student.className}</td>
-                                        <Link to={`/studentprofile/${student.studentId}`}>
+                                        <Link to={`/studentprofile/${student.studentId}?sponsorId=${sponsorId}`}>
                                                 <button className='btn btn-primary'>View Profile</button>
                                         </Link>
                                     </tr>
                                 ))}
                             </tbody>
                         </Table>
-                        {/* <button className='btn btn-primary btnstudent btn-color'>Save</button> */}
+                        <Link to={`/sponsorprofile/${sponsorId ? `${sponsorId}` : ''}`}><button className='btn btn-primary btnstudent btn-color '>Back to Profile</button></Link>
                     </div>
                 </div>
             </div>

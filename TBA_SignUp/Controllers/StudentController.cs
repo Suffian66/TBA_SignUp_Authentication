@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using User.Management.Data.Dto;
+using User.Management.Data.DTOs;
 using User.Management.Data.Models;
 using User.Management.Service.Services;
 
@@ -10,13 +12,15 @@ namespace TBA_SignUp.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IStudent _student;
         private readonly ApplicationDbContext _context;
 
-        public StudentController(IStudent student, ApplicationDbContext context)
+        public StudentController(UserManager<ApplicationUser> userManager, IStudent student, ApplicationDbContext context)
         {
             _student = student;
             _context = context;
+            _userManager = userManager;
         }
 
         
@@ -54,17 +58,22 @@ namespace TBA_SignUp.Controllers
             }
         }
 
-        //[HttpPost]
-        //[Route("add")]
-        //public async Task<ActionResult> AddStudent(Student student)
-        //{
-        //    if (student == null)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> CreateStudentAsync([FromBody] AddStudentDto studentDto)
+        {
+            try
+            {
+                // Assuming userId is fetched from the currently logged-in user context
+                var userId = ""; // Fetch the userId based on your context, e.g., from HttpContext
 
-        //    _studentService.AddStudent(student);
-        //    return Ok("Student added successfully");
-        //}
+                var student = await _student.CreateStudentAsync(studentDto);
+                return Ok(student);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

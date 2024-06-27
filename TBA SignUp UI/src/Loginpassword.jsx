@@ -10,6 +10,9 @@ import Address from "./Address.jsx";
 import Studentlist from "./Studentlist.jsx";
 import Teacher from "./Teacher.jsx";
 import Studentprofile from "./Components/Studentprofile.jsx";
+import Sponsorlist from "./Sponsorlist.jsx";
+import Sponsorprofile from "./Components/Sponsorprofile.jsx";
+import MapSponsorStudentList from "./MapSponsorStudentList.jsx";
 import TeacherProfile from "./Components/TeacherProfile.jsx";
 import TeacherList from "./TeacherList.jsx";
 
@@ -27,6 +30,11 @@ const Loginpassword = () => {
             <Route path="/dashboard" element= {<Dashboard/>}/>
             <Route path="/reset-password" element= {<ResetPassword/>}/>
             <Route path="/address" element= {<Address/>}/>
+            <Route path="/studentlist/:id?" element= {<Studentlist/>}/>
+            <Route path="/sponsorlist" element= {<Sponsorlist/>}/>
+            <Route path="/studentprofile/:id?" element= {<Studentprofile/>}/>
+            <Route path="/sponsorprofile/:id" element= {<Sponsorprofile/>}/>
+            <Route path="/mapSponsorStudentList" element= {<MapSponsorStudentList/>}/>
             <Route path="/studentlist" element= {<Studentlist/>}/>
             <Route path="/teacher-detail" element= {<Teacher/>}/>
             <Route path="/studentprofile/:id " element= {<Studentprofile/>}/>

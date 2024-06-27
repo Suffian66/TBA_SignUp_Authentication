@@ -1,5 +1,6 @@
 ﻿
 using User.Management.Data.Dto;
+using User.Management.Data.DTOs;
 using User.Management.Data.Models;
 
 namespace User.Management.Service.Services
@@ -8,6 +9,6 @@ namespace User.Management.Service.Services
     {
         Task <IEnumerable<StudentDto>> GetAllStudents();
         StudentDto GetStudentById(int studentId);
-        //void AddStudent(StudentDto student);
+        Task<Student> CreateStudentAsync(AddStudentDto dto);
     }
 }

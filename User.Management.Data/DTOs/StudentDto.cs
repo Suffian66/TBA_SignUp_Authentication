@@ -21,10 +21,6 @@ namespace User.Management.Data.Dto
         public DateTime? DateOfSchoolLeaving { get; set; }
         public string? MedicalNeeds { get; set; }
         public string? ClassName { get; set; }
-        //public string familymembername { get; set; }
-        //public string familyrelation { get; set; }
-        //public string personoccupation { get; set; }
-        //public int personincome { get; set; }
         public List<StudentFamily> StudentFamilies { get; set; }
     }
 }

@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace User.Management.Data.Models
+namespace User.Management.Data.DTOs
 {
-    public class MapSponsorStudents
+    public class MapSponsorAllStudentsDto
     {
-        [Key]   
-        public int MapSponsorStudentsId { get; set; }
         public string? StudentsReports { get; set; }
         public int? DonationAmount { get; set; }
         public string? DonationFrequency { get; set; }
@@ -20,14 +16,12 @@ namespace User.Management.Data.Models
         public string? DonationSourceAccount { get; set; }
         public string? DonationDestinationAccount { get; set; }
         public string? Notes { get; set; }
-
-        //[ForeignKey("Students")]
         public int StudentId { get; set; }
-        public virtual Student Students { get; set; }
-
-        //[ForeignKey("Sponsors")]
         public string Id { get; set; }
-        public virtual ApplicationUser Users { get; set; }
+        public int GR_No { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string ClassName { get; set; }
 
     }
 }

@@ -26,7 +26,6 @@ namespace User.Management.Data.Models
         public DbSet<LookUpCategory> LookupsCategory { get; set; }
         public DbSet<LookUpCategoryDetail> LookupsCategoryDetail { get; set; }
         public DbSet<LookUpCountry> LookupsCountry { get; set; }
-        public DbSet<Sponsor> Sponsors { get; set; }
         public DbSet<MapSponsorStudents> MapSponsorStudents { get; set; }
 
         public DbSet<Teacher> Teachers { get; set; }
@@ -48,9 +47,9 @@ namespace User.Management.Data.Models
                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<MapSponsorStudents>()
-                .HasOne(mss => mss.Sponsors)
+                .HasOne(mss => mss.Users)
                 .WithMany()
-                .HasForeignKey(mss => mss.SponsorId)
+                .HasForeignKey(mss => mss.Id)
                 .OnDelete(DeleteBehavior.Restrict);
 
 

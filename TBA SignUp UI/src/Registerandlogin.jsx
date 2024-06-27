@@ -161,6 +161,7 @@ const Registerandlogin = () => {
                     </div>
 
                     <div className="mt-4 pt-2">
+                      
                       <button
                         className="btn btn-primary btn-lg"
                         type="submit"
@@ -168,6 +169,7 @@ const Registerandlogin = () => {
                       >
                         Next
                       </button>
+                      
                     </div>
 
                   </form>

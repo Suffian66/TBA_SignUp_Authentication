@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using User.Management.Data.DTOs;
 using User.Management.Data.Models;
 
 namespace User.Management.Services
@@ -17,11 +18,34 @@ namespace User.Management.Services
             return await _context.Teachers.Include(t => t.Users).ToListAsync();
         }
 
-        public async Task<Teacher> GetTeacherByIdAsync(string teacherId)
+        public async Task<TeacherDto> GetTeacherByIdAsync(string teacherId)
         {
-            return await _context.Teachers.Include(t => t.Users).FirstOrDefaultAsync(t => t.TeacherId == teacherId);
-        }
+            var teacherDetails = _context.Teachers.FirstOrDefault(x => x.Id == teacherId);
+            var users = _context.Users.FirstOrDefault(x => x.Id == teacherId);
 
+
+            if (users != null && teacherDetails != null)
+            {
+                var result = new TeacherDto
+                {
+                    Id = users.Id,
+                    FirstName = users.FirstName,
+                    LastName = users.LastName,
+                    MiddleName = users.MiddleName,
+                    Gender = users.Gender,
+                    NamePrefix = users.NamePrefix,
+                    DOB = users.DOB,
+                    CNIC = users.CNIC,
+                    Occupation = users.Occupation,
+                    Father_HusbandName = teacherDetails.Father_HusbandName,
+                    DegreeQualification = teacherDetails.DegreeQualification,
+                    Certification = teacherDetails.Certification,
+                    Salary = teacherDetails.Salary,
+                };
+                return result;
+            }
+            return null;
+        }
         public async Task<Teacher> CreateTeacherAsync(Teacher teacher)
         {
             _context.Teachers.Add(teacher);

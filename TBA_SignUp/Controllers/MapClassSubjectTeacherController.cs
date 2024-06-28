@@ -33,8 +33,16 @@ namespace User.Management.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MapClassSubjectTeacherDto>>> GetAllMapClassSubjectTeachers()
         {
-            var dtos = await _service.GetAllMapClassSubjectTeachersAsync();
-            return Ok(dtos);
+            try
+            {
+                var dtos = await _service.GetAllMapClassSubjectTeachersAsync();
+                return Ok(dtos);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         [HttpPut("{id}")]

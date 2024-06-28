@@ -36,8 +36,7 @@ const store = configureStore({
 
     middleware: (getDefaultMiddleware) =>
 
-    getDefaultMiddleware().concat(SignUpApi.middleware).concat(Login.middleware).concat(forgotPasswordApi.middleware).concat(login2FA.middleware).concat(resetPasswordApi.middleware).concat(AddressApi.middleware).concat(Studentlist.middleware).concat(TeacherApi.middleware).concat(MapSponsorApi.middleware).concat(SponsorlistApi.middleware).concat(MapSponsorStudentApi.middleware),
-    getDefaultMiddleware().concat(SignUpApi.middleware).concat(Login.middleware).concat(forgotPasswordApi.middleware).concat(login2FA.middleware).concat(resetPasswordApi.middleware).concat(AddressApi.middleware).concat(Studentlist.middleware).concat(TeacherApi.middleware).concat(LookUpApi.middleware),
+    getDefaultMiddleware().concat(SignUpApi.middleware).concat(Login.middleware).concat(forgotPasswordApi.middleware).concat(login2FA.middleware).concat(resetPasswordApi.middleware).concat(AddressApi.middleware).concat(Studentlist.middleware).concat(TeacherApi.middleware).concat(MapSponsorApi.middleware).concat(SponsorlistApi.middleware).concat(MapSponsorStudentApi.middleware).concat(LookUpApi.middleware),
 
 })
 

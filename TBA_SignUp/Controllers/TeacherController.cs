@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using User.Management.Data.DTOs;
 using User.Management.Data.Models;
 using User.Management.Services;
 
@@ -15,22 +16,30 @@ namespace User.Management.Controllers
             _teacherService = teacherService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Teacher>>> GetTeachers()
+        [HttpGet("[action]")]
+        public async Task<ActionResult<IEnumerable<Teacher>>> GetTeacherList()
         {
             var teachers = await _teacherService.GetAllTeachersAsync();
             return Ok(teachers);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Teacher>> GetTeacher(string id)
+        [HttpGet("[action]")]
+        public async Task<ActionResult<TeacherDto>> GetTeacherById(string teacherId)
         {
-            var teacher = await _teacherService.GetTeacherByIdAsync(id);
-            if (teacher == null)
+            try
             {
-                return NotFound();
+                var teacher = _teacherService.GetTeacherByIdAsync(teacherId);
+                if (teacher == null)
+                {
+                    return NotFound();
+                }
+                return Ok(teacher);
             }
-            return Ok(teacher);
+            catch (Exception)
+            {
+                // Log the exception details (ex) here for debugging purposes
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPost]
@@ -39,7 +48,7 @@ namespace User.Management.Controllers
             try
             {
                 var createdTeacher = await _teacherService.CreateTeacherAsync(teacher);
-                return CreatedAtAction(nameof(GetTeacher), new { id = createdTeacher.TeacherId }, createdTeacher);
+                return CreatedAtAction(nameof(GetTeacherList), new { id = createdTeacher.TeacherId }, createdTeacher);
 
             }
             catch (Exception ex)

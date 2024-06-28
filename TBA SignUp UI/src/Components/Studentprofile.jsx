@@ -4,9 +4,10 @@ import Row from 'react-bootstrap/Row';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { PersonFill } from 'react-bootstrap-icons';
 import { useGetStudentByIdQuery } from '../services/Studentlist';
-import { useGetCategoryDetailQuery } from '../services/Address';
+
 import { useAddMapSponsorStudentMutation } from '../services/MapSponsor';
 import { useState } from 'react';
+import { useGetCategoryDetailQuery } from '../services/LookUp';
 
 
 function Studentprofile() {

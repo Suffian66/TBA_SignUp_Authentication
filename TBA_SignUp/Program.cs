@@ -80,18 +80,20 @@ builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IMapTeacherSubjectService, MapTeacherSubjectService>();
 builder.Services.AddScoped<IMapSponsorStudent, MapSponsorService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddScoped<IMapClassSubjectTeacherService, MapClassSubjectTeacherService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
 
 builder.Services.AddScoped<ISponsor, SponsorService>();
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
 
-//.AddJsonOptions(options =>
-// {
-//     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-//     options.JsonSerializerOptions.MaxDepth = 64;  // Optionally increase max depth
-// });
+.AddJsonOptions(options =>
+ {
+     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+     options.JsonSerializerOptions.MaxDepth = 64;  // Optionally increase max depth
+ });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 

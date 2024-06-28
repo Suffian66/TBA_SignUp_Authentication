@@ -1,139 +1,120 @@
-import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { Link, useParams } from 'react-router-dom';
 import { PersonFill } from 'react-bootstrap-icons';
-import { Table } from 'react-bootstrap';
-import { useGetStudentByIdQuery } from '../services/Studentlist';
+import { useGetTeacherByIdQuery } from '../services/Teacher';
 
 
-function Studentprofile() {
+function TeacherProfile() {
     const { id } = useParams();
-    const {data, error, isLoading} = useGetStudentByIdQuery(id);
+    const {data: teachers, error, isLoading} = useGetTeacherByIdQuery(id);
 
-   
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
-    if (!data || Object.keys(data).length === 0) return <div>No student found</div>;
-
-    // Extracting student details
-    const { firstName, middleName, lastName, gender, dob, cnic, occupation, gR_No, dateOfAdmission, lastClassAttended, dateOfSchoolLeaving, medicalNeeds, className, studentFamilies } = data;
-
-    // Extract family members from $values array
-    const familyMembers = studentFamilies && studentFamilies.$values
-        ? studentFamilies.$values
-        : [];
-
+    if (!teachers || Object.keys(teachers).length === 0) return <div>No Teacher found</div>;
+    
     return (
         <>
             <Row className="mb-3 mt-3">
-                <Form.Group as={Col} className='myprofilehead'>
+                <Form.Group as={Col} className='myprofilehead ms-2'>
                     <Form.Label><PersonFill size={40} className='ms-2' /></Form.Label>
-                    <Form.Label className='myprofiletxt ms-2'><h2>Teacher's Profile</h2></Form.Label>
+                    <Form.Label className='myprofiletxt ms-2 '><h2>Teacher's Profile ({teachers?.result?.namePrefix} {teachers?.result?.firstName})</h2></Form.Label>
                 </Form.Group>
             </Row>
+            
             <div className='mt-2 mb-5 ps-3 pe-5'>
                 <h4 className='ms-2 textcolor'>Personal Information</h4>
-                <div className='row ms-2'>
+                <div key={teachers.id} className='row ms-2'>
                     <div className='col-3 divcolor fw-bold'>
                         First/Middle Name
                     </div>
                     <div className='col-3 divcolor '>
-                    {firstName} {middleName}
+                         {teachers?.result?.firstName} {teachers?.result?.middleName}
                     </div>
                     <div className='col-3 divcolor fw-bold'>
                         Last Name
                     </div>
                     <div className='col-3 divcolor'>
-                    {lastName}
+                       {teachers?.result?.lastName}
                     </div>
                 </div>
                 <div className='row ms-2'>
+                    <div className='col-3 divcolor fw-bold'>
+                        Gender
+                    </div>
+                    <div className='col-3 divcolor '>
+                        {teachers?.result?.gender}
+                    </div>
                     <div className='col-3 divcolor fw-bold'>
                         D.O.B
                     </div>
                     <div className='col-3 divcolor'>
-                         {dob}
+                        {teachers?.result?.dob}
                     </div>
-
-
                 </div>
-               
                 <div className='row ms-2'>
                     <div className='col-3 divcolor fw-bold'>
-                          Gender
+                        CNIC 
                     </div>
                     <div className='col-3 divcolor'>
-                          {gender}
+                        {teachers?.result?.cnic} 
                     </div>
                     <div className='col-3 divcolor fw-bold'>
-                         Any Medical Needs
+                        Occupation   
                     </div>
                     <div className='col-3 divcolor'>
-                         {medicalNeeds}
+                        {teachers?.result?.occupation}
                     </div>
                 </div>
-                {/* <div className='row ms-2'>
+                <div className='row ms-2'>
                     <div className='col-3 divcolor fw-bold'>
-                        Contact No
+                        Father's Name 
                     </div>
                     <div className='col-3 divcolor'>
-                         0300-2654121
+                        {teachers?.result?.father_HusbandName} 
                     </div>
                     <div className='col-3 divcolor fw-bold'>
-                        Status
+                    DegreeQualification   
                     </div>
                     <div className='col-3 divcolor'>
-                        Active
+                        {teachers?.result?.degreeQualification}
                     </div>
-                </div> */}
+                </div>
+                <div className='row ms-2'>
+                    <div className='col-3 divcolor fw-bold'>
+                    Certification
+                    </div>
+                    <div className='col-3 divcolor'>
+                        {teachers?.result?.certification} 
+                    </div>
+                    <div className='col-3 divcolor fw-bold'>
+                    Salary   
+                    </div>
+                    <div className='col-3 divcolor'>
+                        {teachers?.result?.salary}
+                    </div>
+                </div>
                 <div className='row ms-2'>
                     <div className='col-3 divcolor fw-bold'>
                         Address
                     </div>
                     <div className='col-9 divcolor'>
-
+                        {/* Add address here */}
                     </div>
                 </div>
-                {/* <div className='row ms-2'>
-                    <div className='col-3 divcolor fw-bold'>
-                       
-                    </div>
-                    <div className='col-9 divcolor'>
-                       
-                    </div>
-                </div> */}
             </div>
 
-            {/* ............Family Info........ */}
-            {familyMembers.length > 0 && (
-            <div className='mt-2 mb-5 ps-3 pe-5'>
-                <h4 className='ms-2 textcolor'>Family Details</h4>
-                <div className='row ms-2 text-center'>
-                    <div className='col-1 divcolor fw-bold'>
-                        S.No
-                    </div>
-                    <div className='col-4 divcolor fw-bold'>
-                        Name of Member
-                    </div>
-                    <div className='col-2 divcolor fw-bold'>
-                        Relation
-                    </div>
-                   
-                  
-                </div>
-
-              
-            </div>
-            )}
-              
             <hr />
-          
-            
-            
+                         
+            <div className='row float-start mt-5 ms-1'>
+                <div className='d-flex'>
+                    <Link to='/teacherlist'><button className='btn btn-primary btnstudent btn-color me-2'>Back to Lists</button></Link>                        
+                    <Link to={`/studentlist/${id}`}><button  className=' btn btn-primary btnstudent btn-color'>Student List</button></Link>
+                </div>
+            </div>
         </>
     );
 }
 
-export default Studentprofile;
+export default TeacherProfile;

@@ -15,6 +15,10 @@ import Sponsorprofile from "./Components/Sponsorprofile.jsx";
 import MapSponsorStudentList from "./MapSponsorStudentList.jsx";
 import TeacherProfile from "./Components/TeacherProfile.jsx";
 import TeacherList from "./TeacherList.jsx";
+import AddressForm from "./multistepform/AddressForm.jsx";
+import Step2 from "./multistepform/Step2.jsx";
+import Confirmation from "./multistepform/Confirmation.jsx";
+import Success from "./multistepform/Success.jsx";
 
 const Loginpassword = () => {
   return (
@@ -35,11 +39,15 @@ const Loginpassword = () => {
             <Route path="/studentprofile/:id?" element= {<Studentprofile/>}/>
             <Route path="/sponsorprofile/:id" element= {<Sponsorprofile/>}/>
             <Route path="/mapSponsorStudentList" element= {<MapSponsorStudentList/>}/>
-            <Route path="/studentlist" element= {<Studentlist/>}/>
             <Route path="/teacher-detail" element= {<Teacher/>}/>
-            <Route path="/studentprofile/:id " element= {<Studentprofile/>}/>
-            <Route path="/teacher-list" element= {<TeacherList/>}/>
-            <Route path="/teacher-profile" element= {<TeacherProfile/>}/>
+            <Route path="/teacherlist" element= {<TeacherList/>}/>
+            <Route path="/teacherprofile/:id" element= {<TeacherProfile/>}/>
+            <Route path="/form" element= {<AddressForm />}/>
+            <Route path="/step2" element= {<Step2 />}/>
+            <Route path="/confirm" element= {<Confirmation />}/>
+            <Route path="/success" element= {<Success />}/>
+        
+
           </Routes>
         </div>
       </BrowserRouter>

@@ -1,10 +1,11 @@
 import { Table } from 'react-bootstrap';
 import { Cart } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
-import { useFetchTeachersQuery } from './services/Teacher';
+import { useGetTeacherListQuery } from './services/Teacher';
+
 
 const TeacherList = () => {
-  const { data: teachersArray, error, isLoading } = useFetchTeachersQuery();
+  const { data: teachersArray, error, isLoading } = useGetTeacherListQuery();
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -23,7 +24,7 @@ const TeacherList = () => {
                 </div>
                 <span>
                   <div className="myprofiletxt ms-3">
-                    <h2>Teacher Details</h2>
+                    <h2>Teacher List</h2>
                   </div>
                 </span>
               </div>
@@ -47,7 +48,7 @@ const TeacherList = () => {
                       <td>{teacher.father_HusbandName}</td>
                       <td>{teacher.degreeQualification}</td> 
                       <td>
-                        <Link to={`/teacher/${teacher.teacherId}`}>
+                        <Link to={`/teacherprofile/${teacher.id}`}>
                           <button className="btn btn-primary">Veiw Profile</button>
                         </Link>
                       </td>

@@ -13,9 +13,9 @@ namespace User.Management.Data.Models
         public string Id { get; set; }
         public virtual ApplicationUser Users { get; set; }
 
-        [ForeignKey("Class")]
+        [ForeignKey("ClassId")]
         public int ClassId { get; set; }
-        public virtual Class Class { get; set; }
+        public virtual LookUpCategoryDetail ClassDetail { get; set; }
 
         [ForeignKey("Subject")]
         public int SubjectId { get; set; }

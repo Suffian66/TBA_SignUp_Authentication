@@ -6,8 +6,7 @@ namespace User.Management.Data.Models
     {
         [Key]
         public int LookUpCtgId { get; set; }
-        public int Lang { get; set; }
-
+        //public int Lang { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public int CreatedBy { get; set; }

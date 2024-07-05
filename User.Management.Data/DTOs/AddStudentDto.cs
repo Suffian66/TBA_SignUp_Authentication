@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using User.Management.Data.Models;
 
 namespace User.Management.Data.DTOs
 {
     public class AddStudentDto
     {
-        //public int StudentId { get; set; }
+        public string? FirstName { get; set; }
+        public string? MiddleName { get; set; }
+        public string? LastName { get; set; }
+        public string? Gender { get; set; }
+        public string? DOB { get; set; }
         public int GR_No { get; set; }
-        public DateTime DateOfAdmission { get; set; }
+        public string? Language { get; set; }
+        public string? ResidenceStatus { get; set; }
+        public DateTime? DateOfAdmission { get; set; }
         public string? LastClassAttended { get; set; }
         public DateTime? DateOfSchoolLeaving { get; set; }
         public string? MedicalNeeds { get; set; }
-        public string? ClassName { get; set; }
-        public List<StudentFamily> StudentFamily { get; set; }
-        //public string Id { get; set; }
+        public string? Class { get; set; }
+        public List<AddStudentFamilyDto> StudentFamilies { get; set; }
     }
 }

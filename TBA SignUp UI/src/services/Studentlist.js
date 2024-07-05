@@ -10,12 +10,18 @@ export const Studentlist = createApi({
 
         getStudentById:builder.query({
           query: (studentId) => `GetStudentById?studentId=${studentId}`
-        })
+        }),
+
+        createStudent: builder.mutation({
+          query: (newStudent) => ({
+            url: 'CreateStudent',
+            method: 'POST',
+            body: newStudent,
+        }),
       }),
-
-
+    })
 });
 
-export const { useGetAllStudentsQuery, useGetStudentByIdQuery } = Studentlist;
+export const { useGetAllStudentsQuery, useGetStudentByIdQuery, useCreateStudentMutation } = Studentlist;
 
 export default Studentlist;

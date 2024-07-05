@@ -54,15 +54,14 @@ namespace User.Management.Service.Services
             var mapSponsorStudents = await _context.MapSponsorStudents.ToListAsync();
             var students = await _context.Students.ToListAsync();
             var users = await _context.Users.ToListAsync();
-            var classes = await _context.Class.ToListAsync();
 
             var result = mapSponsorStudents.Select(mapSponsorStudent =>
             {
                 var newStudent = students.FirstOrDefault(student => student.StudentId == mapSponsorStudent.StudentId);
                 var newUser = users.FirstOrDefault(user => user.Id == mapSponsorStudent.Id);
-                var newClass = classes.FirstOrDefault(x => x.ClassId == newStudent.ClassId);
+                
 
-                if (newStudent != null && newUser != null && newClass != null)
+                if (newStudent != null && newUser != null)
                 {
                     return new MapSponsorAllStudentsDto
                 {
@@ -77,9 +76,9 @@ namespace User.Management.Service.Services
                     StudentId = newStudent.StudentId,
                     Id = newUser.Id,
                     GR_No = newStudent.GR_No,
-                    FirstName = newUser.FirstName,
-                    LastName = newUser.LastName,
-                    ClassName = newClass.ClassName
+                    FirstName = newStudent.FirstName,
+                    LastName = newStudent.LastName,
+                    
                 };
                 }
                 return null;

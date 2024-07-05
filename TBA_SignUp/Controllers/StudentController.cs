@@ -23,7 +23,7 @@ namespace TBA_SignUp.Controllers
             _userManager = userManager;
         }
 
-        
+
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAllStudents()
@@ -46,7 +46,8 @@ namespace TBA_SignUp.Controllers
             try
             {
                 var student = _student.GetStudentById(studentId);
-                if(student == null){
+                if (student == null)
+                {
                     return NotFound();
                 }
                 return Ok(student);
@@ -63,11 +64,8 @@ namespace TBA_SignUp.Controllers
         {
             try
             {
-                // Assuming userId is fetched from the currently logged-in user context
-                var userId = ""; // Fetch the userId based on your context, e.g., from HttpContext
-
-                var student = await _student.CreateStudentAsync(studentDto);
-                return Ok(student);
+                int studentId = await _student.CreateStudentAsync(studentDto);
+                return Ok(new { StudentId = studentId });
             }
             catch (Exception ex)
             {

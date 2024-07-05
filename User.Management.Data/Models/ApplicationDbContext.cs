@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace User.Management.Data.Models
 {
@@ -15,7 +16,6 @@ namespace User.Management.Data.Models
 
         //public DbSet<SponsorDetails> SponsorDetails { get; set; }
         public DbSet<Address> Address { get; set; }
-        public DbSet<Class> Class { get; set; }
         //public DbSet<CourseDetail> Courses { get; set; }
         public DbSet<Student> Students { get; set; }
 
@@ -52,8 +52,6 @@ namespace User.Management.Data.Models
                 .HasForeignKey(mss => mss.Id)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
-
             base.OnModelCreating(builder);
 
             builder.Entity<MapClassSubjectTeacher>()
@@ -72,6 +70,29 @@ namespace User.Management.Data.Models
             .OnDelete(DeleteBehavior.NoAction)
             ;
 
+            builder.Entity<Student>()
+                .HasOne(s => s.ClassDetail)
+                .WithMany()
+                .HasForeignKey(s => s.ClassId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Student>()
+                .HasOne(s => s.LanguageDetail)
+                .WithMany()
+                .HasForeignKey(s => s.LanguageId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Student>()
+                .HasOne(s => s.GenderDetail)
+                .WithMany()
+                .HasForeignKey(s => s.GenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Student>()
+                .HasOne(s => s.ResidenceDetail)
+                .WithMany()
+                .HasForeignKey(s => s.ResidenceId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
         private static void SeedRoles(ModelBuilder builder)

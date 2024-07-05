@@ -16,7 +16,6 @@ namespace User.Management.Services
         {
             return await _context.MapTeacherSubject
                 .Include(m => m.Users)
-                .Include(m => m.Class)
                 .Include(m => m.Subject)
                 .ToListAsync();
         }
@@ -25,7 +24,6 @@ namespace User.Management.Services
         {
             return await _context.MapTeacherSubject
                 .Include(m => m.Users)
-                .Include(m => m.Class)
                 .Include(m => m.Subject)
                 .FirstOrDefaultAsync(m => m.MapTeacherSubjectId == mapTeacherSubjectId);
         }

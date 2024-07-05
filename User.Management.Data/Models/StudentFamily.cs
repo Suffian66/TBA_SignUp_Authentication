@@ -13,11 +13,9 @@ namespace User.Management.Data.Models
         [Key]
         public int StudentFamilyId { get; set; }
         public string FamilyMemberName { get; set;}
-
         public string FamilyRelation { get; set; }
-
+        public string Qualification { get; set; }
         public string PersonOccupation {  get; set; }
-
         public int PersonIncome { get; set; }
 
         [ForeignKey("Student")]

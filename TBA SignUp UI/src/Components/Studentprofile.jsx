@@ -9,7 +9,6 @@ import { useAddMapSponsorStudentMutation } from '../services/MapSponsor';
 import { useState } from 'react';
 import { useGetCategoryDetailQuery } from '../services/LookUp';
 
-
 function Studentprofile() {
     const { id: studentId } = useParams();
     const location = useLocation();
@@ -21,7 +20,7 @@ function Studentprofile() {
     const {data, error, isLoading} = useGetStudentByIdQuery(studentId);
     const {data: dataFrequency, error: frequencyError, isLoading: frequencyIsLoading, } = useGetCategoryDetailQuery(["Donation Frequency", ""], {});
     const {data: dataChannel, error: channelError, isLoading: channelIsLoading, } = useGetCategoryDetailQuery(["Donation Channel", ""], {});
-    console.log(dataFrequency, dataChannel); // Check the data structure
+    console.log('dataFrequency:', dataFrequency); // Check the data structure
    
     const [formData, setFormData] = useState({
         donationAmount: '',
@@ -36,6 +35,10 @@ function Studentprofile() {
     });
 
     const [addMapSponsorStudent, { isLoading: isAdding, isError, isSuccess }] = useAddMapSponsorStudentMutation();
+
+    // useEffect(() => {
+    //     console.log('dataFrequency:', dataFrequency);
+    // }, [dataFrequency]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -82,7 +85,7 @@ function Studentprofile() {
                 });
                 
                 alert('Student is successfully added to sponsor');
-                navigate(`/sponsorprofile/${formData.sponsorId}`);
+                navigate(`/mapSponsorStudentList?sponsorId=${formData.sponsorId}`);
             }
 
             if(error.status === 400){
@@ -99,15 +102,16 @@ function Studentprofile() {
     if (!data || Object.keys(data).length === 0) return <div>No student found</div>;
 
     // Extracting student details
-    const { firstName, middleName, lastName, gender, dob, cnic, occupation, gR_No, dateOfAdmission, lastClassAttended, dateOfSchoolLeaving, medicalNeeds, className, studentFamilies } = data;
+    const { firstName, middleName, lastName, gender, dob, gR_No, dateOfAdmission, lastClassAttended, dateOfSchoolLeaving, medicalNeeds, class: studentClass, language, residenceStatus, studentFamilies } = data;
 
     // Extract family members from $values array
     // const familyMembers = studentFamilies && studentFamilies.$values ? studentFamilies.$values : [];
-    // const donationFrequencies = dataFrequency && dataFrequency.$values ? dataFrequency.$values : [];
-    // const donationChannel = dataChannel && dataChannel.$values ? dataChannel.$values : [];  
+    const donationFrequencies = dataFrequency?.[0]?.lookupCategoryDetail || [];
+    const donationChannel = dataChannel?.[0]?.lookupCategoryDetail || [];  
     
     return (
         <>
+            <div className="profilediv">
             <Row className="mb-3 mt-3">
                 <Form.Group as={Col} className='myprofilehead ms-2'>
                     <Form.Label><PersonFill size={40} className='ms-2' /></Form.Label>
@@ -127,7 +131,7 @@ function Studentprofile() {
                         Class
                     </div>
                     <div className='col-3 divcolor'>
-                    {className}
+                    {studentClass}
                     </div>
                 </div>
                 <div className='row ms-2'>
@@ -151,10 +155,7 @@ function Studentprofile() {
                     <div className='col-3 divcolor'>
                          {dob}
                     </div>
-                    {/* <div className='col-3 divcolor fw-bold'>
-                        Age
-                    </div>
-                    <div className='col-3 divcolor '> */}
+                    
                     <div className='col-3 divcolor fw-bold'>
                          Date of Admission    
                     </div>
@@ -188,6 +189,20 @@ function Studentprofile() {
                     </div>
                     <div className='col-3 divcolor'>
                          {medicalNeeds}
+                    </div>
+                </div>
+                <div className='row ms-2'>
+                    <div className='col-3 divcolor fw-bold'>
+                          Language
+                    </div>
+                    <div className='col-3 divcolor'>
+                          {language}
+                    </div>
+                    <div className='col-3 divcolor fw-bold'>
+                         Residence Status
+                    </div>
+                    <div className='col-3 divcolor'>
+                         {residenceStatus}
                     </div>
                 </div>
                 <div className='row ms-2'>
@@ -246,25 +261,20 @@ function Studentprofile() {
                 {/* ............Progress........ */}
             <hr />
             <div className='mt-2 mb-5 ps-3 pe-5 pb-2'>
-                <h4 className='ms-2 mb-3 textcolor'>Donation Details</h4>
+                <h4 className='ms-2 mb-3 textcolor'>Sponsor This Student</h4>
                 <form onSubmit={handleSubmit}>
                     <div className='row text-center'>
                         <div className='col-3 ms-2'>
                             <select className='form-select'
                                 name="donationFrequency"
                                 // className='form-select'
-                                value={formData.dataFrequency}
+                                value={formData.donationFrequency}
                                 onChange={handleChange}
                                 required>
-                                {/* <option defaultValue>Donation Frequency</option> */} 
-                                {dataFrequency.map((type) => (
-                                  <option
-                                    key={type.lookUpCtgDetailId}
-                                    value={type.title}
-                                  >
-                                    {type.title}
-                                  </option>
-                                ))}                                
+                                {/* <option value=''>Select Donation Frequency</option> */}
+                                {donationFrequencies.map((frequency, index) => (
+                                    <option key={index} value={frequency}>{frequency}</option>
+                                ))}                          
                             </select>
                         </div>
                         <div className='col-3 divcolor'>
@@ -293,15 +303,10 @@ function Studentprofile() {
                                 value={formData.dataChannel}
                                 onChange={handleChange}
                                 required >
-                                {/* <option defaultValue>Donation Channel</option> */}
-                                {dataChannel.map((type) => (
-                                  <option
-                                    key={type.lookUpCtgDetailId}
-                                    value={type.title}
-                                  >
-                                    {type.title}
-                                  </option>
-                                ))}
+                                {/* <option value=''>Select Donation Channel</option> */}
+                                {donationChannel.map((channel, index) => (
+                                    <option key={index} value={channel}>{channel}</option>
+                                ))}  
                             </select>
                         </div>
                     </div>
@@ -349,7 +354,7 @@ function Studentprofile() {
                 </div>
                 </form>
             </div>
-         
+        </div> 
             
         </>
     );

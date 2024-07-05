@@ -18,68 +18,64 @@ namespace User.Management.Service.Services
 
         public async Task<IEnumerable<StudentDto>> GetAllStudents()
         {
-            var students = await _context.Students.ToListAsync();
-            var users = await _context.Users.ToListAsync();
-            var classes = await _context.Class.ToListAsync();
+            var students = await _context.Students
+                                 .Include(s => s.LanguageDetail)
+                                 .Include(s => s.ClassDetail)
+                                 .Include(s => s.GenderDetail)
+                                 .Include(s => s.ResidenceDetail)
+                                 .ToListAsync();
 
-            var result = students.Select(student =>
-            {
-                var newUser = users.FirstOrDefault(user => user.Id == student.Id);
-                var newClasses = classes.FirstOrDefault(newClass => newClass.ClassId == student.ClassId);
-
-                if (newUser != null && newClasses != null)
-                {
-                    return new StudentDto
+            var result = students.Select(student => new StudentDto
+                    
 
                     {
-                        FirstName = student.Users.FirstName,
-                        LastName = student.Users.LastName,
-                        MiddleName = student.Users.MiddleName,
-                        Gender = student.Users.Gender,
-                        NamePrefix = student.Users.NamePrefix,
-                        DOB = student.Users.DOB,
-                        CNIC = student.Users.CNIC,
-                        Occupation = student.Users.Occupation,
                         StudentId = student.StudentId,
+                        FirstName = student.FirstName,
+                        LastName = student.LastName,
+                        MiddleName = student.MiddleName,
+                        Gender = student.GenderDetail?.Title,
+                        DOB = student.DOB,
                         GR_No = student.GR_No,
+                        Language = student.LanguageDetail?.Title,
+                        ResidenceStatus = student.ResidenceDetail?.Title,
+                        DateOfAdmission = student.DateOfAdmission,
                         LastClassAttended = student.LastClassAttended,
                         DateOfSchoolLeaving = student.DateOfSchoolLeaving,
                         MedicalNeeds = student.MedicalNeeds,
-                        ClassName = student.Class.ClassName
-                    };
-                }
-                return null;
-            }).Where(dto => dto != null).ToList();
+                        Class = student.ClassDetail?.Title,
+                    }).ToList();
+                
             return result;
         }
 
         public StudentDto GetStudentById(int studentId)
         {
             var students = _context.Students.FirstOrDefault(x => x.StudentId == studentId);
-            var users = _context.Users.FirstOrDefault(x => x.Id == students.Id);
-            var classes = _context.Class.FirstOrDefault(x => x.ClassId == students.ClassId);
+            var gender = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == students.GenderId);
+            var language = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == students.LanguageId);
+            var residenceStatus = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == students.ResidenceId);
+            var classAttended = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == students.ClassId);
             var studentsFamily = _context.StudentFamily.Where(x => x.StudentId == studentId).ToList();
 
-            if (students != null && classes != null && users != null)
+            if (students != null && gender != null && language != null && residenceStatus != null && classAttended != null)
             {
                 var result = new StudentDto
 
                 {
-                    FirstName = users.FirstName,
-                    LastName = users.LastName,
-                    MiddleName = users.MiddleName,
-                    Gender = users.Gender,
-                    NamePrefix = users.NamePrefix,
-                    DOB = users.DOB,
-                    CNIC = users.CNIC,
-                    Occupation = users.Occupation,
                     StudentId = students.StudentId,
+                    FirstName = students.FirstName,
+                    LastName = students.LastName,
+                    MiddleName = students.MiddleName,
+                    Gender = gender?.Title,
+                    DOB = students.DOB,
                     GR_No = students.GR_No,
+                    Language = language?.Title,
+                    ResidenceStatus = residenceStatus?.Title,
                     DateOfAdmission = students.DateOfAdmission,
                     LastClassAttended = students.LastClassAttended,
                     DateOfSchoolLeaving = students.DateOfSchoolLeaving,
                     MedicalNeeds = students.MedicalNeeds,
-                    ClassName = classes.ClassName,
+                    Class = classAttended?.Title,
                     StudentFamilies = studentsFamily
                 };
                 return result;
@@ -87,57 +83,65 @@ namespace User.Management.Service.Services
             return null;
         }
 
-        public async Task<AddStudentDto> CreateStudentAsync(AddStudentDto dto)
+        public async Task<int> CreateStudentAsync(AddStudentDto dto)
         {
-            // Create a new student entity (assuming you save it in the database)
+            // Resolve ClassId from ClassName
+            var residenceEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.ResidenceStatus);
+            var genderEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.Gender);
+            var languageEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.Language);
+            var classEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.Class);
+
+            if (residenceEntity == null && genderEntity == null && languageEntity == null && classEntity == null)
+            {
+                throw new Exception($"Class with name not found");
+            }
+
+            // Create a new student entity
             var newStudent = new Student
             {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                MiddleName = dto.MiddleName,
+                GenderId = genderEntity.LookUpCtgDetailId,
+                DOB = dto.DOB,
                 GR_No = dto.GR_No,
+                LanguageId = languageEntity.LookUpCtgDetailId,
+                ResidenceId = residenceEntity.LookUpCtgDetailId,
                 DateOfAdmission = dto.DateOfAdmission,
                 LastClassAttended = dto.LastClassAttended,
                 DateOfSchoolLeaving = dto.DateOfSchoolLeaving,
                 MedicalNeeds = dto.MedicalNeeds,
-                ClassId = _context.Class.FirstOrDefault(c => c.ClassName == dto.ClassName)?.ClassId ?? 0, // Resolve ClassId from ClassName
+                ClassId = classEntity.LookUpCtgDetailId
             };
-
             _context.Students.Add(newStudent);
             await _context.SaveChangesAsync();
 
-            // For simplicity, assuming you have logic to save student family details here
-            foreach (var familyDto in dto.StudentFamily)
+            if (dto.StudentFamilies != null)
             {
-                var studentFamily = new StudentFamily
+                foreach (var familyDto in dto.StudentFamilies)
                 {
-                    FamilyMemberName = familyDto.FamilyMemberName,
-                    FamilyRelation = familyDto.FamilyRelation,
-                    PersonOccupation = familyDto.PersonOccupation,
-                    PersonIncome = familyDto.PersonIncome,
-                    StudentId = newStudent.StudentId // Assign the newly created student's Id
-                };
-
-                _context.StudentFamily.Add(studentFamily);
+                    await AddStudentFamilyAsync(familyDto, newStudent.StudentId);
+                }
             }
+            return newStudent.StudentId;
+        }
 
-            await _context.SaveChangesAsync();
-
-            // Prepare the response DTO with necessary fields
-            var resultDto = new AddStudentDto
+        private async Task AddStudentFamilyAsync(AddStudentFamilyDto dto, int studentId)
+        {
+            var studentFamily = new StudentFamily
             {
-                GR_No = newStudent.GR_No,
-                DateOfAdmission = newStudent.DateOfAdmission,
-                LastClassAttended = newStudent.LastClassAttended,
-                DateOfSchoolLeaving = newStudent.DateOfSchoolLeaving,
-                MedicalNeeds = newStudent.MedicalNeeds,
-                ClassName = dto.ClassName, // Use the input DTO's ClassName directly
-                StudentFamily = dto.StudentFamily // Use the input DTO's StudentFamily directly
+                FamilyMemberName = dto.FamilyMemberName,
+                FamilyRelation = dto.FamilyRelation,
+                Qualification = dto.Qualification,
+                PersonOccupation = dto.PersonOccupation,
+                PersonIncome = dto.PersonIncome,
+                StudentId = studentId
             };
 
-            return resultDto;
+            _context.StudentFamily.Add(studentFamily);
+            await _context.SaveChangesAsync();
         }
 
-        Task<Student> IStudent.CreateStudentAsync(AddStudentDto dto)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 
 const Registerandlogin = () => {
   const [addUser, { data, error, isLoading }] = useAddUserMutation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const {
     register,
@@ -19,7 +19,7 @@ const Registerandlogin = () => {
       const updatedFormData = { ...formData, roles: ["teacher"] };
       await addUser(updatedFormData);
       console.log("User added successfully:", updatedFormData);  
-      navigate('/address');
+      // navigate('/address');
 
     } 
     catch (err) {

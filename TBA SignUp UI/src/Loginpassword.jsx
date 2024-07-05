@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Registerandlogin from "./Registerandlogin";
 import Home from "./Home.jsx";
 import SignIn from "./SignIn.jsx";
@@ -19,40 +19,205 @@ import AddressForm from "./multistepform/AddressForm.jsx";
 import Step2 from "./multistepform/Step2.jsx";
 import Confirmation from "./multistepform/Confirmation.jsx";
 import Success from "./multistepform/Success.jsx";
+import Wrapper from "./Components/Wrapper.jsx";
+import AddStudent from "./Components/AddStudent.jsx";
+import StudentFamily from "./Components/StudentFamily.jsx";
 
-const Loginpassword = () => {
-  return (
-    <>
-      <BrowserRouter>
-        <div>
-          <Routes>
-            <Route path="/" element= {<Registerandlogin/>}/>
-            <Route path="/home" element= {<Home/>}/>
-            <Route path="/signin" element ={<SignIn/>}/>
-            <Route path="/otplogin" element ={<Otplogin/>}/>
-            <Route path="/forgot-password" element= {<ForgotPassword/>}/>
-            <Route path="/dashboard" element= {<Dashboard/>}/>
-            <Route path="/reset-password" element= {<ResetPassword/>}/>
-            <Route path="/address" element= {<Address/>}/>
-            <Route path="/studentlist/:id?" element= {<Studentlist/>}/>
-            <Route path="/sponsorlist" element= {<Sponsorlist/>}/>
-            <Route path="/studentprofile/:id?" element= {<Studentprofile/>}/>
-            <Route path="/sponsorprofile/:id" element= {<Sponsorprofile/>}/>
-            <Route path="/mapSponsorStudentList" element= {<MapSponsorStudentList/>}/>
-            <Route path="/teacher-detail" element= {<Teacher/>}/>
-            <Route path="/teacherlist" element= {<TeacherList/>}/>
-            <Route path="/teacherprofile/:id" element= {<TeacherProfile/>}/>
-            <Route path="/form" element= {<AddressForm />}/>
-            <Route path="/step2" element= {<Step2 />}/>
-            <Route path="/confirm" element= {<Confirmation />}/>
-            <Route path="/success" element= {<Success />}/>
-        
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+    ],
+  },
+  {
+    path: "/registerandlogin",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <Registerandlogin />,
+      },
+    ],
+  },
+  {
+    path: "/signin",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <SignIn />,
+      },
+    ],
+  },
+  {
+    path: "/otplogin",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <Otplogin />,
+      },
+    ],
+  },         
+  {
+    path: "/forgotpassword",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <ForgotPassword />,
+      },
+    ],
+  },          
+  {
+    path: "/dashboard",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <Dashboard />,
+      },
+    ],
+  },    
+  {
+    path: "/resetpassword",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <ResetPassword />,
+      },
+    ],
+  },      
+  {
+    path: "/address",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <Address />,
+      },
+    ],
+  },
+  {
+    path: "/studentlist/:id?",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <Studentlist />,
+      },
+    ],
+  },
+  {
+    path: "/sponsorlist",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <Sponsorlist />,
+      },
+    ],
+  },
+  {
+    path: "/studentprofile/:id",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <Studentprofile />,
+      },
+    ],
+  },
+  {
+    path: "/sponsorprofile/:id",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <Sponsorprofile />,
+      },
+    ],
+  },          
+  {
+    path: "/mapsponsorstudentlist/",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <MapSponsorStudentList />,
+      },
+    ],
+  },
+  {
+    path: "/teacher",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <Teacher />,
+      },
+    ],
+  },           
+  {
+    path: "/studentprofile/:id",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <Studentprofile />,
+      },
+    ],
+  },          
+  {
+    path: "/teacherlist",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <TeacherList />,
+      },
+    ],
+  },
+  {
+    path: "/teacherprofile",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <TeacherProfile />,
+      },
+    ],
+  },
+  {
+    path: "/addstudent",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <AddStudent />,
+      },
+    ],
+  },    
+  {
+    path: "/studentfamily",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <StudentFamily />,
+      },
+    ],
+  },         
+]);
 
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </>
-  );
-};
+function Loginpassword() {
+  return <RouterProvider router={router} />;
+}
 
 export default Loginpassword;

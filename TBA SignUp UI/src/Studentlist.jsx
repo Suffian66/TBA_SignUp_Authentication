@@ -22,7 +22,7 @@ const Studentlist = () => {
                         <div className="mb-3 mt-3">
                             <div className='myprofilehead d-flex'>
                                 <div><Cart size={40} className='' /></div>
-                                <span><div className='myprofiletxt ms-3'><h2>My Student List</h2></div></span>
+                                <span><div className='myprofiletxt ms-3'><h2>Student List</h2></div></span>
                             </div>
                         </div>
                         <div className='me-5 table-div'>

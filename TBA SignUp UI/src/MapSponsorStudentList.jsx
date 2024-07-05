@@ -1,17 +1,25 @@
 import { Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { Cart } from 'react-bootstrap-icons';
 import { useGetAllMapSponsorStudentsQuery } from './services/MapSponsorStudent';
 
 const MapSponsorStudentList = () => {
-    // const { id } = useParams();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const sponsorId = queryParams.get('sponsorId');
     const { data: sponsorStudents, error, isLoading } = useGetAllMapSponsorStudentsQuery();
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
 
-    console.log(sponsorStudents);
-    // const students = studentsArray?.$values || []; 
+    console.log('Sponsor ID:', sponsorId);
+    console.log('Sponsor Students Data:', sponsorStudents)
+
+        const filteredStudents = sponsorId
+        ? sponsorStudents.filter(student => student.id === sponsorId)
+        : sponsorStudents;
+
+    console.log('Filtered Students:', filteredStudents);
 
     return (
         <>
@@ -25,13 +33,13 @@ const MapSponsorStudentList = () => {
                             </div>
                         </div>
                         <div className='me-5 table-div'>
-                            <Table striped bordered hover className='text-center tablefont' >
+                            <Table bordered hover className='text-center tablefont' >
                                 <thead>
                                     <tr>
                                         <th className='col-1'>S.No</th>
                                         <th className='col-1'>G.R.No </th>
                                         <th className='col-1'>First Name</th>
-                                        <th className='col-1'>Last Name</th>
+                                        {/* <th className='col-1'>Last Name</th> */}
                                         <th className='col-1'>Class</th>
                                         <th className='col-1'>Don. Amount</th>
                                         <th className='col-1'>Frequency</th>
@@ -39,17 +47,17 @@ const MapSponsorStudentList = () => {
                                         <th className='col-1'>Starting Date</th>
                                         <th className='col-1'>Source Acct.</th>
                                         <th className='col-1'>Destination Acct</th>
-                                        <th className='col-1'>Action</th>
+                                        <th className='col-2'>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {sponsorStudents.map((student, index) => (
+                                {filteredStudents.map((student, index) => (
                                     <tr key={index} style={{ height: '40px' }}>
                                         <td>{index + 1}</td>
                                         <td>{student.gR_No}</td>
                                         <td>{student.firstName}</td>
-                                        <td>{student.lastName}</td>
-                                        <td>{student.className}</td>
+                                        {/* <td>{student.lastName}</td> */}
+                                        <td>{student.class}</td>
                                         <td>{student.donationAmount}</td>
                                         <td>{student.donationFrequency}</td>
                                         <td>{student.donationChannel}</td>
@@ -57,13 +65,18 @@ const MapSponsorStudentList = () => {
                                         <td>{student.donationSourceAccount}</td>
                                         <td>{student.donationDestinationAccount}</td>
                                         <Link>
-                                            <button className='btn btn-primary'>Pay for Sponsor</button>
+                                            <button className='btn btn-primary btn-sm lh-2 mt-3'>Click to Pay</button>
                                         </Link>
                                     </tr>
                                 ))}
                             </tbody>
                         </Table>
-                        <button className='btn btn-primary btnstudent btn-color '>Back to Profile</button>
+                        {/* <div className='row float-start mt-5 ms-1'>
+                            <div className='d-flex'> */}
+                                {/* <Link to={`/sponsorprofile/${sponsorId ? `${sponsorId}` : ''}`}><button className='btn btn-primary btnstudent btn-color me-3 '>Back to Profile</button></Link> */}
+                                <Link to={`/studentlist/${sponsorId ? `${sponsorId}` : ''}`}> <button className='btn btn-primary btnstudent btn-color me-2'>Back to Student List</button></Link>
+                            {/* </div>        
+                        </div> */}
                     </div>
                 </div>
             </div>

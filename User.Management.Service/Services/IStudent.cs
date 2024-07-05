@@ -7,8 +7,9 @@ namespace User.Management.Service.Services
 {
     public interface IStudent
     {
-        Task <IEnumerable<StudentDto>> GetAllStudents();
+        Task<IEnumerable<StudentDto>> GetAllStudents();
         StudentDto GetStudentById(int studentId);
-        Task<Student> CreateStudentAsync(AddStudentDto dto);
+        public Task<int> CreateStudentAsync(AddStudentDto dto);
+
     }
 }

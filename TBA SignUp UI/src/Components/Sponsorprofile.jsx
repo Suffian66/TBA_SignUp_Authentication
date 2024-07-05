@@ -15,14 +15,15 @@ function Sponsorprofile() {
     
     return (
         <>
-            <Row className="mb-3 mt-3">
+            <div className='profilediv'>    
+            <Row className="mb-3 mt-3 ">
                 <Form.Group as={Col} className='myprofilehead ms-2'>
                     <Form.Label><PersonFill size={40} className='ms-2' /></Form.Label>
                     <Form.Label className='myprofiletxt ms-2 '><h2>Sponsor's Profile ({sponsors.namePrefix} {sponsors.firstName})</h2></Form.Label>
                 </Form.Group>
             </Row>
             
-            <div className='mt-2 mb-5 ps-3 pe-5'>
+            <div className='mt-2 mb-5 ps-3 pe-5 dashboardbox profilebox'>
                 <h4 className='ms-2 textcolor'>Personal Information</h4>
                 <div key={sponsors.id} className='row ms-2'>
                     <div className='col-3 divcolor fw-bold'>
@@ -81,8 +82,11 @@ function Sponsorprofile() {
             <div className='row float-start mt-5 ms-1'>
                 <div className='d-flex'>
                     <Link to='/sponsorlist'><button className='btn btn-primary btnstudent btn-color me-2'>Back to Lists</button></Link>                        
-                    <Link to={`/studentlist/${id}`}><button  className=' btn btn-primary btnstudent btn-color'>Student List</button></Link>
+                    <Link to={`/studentlist/${id}`}><button  className=' btn btn-primary btnstudent btn-color me-2'>Student List</button></Link>
+                    <Link to={`/mapSponsorStudentList?sponsorId=${id}`}><button  className=' btn btn-primary btnstudent btn-color'>My Sponsor Cart</button></Link>
+                
                 </div>
+            </div>
             </div>
         </>
     );

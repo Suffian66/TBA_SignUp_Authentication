@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using User.Management.Data.DTOs;
 using User.Management.Data.Models;
 
@@ -20,34 +15,34 @@ namespace User.Management.Service.Services
 
         public MapSponsorStudents AddMapSponsorStudent(MapSponsorStudentDto mapSponsorStd)
         {
-                // Check if the student is already sponsored
-                var existingSponsorship = _context.MapSponsorStudents.FirstOrDefault(s => s.StudentId == mapSponsorStd.StudentId);
+            // Check if the student is already sponsored
+            var existingSponsorship = _context.MapSponsorStudents.FirstOrDefault(s => s.StudentId == mapSponsorStd.StudentId);
 
-                if (existingSponsorship != null)
-                {
+            if (existingSponsorship != null)
+            {
                 // Return a message indicating that the student is already sponsored
                 throw new InvalidOperationException("Student is already sponsored!");
-                }
-                
-                var mapSponsor = new MapSponsorStudents
-                {
-                    //MapSponsorStudentsId = mapstudent.MapSponsorStudentsId,
-                    StudentsReports = mapSponsorStd.StudentsReports,
-                    DonationAmount = mapSponsorStd.DonationAmount,
-                    DonationFrequency = mapSponsorStd.DonationFrequency,
-                    DonationStartDate = mapSponsorStd.DonationStartDate,
-                    DonationChannel = mapSponsorStd.DonationChannel,
-                    DonationSourceAccount = mapSponsorStd.DonationSourceAccount,
-                    DonationDestinationAccount = mapSponsorStd.DonationDestinationAccount,
-                    Notes = mapSponsorStd.Notes,
-                    StudentId = mapSponsorStd.StudentId,
-                    Id = mapSponsorStd.Id
-                };
-                _context.MapSponsorStudents.Add(mapSponsor);
-                _context.SaveChanges();
-
-                return mapSponsor; // Return the created entity
             }
+
+            var mapSponsor = new MapSponsorStudents
+            {
+                //MapSponsorStudentsId = mapstudent.MapSponsorStudentsId,
+                StudentsReports = mapSponsorStd.StudentsReports,
+                DonationAmount = mapSponsorStd.DonationAmount,
+                DonationFrequency = mapSponsorStd.DonationFrequency,
+                DonationStartDate = mapSponsorStd.DonationStartDate,
+                DonationChannel = mapSponsorStd.DonationChannel,
+                DonationSourceAccount = mapSponsorStd.DonationSourceAccount,
+                DonationDestinationAccount = mapSponsorStd.DonationDestinationAccount,
+                Notes = mapSponsorStd.Notes,
+                StudentId = mapSponsorStd.StudentId,
+                Id = mapSponsorStd.Id
+            };
+            _context.MapSponsorStudents.Add(mapSponsor);
+            _context.SaveChanges();
+
+            return mapSponsor; // Return the created entity
+        }
 
         public async Task<IEnumerable<MapSponsorAllStudentsDto>> GetAllMapSponsorStudent()
         {

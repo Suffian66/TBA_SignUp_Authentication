@@ -1,8 +1,7 @@
 import { Table } from 'react-bootstrap';
-// import Sidebar from '../components/Sidebar';
 import { Link, useParams } from 'react-router-dom';
 import { Cart } from 'react-bootstrap-icons';
-import { useGetAllStudentsQuery, useGetStudentByIdQuery } from './services/Studentlist';
+import { useGetAllStudentsQuery } from './services/Studentlist';
 
 const Studentlist = () => {
     const { id: sponsorId } = useParams();
@@ -12,11 +11,11 @@ const Studentlist = () => {
     if (error) return <div>Error: {error.message}</div>;
 
     console.log(studentsArray);
-    // const students = studentsArray?.$values || []; 
+    const students = Array.isArray(studentsArray) ? studentsArray : [];
 
     return (
         <>
-             <div className="dashboardbody">
+            <div className="dashboardbody">
                 <div className="row dashboardbox pt-5 pb-5">
                     <div className="col-12 classlist">
                         <div className="mb-3 mt-3">
@@ -38,7 +37,7 @@ const Studentlist = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {studentsArray.map((student, index) => (
+                                {students.map((student, index) => (
                                     <tr key={index} style={{ height: '40px' }}>
                                         <td>{index + 1}</td>
                                         <td>{student.gR_No}</td>
@@ -47,18 +46,22 @@ const Studentlist = () => {
                                         <td>{student.lastName}</td>
                                         {/* <td>{student.fatherName}</td> */}
                                         <td>{student.className}</td>
-                                        <Link to={`/studentprofile/${student.studentId}?sponsorId=${sponsorId}`}>
+                                        <td>
+                                            <Link to={`/studentprofile/${student.studentId}?sponsorId=${sponsorId}`}>
                                                 <button className='btn btn-primary'>View Profile</button>
-                                        </Link>
+                                            </Link>
+                                        </td>
                                     </tr>
                                 ))}
-                            </tbody>
-                        </Table>
-                        <Link to={`/sponsorprofile/${sponsorId ? `${sponsorId}` : ''}`}><button className='btn btn-primary btnstudent btn-color '>Back to Profile</button></Link>
+                                </tbody>
+                            </Table>
+                            <Link to={`/sponsorprofile/${sponsorId ? `${sponsorId}` : ''}`}>
+                                <button className='btn btn-primary btnstudent btn-color'>Back to Profile</button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div >
         </>
     );
 }

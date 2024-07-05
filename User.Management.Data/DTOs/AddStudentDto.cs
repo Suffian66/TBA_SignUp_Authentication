@@ -1,7 +1,4 @@
-﻿
-using User.Management.Data.Models;
-
-namespace User.Management.Data.DTOs
+﻿namespace User.Management.Data.DTOs
 {
     public class AddStudentDto
     {

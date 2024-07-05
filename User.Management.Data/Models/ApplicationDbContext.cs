@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace User.Management.Data.Models
 {
@@ -14,18 +13,16 @@ namespace User.Management.Data.Models
 
         }
 
-        //public DbSet<SponsorDetails> SponsorDetails { get; set; }
+
         public DbSet<Address> Address { get; set; }
         //public DbSet<CourseDetail> Courses { get; set; }
         public DbSet<Student> Students { get; set; }
-
         //public DbSet<Subject> Subjects { get; set; }
-
         public DbSet<StudentFamily> StudentFamily { get; set; }
         //public DbSet<Subject> Subjects { get; set; }
         public DbSet<LookUpCategory> LookupsCategory { get; set; }
         public DbSet<LookUpCategoryDetail> LookupsCategoryDetail { get; set; }
-        public DbSet<LookUpCountry> LookupsCountry { get; set; }
+
         public DbSet<MapSponsorStudents> MapSponsorStudents { get; set; }
 
         public DbSet<Teacher> Teachers { get; set; }
@@ -67,8 +64,12 @@ namespace User.Management.Data.Models
             .WithMany(l => l.MapClassSubjectTeachers)
             .HasForeignKey(m => m.TeacherId)
             .HasForeignKey(m => m.TeacherAssistantId)
-            .OnDelete(DeleteBehavior.NoAction)
-            ;
+            .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<ApplicationUser>()
+          .HasOne(a => a.Teacher)
+          .WithOne(t => t.User)
+          .HasForeignKey<Teacher>(t => t.UserId);
 
             builder.Entity<Student>()
                 .HasOne(s => s.ClassDetail)

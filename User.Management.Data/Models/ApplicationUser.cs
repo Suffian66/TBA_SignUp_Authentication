@@ -43,10 +43,12 @@ namespace User.Management.Data.Models
 
         public bool StatusInfo { get; set; }
 
-        public virtual Teacher Teacher { get; set; }
+        //public int TeacherId { get; set; }
+        //public virtual Teacher Teacher { get; set; }
 
         //public int StudentId { get; set; }
         //public virtual Student Student { get; set; }
         public ICollection<MapClassSubjectTeacher> MapClassSubjectTeachers { get; set; }
+        public virtual Teacher Teacher { get; set; }
     }
 }

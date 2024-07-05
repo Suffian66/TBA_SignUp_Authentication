@@ -4,22 +4,25 @@ import Row from 'react-bootstrap/Row';
 import { Link, useParams } from 'react-router-dom';
 import { PersonFill } from 'react-bootstrap-icons';
 import { useGetTeacherByIdQuery } from '../services/Teacher';
-
+// import { useGetAddressByIdQuery } from '../services/Address';
 
 function TeacherProfile() {
     const { id } = useParams();
-    const {data: teachers, error, isLoading} = useGetTeacherByIdQuery(id);
+    const { data: teachers, error: teacherError, isLoading: isTeacherLoading } = useGetTeacherByIdQuery(id);
+    // const { data: addresses, error: addressError, isLoading: isAddressLoading } = useGetAddressByIdQuery(id);
 
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
+    if (isTeacherLoading ) return <div>Loading...</div>;
+    if (teacherError) return <div>Error: {teacherError.message}</div>;
+    // if (addressError) return <div>Error: {addressError.message}</div>;
     if (!teachers || Object.keys(teachers).length === 0) return <div>No Teacher found</div>;
-    
+    // if (!addresses || addresses.length === 0) return <div>No Address found</div>;
+
     return (
         <>
             <Row className="mb-3 mt-3">
                 <Form.Group as={Col} className='myprofilehead ms-2'>
                     <Form.Label><PersonFill size={40} className='ms-2' /></Form.Label>
-                    <Form.Label className='myprofiletxt ms-2 '><h2>Teacher's Profile ({teachers?.result?.namePrefix} {teachers?.result?.firstName})</h2></Form.Label>
+                    <Form.Label className='myprofiletxt ms-2 '><h2>Teacher's Profile ({teachers?.namePrefix} {teachers?.firstName})</h2></Form.Label>
                 </Form.Group>
             </Row>
             
@@ -30,13 +33,13 @@ function TeacherProfile() {
                         First/Middle Name
                     </div>
                     <div className='col-3 divcolor '>
-                         {teachers?.result?.firstName} {teachers?.result?.middleName}
+                         {teachers?.firstName} {teachers?.middleName}
                     </div>
                     <div className='col-3 divcolor fw-bold'>
                         Last Name
                     </div>
                     <div className='col-3 divcolor'>
-                       {teachers?.result?.lastName}
+                       {teachers?.lastName}
                     </div>
                 </div>
                 <div className='row ms-2'>
@@ -44,13 +47,13 @@ function TeacherProfile() {
                         Gender
                     </div>
                     <div className='col-3 divcolor '>
-                        {teachers?.result?.gender}
+                        {teachers?.gender}
                     </div>
                     <div className='col-3 divcolor fw-bold'>
                         D.O.B
                     </div>
                     <div className='col-3 divcolor'>
-                        {teachers?.result?.dob}
+                        {teachers?.dob}
                     </div>
                 </div>
                 <div className='row ms-2'>
@@ -58,13 +61,13 @@ function TeacherProfile() {
                         CNIC 
                     </div>
                     <div className='col-3 divcolor'>
-                        {teachers?.result?.cnic} 
+                        {teachers?.cnic} 
                     </div>
                     <div className='col-3 divcolor fw-bold'>
                         Occupation   
                     </div>
                     <div className='col-3 divcolor'>
-                        {teachers?.result?.occupation}
+                        {teachers?.occupation}
                     </div>
                 </div>
                 <div className='row ms-2'>
@@ -72,37 +75,41 @@ function TeacherProfile() {
                         Father's Name 
                     </div>
                     <div className='col-3 divcolor'>
-                        {teachers?.result?.father_HusbandName} 
+                        {teachers?.father_HusbandName} 
                     </div>
                     <div className='col-3 divcolor fw-bold'>
-                    DegreeQualification   
+                        DegreeQualification   
                     </div>
                     <div className='col-3 divcolor'>
-                        {teachers?.result?.degreeQualification}
+                        {teachers?.degreeQualification}
                     </div>
                 </div>
                 <div className='row ms-2'>
                     <div className='col-3 divcolor fw-bold'>
-                    Certification
+                        Certification
                     </div>
                     <div className='col-3 divcolor'>
-                        {teachers?.result?.certification} 
+                        {teachers?.certification} 
                     </div>
                     <div className='col-3 divcolor fw-bold'>
-                    Salary   
+                        Salary   
                     </div>
                     <div className='col-3 divcolor'>
-                        {teachers?.result?.salary}
+                        {teachers?.salary}
                     </div>
                 </div>
-                <div className='row ms-2'>
+                {/* <div className='row ms-2'>
                     <div className='col-3 divcolor fw-bold'>
                         Address
                     </div>
                     <div className='col-9 divcolor'>
-                        {/* Add address here */}
-                    </div>
-                </div>
+                        {addresses.map((address) => (
+                            <div key={address.addressId}>
+                                {address.address1}, {address.address2}, {address.city}, {address.state}, {address.postalCode}, {address.country}
+                            </div>
+                        ))}
+                        </div>
+                </div> */}
             </div>
 
             <hr />
@@ -110,7 +117,7 @@ function TeacherProfile() {
             <div className='row float-start mt-5 ms-1'>
                 <div className='d-flex'>
                     <Link to='/teacherlist'><button className='btn btn-primary btnstudent btn-color me-2'>Back to Lists</button></Link>                        
-                    <Link to={`/studentlist/${id}`}><button  className=' btn btn-primary btnstudent btn-color'>Student List</button></Link>
+                    {/* <Link to={`/studentlist/${id}`}><button className='btn btn-primary btnstudent btn-color'>Student List</button></Link> */}
                 </div>
             </div>
         </>

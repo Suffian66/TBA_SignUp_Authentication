@@ -22,20 +22,19 @@ namespace User.Management.Controllers
             var teachers = await _teacherService.GetAllTeachersAsync();
             return Ok(teachers);
         }
-
         [HttpGet("[action]")]
-        public async Task<ActionResult<TeacherDto>> GetTeacherById(string teacherId)
+        public async Task<ActionResult<TeacherDto>> GetTeacherById(int teacherId)
         {
             try
             {
-                var teacher = _teacherService.GetTeacherByIdAsync(teacherId);
+                var teacher = await _teacherService.GetTeacherByIdAsync(teacherId);
                 if (teacher == null)
                 {
                     return NotFound();
                 }
                 return Ok(teacher);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // Log the exception details (ex) here for debugging purposes
                 return StatusCode(500, "Internal server error");
@@ -43,32 +42,35 @@ namespace User.Management.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Teacher>> CreateTeacher(Teacher teacher)
+        public async Task<ActionResult<AddTeacherDto>> CreateTeacher([FromBody] AddTeacherDto teacher)
         {
             try
             {
+                if (string.IsNullOrEmpty(teacher.userId))
+                {
+                    return BadRequest(new { message = "UserId is required" });
+                }
+
                 var createdTeacher = await _teacherService.CreateTeacherAsync(teacher);
                 return CreatedAtAction(nameof(GetTeacherList), new { id = createdTeacher.TeacherId }, createdTeacher);
-
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message, ex);
-
+                return BadRequest(new { message = ex.Message });
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTeacher(string id, Teacher teacher)
-        {
-            if (id != teacher.TeacherId)
-            {
-                return BadRequest("Teacher ID mismatch");
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateTeacher(string id, Teacher teacher)
+        //{
+        //    if (id != teacher.TeacherId)
+        //    {
+        //        return BadRequest("Teacher ID mismatch");
+        //    }
 
-            await _teacherService.UpdateTeacherAsync(teacher);
-            return NoContent();
-        }
+        //    await _teacherService.UpdateTeacherAsync(teacher);
+        //    return NoContent();
+        //}
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTeacher(string id)

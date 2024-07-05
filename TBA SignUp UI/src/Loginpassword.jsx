@@ -8,7 +8,7 @@ import Dashboard from "./Dashboard.jsx";
 import ResetPassword from "./ResetPassword.jsx";
 import Address from "./Address.jsx";
 import Studentlist from "./Studentlist.jsx";
-import Teacher from "./Teacher.jsx";
+// import Teacher from "./Teacher.jsx";
 import Studentprofile from "./Components/Studentprofile.jsx";
 import Sponsorlist from "./Sponsorlist.jsx";
 import Sponsorprofile from "./Components/Sponsorprofile.jsx";
@@ -22,6 +22,8 @@ import Success from "./multistepform/Success.jsx";
 import Wrapper from "./Components/Wrapper.jsx";
 import AddStudent from "./Components/AddStudent.jsx";
 import StudentFamily from "./Components/StudentFamily.jsx";
+import TeacherForm1 from "./Components/TeacherForm1.jsx";
+import TeacherForm2 from "./Components/TeacherForm2.jsx";
 
 const router = createBrowserRouter([
   {
@@ -154,16 +156,16 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: "/teacher",
-    element: <Wrapper />,
-    children: [
-      {
-        index: true,
-        element: <Teacher />,
-      },
-    ],
-  },           
+  // {
+  //   path: "/teacher",
+  //   element: <Wrapper />,
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: <Teacher />,
+  //     },
+  //   ],
+  // },           
   {
     path: "/studentprofile/:id",
     element: <Wrapper />,

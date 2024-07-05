@@ -6,5 +6,7 @@
         public string? Message { get; set; }
         public bool IsSuccess { get; set; }
 
+        public string userId { get; set; }
+
     }
 }

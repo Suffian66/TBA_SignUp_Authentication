@@ -6,8 +6,8 @@ namespace User.Management.Data.Models
     public class Teacher
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string TeacherId { get; set; }
+
+        public int TeacherId { get; set; }
         [StringLength(10)]
 
         public string Father_HusbandName { get; set; }
@@ -19,9 +19,9 @@ namespace User.Management.Data.Models
         public int? Salary { get; set; }
 
 
-        [ForeignKey("Users")]
-        public string Id { get; set; }
-        public virtual ApplicationUser Users { get; set; }
+        [ForeignKey("UserId")]
+        public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
 
     }

@@ -1,33 +1,36 @@
 import { useNavigate } from "react-router-dom";
-import { useAddUserMutation } from "./services/SignUp";
+import { useAddUserMutation } from "../services/SignUp";
 import { useForm } from "react-hook-form";
 
-const Registerandlogin = () => {
+const TeacherForm1 = () => {
   const [addUser, { data, error, isLoading }] = useAddUserMutation();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    defaultValues: {},
+    defaultValues: {
+
+    },
   });
 
   const onSubmit = async (formData) => {
     try {
-      const updatedFormData = { ...formData, roles: ["sponsor"] };
-      await addUser(updatedFormData);
-      console.log("User added successfully:", updatedFormData);  
-      // navigate('/address');
+      const updatedFormData = { ...formData, roles: ["teacher"] };
+      const result = await addUser(updatedFormData).unwrap();
+      console.log("User added successfully:", result);
 
-    } 
-    catch (err) {
+      // Assuming result contains the created user's data including the ID
+      const userId = result.userId;
+      navigate(`/teacherform2/${userId}`);
+      console.log(userId);
+    } catch (err) {
       console.error("Failed to add user:", err);
       alert("Failed to add user:", err);
     }
   };
-
   return (
     <>
       <section className="gradient-custom">
@@ -40,7 +43,7 @@ const Registerandlogin = () => {
               >
                 <div className="card-body p-4 p-md-5">
                   <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">
-                    Registration Form
+                   Teacher's Registration Form
                   </h3>
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">
@@ -167,7 +170,7 @@ const Registerandlogin = () => {
                         type="submit"
                         disabled={isLoading}
                       >
-                      Submit
+                        Next
                       </button>
                       
                     </div>
@@ -183,4 +186,4 @@ const Registerandlogin = () => {
   );
 };
 
-export default Registerandlogin;
+export default TeacherForm1;

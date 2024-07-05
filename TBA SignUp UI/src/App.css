@@ -1,0 +1,316 @@
+
+/* ....................Sidebar.................... */
+
+.tba-heading{
+  color: #ffffff;
+  font-size: 22px;
+}
+.dashboardnavbar{
+  /* background-image: linear-gradient(rgba(255, 193, 22, 1), rgba(255,255,255, 0.9)); */
+  background-color: #FFC211;
+  height: 80px;
+}
+
+@media (min-width: 992px) {
+  .sidebar {
+    height: unset!important;
+  }
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  padding: 10px 0 0;
+  /* Height of navbar */
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+  width: 300px;
+  z-index: 600;
+  /* background-image: linear-gradient( rgba(70,70,70, 0.9), rgba(69,69,69,0.5)), url('kid2.jpg'); */
+  background-image: linear-gradient( rgba(0,0,120, 0.9), rgba(0,0,100,0.5)), url('kid2.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.sidebarbtn{
+  background-color: transparent !important;
+  color: #ffffff !important;
+}
+.sidebarlink{
+  text-decoration: none;
+}
+.sidebarbtn:hover{
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+/* .sidebar.show {
+  height: 10vh; 
+   background-color: #0D0877 !important;
+} */
+
+@media (max-width: 992px) {
+  .sidebar {
+    width: 100%;
+  }
+}
+
+/* .sidebar .active {
+  border-radius: 5px;
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+  /* background-color: #0D0877 !important; 
+} */
+
+/* .sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px); 
+  padding-top: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* Scrollable contents if viewport is shorter than content.
+  /* background-color: #0D0877 !important;
+} */
+
+.dashboardbody{
+  margin-left: 300px;
+}
+.dashboardbox{
+  background-color: #F7F7F8;
+}
+.box1{
+  background-color: #ffffff;
+  max-width: 300px;
+  min-height: 150px;
+  margin-top: 30px !important;
+  margin-left: 75px;
+  margin-bottom: 30px;
+  border: 1px solid #DFDFDF;
+}
+
+.barchart{
+  background-color: #ffffff;
+  /* min-width: 200px; */
+  min-height: 400px;
+  margin-top: 30px !important;
+  margin-left: 75px;
+  margin-bottom: 20px;
+  border: 1px solid #DFDFDF;
+}
+.piechart{
+  background-color: #ffffff;
+  /* min-width: 200px; */
+  min-height: 400px;
+  margin-top: 30px !important;
+  margin-left: 45px;
+  margin-bottom: 20px;
+  border: 1px solid #DFDFDF;
+}
+.boxiconpie{
+  font-size: 70px;
+  color: #db2626;
+}
+.boxiconglobe{
+  font-size: 70px;
+  color: #FFC600;
+}
+.boxiconbar{
+  font-size: 70px;
+}
+.boxstd{
+ display: flex;
+ justify-content: end;
+  font-size: 40px;
+  color: #db2626;
+  margin-top: 40px;
+}
+.boxclass{
+  display: flex;
+  justify-content: end;
+   font-size: 40px;
+   margin-top: 40px;
+ }
+.boxevent{
+  display: flex;
+  justify-content: end;
+   font-size: 20px;
+   color: #FFC600;
+   margin-top: 40px;
+ }
+.boxheading{
+  color: grey;
+}
+.profileform{
+  background-color: #ffffff;
+  min-width: 700px;
+  margin-top: 30px !important;
+  margin-left: 40px;
+  margin-bottom: 20px;
+  border: 1px solid #DFDFDF;
+}
+.myprofilehead{
+  color: #33327e;
+}
+.myprofiletxt{
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 0.5;
+}
+.profilepic{
+  margin-top: 35px !important;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #DFDFDF;
+  padding: 0px !important;
+  max-height: 500px !important;
+ 
+}
+.profilepicback{
+  height: 300px;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255,255,255,0.6)), url('school.jpg');
+  background-position: center;
+  background-size: cover;
+  padding-top: 150px;
+}
+.profileimg{
+  width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: auto;
+}
+.stdprofileimg{
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    display: flex;
+    margin: auto;
+}
+.profileformlabel{
+  font-size: 14px;
+  color: whitesmoke;
+  border: 2px solid lightgrey;
+  padding: 10px;
+  border-radius: 10px;
+  width: 200px;
+  font-weight: bold;
+  background-color: #333280;
+}
+.profileformlabeladd{
+  font-size: 14px;
+  color: whitesmoke;
+  border: 2px solid lightgrey;
+  padding: 10px;
+  border-radius: 10px;
+  width: 580px;
+  font-weight: bold;
+  background-color: #333280;
+}
+.profilebtn{
+  margin-top: 120px;
+}
+.classlist{
+  background-color: #ffffff;
+  margin:  auto !important;
+  padding: 20px 0px 20px 70px!important;
+  border: 1px solid #DFDFDF;
+}
+.classbtn{
+  padding: 10px 30px !important;
+  background-color: #0D0877 !important;
+}
+.classbtn:hover{
+  background-color: #FFC30D !important;
+  color: black !important;
+}
+.btnclasslist{
+  padding: 5px 10px !important;
+  margin: 0px !important;
+  font-size: 12px !important;
+  font-weight: bold !important;
+  border: 1px solid grey !important;
+}
+.btnclasslist:hover{
+  background-color: #0D0877 !important;
+  color: #FFC30D !important;
+  border-color: #FFC30D !important;
+}
+.tablefont{
+  font-size: 14px;
+  font-weight: bold;
+}
+.btnstudent{
+  float: right;
+}
+.divcolor{
+  background-color: #F2F2F2;
+  border: 1px solid #DFDFDF;
+  color: #333280;
+}
+.textcolor{
+  color:#333280;
+}
+.btn-color{
+  background-color: #333087 !important;
+  color: white !important;
+}
+.btn-color:hover{
+  background-color: #FFC211 !important;
+  color: black !important;
+  border-color: #FFC211 !important;
+}
+.activitybox{
+  background-color: #ffffff;
+  margin:  auto !important;
+  padding: 20px 0px 20px 50px!important;
+  border: 1px solid #DFDFDF;
+}
+.actvityboxes{
+  padding: 50px 20px !important;
+  background-color: #0D0877 !important;
+  max-width: 250px !important;
+  font-size: 30px !important;
+  font-weight: bold !important;
+  color: white !important;
+}
+.daywiseboxes{
+  padding: 50px 30px !important;
+  background-color: #0D0877 !important;
+  max-width: 250px !important;
+  font-size: 30px !important;
+  font-weight: bold !important;
+  color: white !important;
+}
+.textdecor{
+  text-decoration: none !important;
+  color: white !important;  
+}
+.txtspc{
+  padding: 60px !important;
+}
+.calendardiv{
+  background-color: #519365;
+}
+
+.fs-calendar{
+  font-size: 30px;
+}
+.border{
+  border: 1px solid #90EE90;
+  border-radius: 10px;
+}
+.datefs{
+  font-size: 14px;
+}
+.boxsize{
+  width: 168px !important;
+}
+.eventheading{
+  text-decoration: none;
+  color: #0D0877;
+}
+
+/* .........................Sidebar......................... */

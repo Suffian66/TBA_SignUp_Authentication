@@ -51,31 +51,38 @@ namespace User.Management.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3b268de8-be6a-49e5-a39f-b0176bc9bba5",
+                            Id = "366dbaff-bf18-4f07-91ad-28bdd3da83e1",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "ad80571c-658f-47ca-a0fc-3b4414f40e92",
+                            Id = "8898e053-bd82-4c09-a327-911d4bb5ffaf",
                             ConcurrencyStamp = "2",
                             Name = "Sponsor",
                             NormalizedName = "Sponsor"
                         },
                         new
                         {
-                            Id = "49e442f3-ee37-46b8-b4b2-54a3dcd6a49b",
+                            Id = "8e04cbed-e8cd-487e-9316-41a233776e2d",
                             ConcurrencyStamp = "3",
                             Name = "Teacher",
                             NormalizedName = "Teacher"
                         },
                         new
                         {
-                            Id = "36e336c9-83d1-4b01-b766-432564b068f0",
+                            Id = "e6c43b64-69c6-40c1-ba8f-261b8bab0393",
                             ConcurrencyStamp = "4",
                             Name = "Student",
                             NormalizedName = "Student"
+                        },
+                        new
+                        {
+                            Id = "fffc5256-5c3a-40da-a80d-f3f9821b332c",
+                            ConcurrencyStamp = "5",
+                            Name = "AssistanceTeacher",
+                            NormalizedName = "AssistantTeacher"
                         });
                 });
 
@@ -222,10 +229,6 @@ namespace User.Management.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -247,6 +250,7 @@ namespace User.Management.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("AddressId");
@@ -324,10 +328,6 @@ namespace User.Management.Data.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Occupation")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
@@ -514,6 +514,40 @@ namespace User.Management.Data.Migrations
                     b.HasKey("LookUpCountryId");
 
                     b.ToTable("LookupsCountry");
+                });
+
+            modelBuilder.Entity("User.Management.Data.Models.MapClassSubjectTeacher", b =>
+                {
+                    b.Property<int>("MapClassSubjectTeacherId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MapClassSubjectTeacherId"), 1L, 1);
+
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TeacherAssistantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TeacherId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MapClassSubjectTeacherId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.HasIndex("TeacherAssistantId");
+
+                    b.ToTable("MapClassSubjectTeacher");
                 });
 
             modelBuilder.Entity("User.Management.Data.Models.MapSponsorStudents", b =>
@@ -709,14 +743,16 @@ namespace User.Management.Data.Migrations
 
                     b.HasKey("SubjectId");
 
-                    b.ToTable("Subjects");
+                    b.ToTable("Subject");
                 });
 
             modelBuilder.Entity("User.Management.Data.Models.Teacher", b =>
                 {
-                    b.Property<string>("TeacherId")
+                    b.Property<int>("TeacherId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeacherId"), 1L, 1);
 
                     b.Property<string>("Certification")
                         .HasMaxLength(50)
@@ -730,16 +766,17 @@ namespace User.Management.Data.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<string>("Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int?>("Salary")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("TeacherId");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Teachers");
                 });
@@ -805,7 +842,9 @@ namespace User.Management.Data.Migrations
 
                     b.HasOne("User.Management.Data.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("LookUpCountry");
 
@@ -821,6 +860,25 @@ namespace User.Management.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("LookUpCategory");
+                });
+
+            modelBuilder.Entity("User.Management.Data.Models.MapClassSubjectTeacher", b =>
+                {
+                    b.HasOne("User.Management.Data.Models.LookUpCategoryDetail", "LookUpCategoryDetail")
+                        .WithMany("MapClassSubjectTeachers")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("User.Management.Data.Models.ApplicationUser", "User")
+                        .WithMany("MapClassSubjectTeachers")
+                        .HasForeignKey("TeacherAssistantId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("LookUpCategoryDetail");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("User.Management.Data.Models.MapSponsorStudents", b =>
@@ -901,13 +959,26 @@ namespace User.Management.Data.Migrations
 
             modelBuilder.Entity("User.Management.Data.Models.Teacher", b =>
                 {
-                    b.HasOne("User.Management.Data.Models.ApplicationUser", "Users")
-                        .WithMany()
-                        .HasForeignKey("Id")
+                    b.HasOne("User.Management.Data.Models.ApplicationUser", "User")
+                        .WithOne("Teacher")
+                        .HasForeignKey("User.Management.Data.Models.Teacher", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Users");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("User.Management.Data.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("MapClassSubjectTeachers");
+
+                    b.Navigation("Teacher")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("User.Management.Data.Models.LookUpCategoryDetail", b =>
+                {
+                    b.Navigation("MapClassSubjectTeachers");
                 });
 #pragma warning restore 612, 618
         }

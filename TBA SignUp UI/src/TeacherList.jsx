@@ -44,11 +44,11 @@ const TeacherList = () => {
                   {teachers.map((teacher, index) => (
                     <tr key={teacher.teacherId} style={{ height: '40px' }}>
                       <td>{index + 1}</td>
-                      <td colSpan="3">{`${teacher.users.firstName} ${teacher.users.lastName}`}</td>
+                      <td colSpan="3">{`${teacher.user.firstName} ${teacher.user.lastName}`}</td>
                       <td>{teacher.father_HusbandName}</td>
                       <td>{teacher.degreeQualification}</td> 
                       <td>
-                        <Link to={`/teacherprofile/${teacher.id}`}>
+                        <Link to={`/teacherprofile/${teacher.teacherId}`}>
                           <button className="btn btn-primary">Veiw Profile</button>
                         </Link>
                       </td>

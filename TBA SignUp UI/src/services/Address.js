@@ -14,9 +14,13 @@ export const AddressApi = createApi({
                 body,
             }),
         }),
-    }),
-});
+        getAddressById: builder.query({
+            query: (addressId) => `address/${addressId}`,
+            transformResponse: (response) => response.$values, 
+        }),
+        }),
+})
 
-export const { useAddAddressMutation } = AddressApi;
+export const { useAddAddressMutation, useGetAddressByIdQuery } = AddressApi;
 
 export default AddressApi;

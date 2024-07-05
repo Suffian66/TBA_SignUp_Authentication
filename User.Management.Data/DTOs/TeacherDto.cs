@@ -11,7 +11,6 @@
         public string? DOB { get; set; }
         public string? CNIC { get; set; }
         public string? Occupation { get; set; }
-
         public string Father_HusbandName { get; set; }
         public string DegreeQualification { get; set; }
         public string Certification { get; set; }

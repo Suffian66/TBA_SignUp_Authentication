@@ -25,6 +25,15 @@ namespace User.Management.Services
 
         public async Task<AddressDto> CreateAddressAsync(AddressDto address)
         {
+
+            var user = await _context.Users
+
+                .FindAsync(address.Id);
+            if (user == null)
+            {
+                throw new ArgumentException($"User with Id '{address.Id}' does not exist.");
+            }
+
             var addressModel = new Address()
             {
                 AddressType = address.AddressType.Title,
@@ -35,9 +44,7 @@ namespace User.Management.Services
                 City = address.City,
                 PostalCode = address.PostalCode,
                 State = address.State,
-
-
-
+                UserId = address.Id,
             };
 
             _context.Address.Add(addressModel);

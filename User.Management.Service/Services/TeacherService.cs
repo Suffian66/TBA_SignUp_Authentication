@@ -15,17 +15,18 @@ namespace User.Management.Services
 
         public async Task<IEnumerable<Teacher>> GetAllTeachersAsync()
         {
-            return await _context.Teachers.Include(t => t.Users).ToListAsync();
+            return await _context.Teachers.Include(t => t.User).ToListAsync();
         }
 
-        public async Task<TeacherDto> GetTeacherByIdAsync(string teacherId)
+        public async Task<TeacherDto?> GetTeacherByIdAsync(int teacherId)
         {
-            var teacherDetails = _context.Teachers.FirstOrDefault(x => x.Id == teacherId);
-            var users = _context.Users.FirstOrDefault(x => x.Id == teacherId);
+            var teacherDetails = _context.Teachers.FirstOrDefault(x => x.TeacherId == teacherId);
 
 
-            if (users != null && teacherDetails != null)
+            if (teacherDetails != null)
             {
+                var users = _context.Users.FirstOrDefault(x => x.Id == teacherDetails.UserId);
+
                 var result = new TeacherDto
                 {
                     Id = users.Id,
@@ -44,14 +45,27 @@ namespace User.Management.Services
                 };
                 return result;
             }
+
             return null;
         }
-        public async Task<Teacher> CreateTeacherAsync(Teacher teacher)
+        public async Task<Teacher> CreateTeacherAsync(AddTeacherDto teacher)
         {
-            _context.Teachers.Add(teacher);
+            var teacherModel = new Teacher()
+            {
+                Father_HusbandName = teacher.Father_HusbandName,
+                DegreeQualification = teacher.DegreeQualification,
+                Certification = teacher.Certification,
+                Salary = teacher.Salary,
+                UserId = teacher.userId,
+            };
+
+            var createdTeacher = _context.Teachers.Add(teacherModel);
             await _context.SaveChangesAsync();
-            return teacher;
+            return createdTeacher.Entity;
         }
+
+
+
 
         public async Task UpdateTeacherAsync(Teacher teacher)
         {

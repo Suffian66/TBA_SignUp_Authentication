@@ -1,4 +1,6 @@
-﻿namespace User.Management.Data.Dto
+﻿using User.Management.DTOs;
+
+namespace User.Management.Data.Dto
 {
     public class AddressDto
     {
@@ -10,6 +12,8 @@
         public string City { get; set; }
         public string State { get; set; }
         public string PostalCode { get; set; }
-        public CountryDto Country { get; set; }
+        public LookupCategoryDetailDto Country { get; set; }
+
+        public string Id { get; set; }
     }
 }

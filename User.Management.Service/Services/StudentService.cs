@@ -26,25 +26,25 @@ namespace User.Management.Service.Services
                                  .ToListAsync();
 
             var result = students.Select(student => new StudentDto
-                    
 
-                    {
-                        StudentId = student.StudentId,
-                        FirstName = student.FirstName,
-                        LastName = student.LastName,
-                        MiddleName = student.MiddleName,
-                        Gender = student.GenderDetail?.Title,
-                        DOB = student.DOB,
-                        GR_No = student.GR_No,
-                        Language = student.LanguageDetail?.Title,
-                        ResidenceStatus = student.ResidenceDetail?.Title,
-                        DateOfAdmission = student.DateOfAdmission,
-                        LastClassAttended = student.LastClassAttended,
-                        DateOfSchoolLeaving = student.DateOfSchoolLeaving,
-                        MedicalNeeds = student.MedicalNeeds,
-                        Class = student.ClassDetail?.Title,
-                    }).ToList();
-                
+
+            {
+                StudentId = student.StudentId,
+                FirstName = student.FirstName,
+                LastName = student.LastName,
+                MiddleName = student.MiddleName,
+                Gender = student.GenderDetail?.Title,
+                DOB = student.DOB,
+                GR_No = student.GR_No,
+                Language = student.LanguageDetail?.Title,
+                ResidenceStatus = student.ResidenceDetail?.Title,
+                DateOfAdmission = student.DateOfAdmission,
+                LastClassAttended = student.LastClassAttended,
+                DateOfSchoolLeaving = student.DateOfSchoolLeaving,
+                MedicalNeeds = student.MedicalNeeds,
+                Class = student.ClassDetail?.Title,
+            }).ToList();
+
             return result;
         }
 

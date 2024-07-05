@@ -48,49 +48,60 @@ namespace User.Management.Service.Services
 
         public async Task<ApiResponse<CreateUserResponse>> CreateUserwithTokenAsync(RegisterUser registerUser)
         {
-            var userExist = await _userManager.FindByEmailAsync(registerUser.Email);
-            if (userExist != null)
+            try
             {
-                return new ApiResponse<CreateUserResponse> { IsSuccess = false, StatusCode = 403, Message = "User Already Exists" };
-            }
 
-
-            //Add the User in the database
-            ApplicationUser user = new()
-            {
-                Email = registerUser.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = registerUser.UserName,
-                FirstName = registerUser.FirstName,
-                MiddleName = registerUser.MiddleName,
-                LastName = registerUser.LastName,
-                Gender = registerUser.Gender,
-                NamePrefix = registerUser.NamePrefix,
-                DOB = registerUser.DOB,
-                CNIC = registerUser.CNIC,
-                Occupation = registerUser.Occupation,
-                TwoFactorEnabled = true
-            };
-            var result = await _userManager.CreateAsync(user, registerUser.Password);
-            if (result.Succeeded)
-            {
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                return new ApiResponse<CreateUserResponse>
+                var userExist = await _userManager.FindByEmailAsync(registerUser.Email);
+                if (userExist != null)
                 {
-                    Response = new CreateUserResponse()
-                    {
-                        User = user,
-                        Token = token
-                    },
-                    IsSuccess = true,
-                    StatusCode = 201,
-                    Message = "User Created Successfully"
+                    return new ApiResponse<CreateUserResponse> { IsSuccess = false, StatusCode = 403, Message = "User Already Exists" };
+                }
+
+
+                //Add the User in the database
+                ApplicationUser user = new()
+                {
+                    Email = registerUser.Email,
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    UserName = registerUser.UserName,
+                    FirstName = registerUser.FirstName,
+                    MiddleName = registerUser.MiddleName,
+                    LastName = registerUser.LastName,
+                    Gender = registerUser.Gender,
+                    NamePrefix = registerUser.NamePrefix,
+                    DOB = registerUser.DOB,
+                    CNIC = registerUser.CNIC,
+                    Occupation = registerUser.Occupation,
+                    TwoFactorEnabled = true
                 };
+                var result = await _userManager.CreateAsync(user, registerUser.Password);
+                if (result.Succeeded)
+                {
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    return new ApiResponse<CreateUserResponse>
+                    {
+                        Response = new CreateUserResponse()
+                        {
+                            User = user,
+                            Token = token
+                        },
+                        IsSuccess = true,
+                        StatusCode = 201,
+                        Message = "User Created Successfully"
+                    };
+                }
+                else
+                {
+                    return new ApiResponse<CreateUserResponse> { IsSuccess = false, StatusCode = 500, Message = "User Failed To Create" };
+                }
+
             }
-            else
+            catch (Exception)
             {
-                return new ApiResponse<CreateUserResponse> { IsSuccess = false, StatusCode = 500, Message = "User Failed To Create" };
+
+                throw;
             }
+
         }
 
         public async Task<ApiResponse<LoginOtpResponse>> GetOtpByLoginAsync(LoginModel loginModel)

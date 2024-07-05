@@ -72,7 +72,7 @@ builder.Services.AddSingleton(emailConfig);
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserManagement, UserManagementService>();
-builder.Services.AddScoped<ILookUpCountryService, LookUpCountryService>();
+//builder.Services.AddScoped<ILookUpCountryService, LookUpCountryService>();
 builder.Services.AddScoped<ILookUpCategoryService, LookUpCategoryService>();
 builder.Services.AddScoped<ILookUpCategoryDetailService, LookUpCategoryDetailService>();
 builder.Services.AddScoped<IStudent, StudentService>();
@@ -82,7 +82,6 @@ builder.Services.AddScoped<IMapSponsorStudent, MapSponsorService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
 builder.Services.AddScoped<IMapClassSubjectTeacherService, MapClassSubjectTeacherService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
-
 builder.Services.AddScoped<ISponsor, SponsorService>();
 
 // Add services to the container.

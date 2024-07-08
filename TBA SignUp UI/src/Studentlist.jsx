@@ -11,8 +11,9 @@ const Studentlist = () => {
     if (error) return <div>Error: {error.message}</div>;
 
     console.log(studentsArray);
-    const students = Array.isArray(studentsArray) ? studentsArray : [];
+    const students = studentsArray && studentsArray.$values ? studentsArray.$values : [];
 
+    
     return (
         <>
             <div className="dashboardbody">
@@ -45,7 +46,7 @@ const Studentlist = () => {
                                         <td>{student.middleName}</td>
                                         <td>{student.lastName}</td>
                                         {/* <td>{student.fatherName}</td> */}
-                                        <td>{student.className}</td>
+                                        <td>{student.class}</td>
                                         <td>
                                             <Link to={`/studentprofile/${student.studentId}?sponsorId=${sponsorId}`}>
                                                 <button className='btn btn-primary'>View Profile</button>

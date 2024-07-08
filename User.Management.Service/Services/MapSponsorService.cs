@@ -49,32 +49,33 @@ namespace User.Management.Service.Services
             var mapSponsorStudents = await _context.MapSponsorStudents.ToListAsync();
             var students = await _context.Students.ToListAsync();
             var users = await _context.Users.ToListAsync();
+            var lookupCategoryDetails = await _context.LookupsCategoryDetail.ToListAsync(); // Assuming this is the table for class names
 
             var result = mapSponsorStudents.Select(mapSponsorStudent =>
             {
                 var newStudent = students.FirstOrDefault(student => student.StudentId == mapSponsorStudent.StudentId);
                 var newUser = users.FirstOrDefault(user => user.Id == mapSponsorStudent.Id);
-                
+                var classDetail = lookupCategoryDetails.FirstOrDefault(l => l.LookUpCtgDetailId == newStudent.ClassId); // Assuming ClassId is the foreign key
 
-                if (newStudent != null && newUser != null)
+                if (newStudent != null && newUser != null && classDetail != null)
                 {
                     return new MapSponsorAllStudentsDto
-                {
-                    StudentsReports = mapSponsorStudent.StudentsReports,
-                    DonationAmount = mapSponsorStudent.DonationAmount,
-                    DonationFrequency = mapSponsorStudent.DonationFrequency,
-                    DonationStartDate = mapSponsorStudent.DonationStartDate,
-                    DonationChannel = mapSponsorStudent.DonationChannel,
-                    DonationSourceAccount = mapSponsorStudent.DonationSourceAccount,
-                    DonationDestinationAccount = mapSponsorStudent.DonationDestinationAccount,
-                    Notes = mapSponsorStudent.Notes,
-                    StudentId = newStudent.StudentId,
-                    Id = newUser.Id,
-                    GR_No = newStudent.GR_No,
-                    FirstName = newStudent.FirstName,
-                    LastName = newStudent.LastName,
-                    
-                };
+                    {
+                        StudentsReports = mapSponsorStudent.StudentsReports,
+                        DonationAmount = mapSponsorStudent.DonationAmount,
+                        DonationFrequency = mapSponsorStudent.DonationFrequency,
+                        DonationStartDate = mapSponsorStudent.DonationStartDate,
+                        DonationChannel = mapSponsorStudent.DonationChannel,
+                        DonationSourceAccount = mapSponsorStudent.DonationSourceAccount,
+                        DonationDestinationAccount = mapSponsorStudent.DonationDestinationAccount,
+                        Notes = mapSponsorStudent.Notes,
+                        StudentId = newStudent.StudentId,
+                        Id = newUser.Id,
+                        GR_No = newStudent.GR_No,
+                        FirstName = newStudent.FirstName,
+                        LastName = newStudent.LastName,
+                        Class = classDetail.Title // Assuming 'Name' is the column for class name
+                    };
                 }
                 return null;
             }).Where(dto => dto != null) // Filter out null results
@@ -82,5 +83,6 @@ namespace User.Management.Service.Services
 
             return result;
         }
+
     }
 }

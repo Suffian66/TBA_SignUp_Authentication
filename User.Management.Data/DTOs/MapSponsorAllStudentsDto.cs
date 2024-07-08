@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace User.Management.Data.DTOs
+﻿namespace User.Management.Data.DTOs
 {
     public class MapSponsorAllStudentsDto
     {
@@ -21,6 +15,7 @@ namespace User.Management.Data.DTOs
         public int GR_No { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Class { get; set; }
 
     }
 }

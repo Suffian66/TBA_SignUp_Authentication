@@ -18,8 +18,10 @@ const Registerandlogin = () => {
     try {
       const updatedFormData = { ...formData, roles: ["sponsor"] };
       await addUser(updatedFormData);
+      alert(updatedFormData,'success ');
       console.log("User added successfully:", updatedFormData);  
       // navigate('/address');
+      window.location.reload();
 
     } 
     catch (err) {

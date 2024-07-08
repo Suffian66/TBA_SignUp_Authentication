@@ -12,7 +12,6 @@ import MapSponsorApi from "./services/MapSponsor";
 import SponsorlistApi from "./services/Sponsorlist";
 import MapSponsorStudentApi from "./services/MapSponsorStudent";
 import LookUpApi from "./services/LookUp";
-import MapSponsorStudentList from "./MapSponsorStudentList";
 
 
 
@@ -31,6 +30,7 @@ const store = configureStore({
         [MapSponsorStudentApi.reducerPath]: MapSponsorStudentApi.reducer,
         [LookUpApi.reducerPath]: LookUpApi.reducer,
         [MapSponsorStudentApi.reducerPath]: MapSponsorStudentApi.reducer,  
+     
        
     },
 

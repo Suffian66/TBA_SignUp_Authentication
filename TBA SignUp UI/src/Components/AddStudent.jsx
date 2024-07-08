@@ -13,10 +13,10 @@ const AddStudent = () => {
 
 
   const categoryData = {
-    gender: dataGender?.[0]?.lookupCategoryDetail || [],
-    language: dataLanguage?.[0]?.lookupCategoryDetail || [],
-    residenceStatus: dataResidence?.[0]?.lookupCategoryDetail || [],
-    class: dataClass?.[0]?.lookupCategoryDetail || []
+    gender: dataGender?.$values[0]?.lookupCategoryDetail?.$values || [],
+    language: dataLanguage?.$values[0]?.lookupCategoryDetail?.$values || [],
+    residenceStatus: dataResidence?.$values[0]?.lookupCategoryDetail?.$values || [],
+    class: dataClass?.$values[0]?.lookupCategoryDetail?.$values || []
   };
 
   // Set default values for select inputs
@@ -60,9 +60,9 @@ const AddStudent = () => {
                         type="text"
                         className="form-control form-control-lg"
                         placeholder="Middle Name"
-                        {...register("middleName", { required: true })}
+                        {...register("middleName")}
                       />
-                      {errors.lastName && <p>This field is required</p>}
+                      {/* {errors.middleName && <p>This field is required</p>} */}
                     </div>
                   </div>
                   <div className="row">
@@ -73,6 +73,7 @@ const AddStudent = () => {
                         placeholder="Last Name"
                         {...register("lastName")}
                       />
+                      {errors.lastName && <p>This field is required</p>}
                     </div>
                     <div className="col-md-6 mb-4">
                       <select

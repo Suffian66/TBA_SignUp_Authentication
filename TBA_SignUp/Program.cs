@@ -88,10 +88,14 @@ builder.Services.AddScoped<ISponsor, SponsorService>();
 
 builder.Services.AddControllers()
 
-.AddJsonOptions(options =>
+//.AddJsonOptions(options =>
+// {
+//     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+//     options.JsonSerializerOptions.MaxDepth = 64;  // Optionally increase max depth
+// });
+ .AddJsonOptions(options =>
  {
      options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-     options.JsonSerializerOptions.MaxDepth = 64;  // Optionally increase max depth
  });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

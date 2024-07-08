@@ -4,18 +4,20 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import { useCreateTeacherMutation } from "../services/Teacher";
 
 const TeacherForm2 = () => {
-  const { Id } = useParams();
+  const { id } = useParams();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [createTeacher, { isLoading, error }] = useCreateTeacherMutation();
 
   const onSubmit = async (data) => {
     try {
-      const updatedData = { ...data, userId: Id }; // Include the Id in the form data
+      const updatedData = { ...data, userId: id }; // Include the Id in the form data
       await createTeacher(updatedData).unwrap();
+      alert(updatedData,'Teacher Added Successfully ')
       console.log('Teacher created successfully');
-      Navigate('/teacherform')
+      Navigate('/teacherform1')
      
     } catch (err) {
+      error(err,'Teacher Creation Failed');
       console.error('Failed to create teacher:', err);
     }
   };

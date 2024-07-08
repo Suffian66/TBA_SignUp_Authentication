@@ -50,7 +50,7 @@ const Sidebar = () => {
 
             <Link to="/addstudent" className='sidebarlink'><MDBListGroupItem tag='a' className='sidebarbtn rounded mb-4'>
                 <MDBIcon fas icon="lock me-3" />
-                User Registration
+                Student Registration
               </MDBListGroupItem></Link>
 
               <Link to="/sponsorlist" className='sidebarlink'><MDBListGroupItem tag='a' className='sidebarbtn rounded mb-4'>
@@ -63,14 +63,19 @@ const Sidebar = () => {
                 Teachers List
               </MDBListGroupItem></Link>
 
-              <Link to="/activitycalendar" className='sidebarlink'><MDBListGroupItem tag='a' href='#'  className='sidebarbtn rounded mb-4'>
+              <Link to="/teacherform1" className='sidebarlink'><MDBListGroupItem tag='a' href='#'  className='sidebarbtn rounded mb-4'>
                 <MDBIcon far icon="chart-bar me-3" />
-                TBA Activity Calendar
+                Add Teacher
               </MDBListGroupItem></Link>
 
-             <Link to="/events" className='sidebarlink'> <MDBListGroupItem tag='a' href='#' className='sidebarbtn rounded mb-4'>
+             <Link to="/registerandlogin" className='sidebarlink'> <MDBListGroupItem tag='a' href='#' className='sidebarbtn rounded mb-4'>
                 <MDBIcon fas icon="globe me-3" />
-                TBA Events / Gallery 
+               Add Sponsor
+              </MDBListGroupItem></Link>
+
+             <Link to="/classlist" className='sidebarlink'> <MDBListGroupItem tag='a' href='#' className='sidebarbtn rounded mb-4'>
+                <MDBIcon fas icon="globe me-3" />
+               Class List
               </MDBListGroupItem></Link>
 
           </MDBListGroup>

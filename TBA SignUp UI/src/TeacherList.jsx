@@ -49,7 +49,7 @@ const TeacherList = () => {
                       <td>{teacher.degreeQualification}</td> 
                       <td>
                         <Link to={`/teacherprofile/${teacher.teacherId}`}>
-                          <button className="btn btn-primary">Veiw Profile</button>
+                          <button className="btn btn-primary">View Profile</button>
                         </Link>
                       </td>
                     </tr>

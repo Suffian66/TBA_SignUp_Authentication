@@ -29,7 +29,7 @@ const StudentFamily = () => {
     try {
       await createStudent(combinedData).unwrap();
       console.log('Student and family members added successfully');
-      navigate('/'); // Navigate to a success page or another component
+      navigate('/studentlist'); // Navigate to a success page or another component
     } catch (err) {
       console.error('Failed to add student and family members:', err);
       alert('Failed to add student and family members. Please check the console for more details.');

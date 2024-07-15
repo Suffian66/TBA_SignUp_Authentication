@@ -8,7 +8,7 @@ namespace User.Management.Services
         Task<IEnumerable<Teacher>> GetAllTeachersAsync();
         Task<TeacherDto> GetTeacherByIdAsync(int teacherId);
         Task<Teacher> CreateTeacherAsync(AddTeacherDto teacher);
-        Task UpdateTeacherAsync(Teacher teacher);
-        Task DeleteTeacherAsync(string teacherId);
+        Task UpdateTeacherAsync(int teacherId, UpdateTeacherDto teacher);
+
     }
 }

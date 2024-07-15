@@ -67,20 +67,50 @@ namespace User.Management.Services
 
 
 
-        public async Task UpdateTeacherAsync(Teacher teacher)
+        public async Task UpdateTeacherAsync(int teacherId, UpdateTeacherDto teacher)
         {
-            _context.Entry(teacher).State = EntityState.Modified;
+            var existingTeacher = _context.Teachers.FirstOrDefault(x => x.TeacherId == teacherId);
+            if (existingTeacher == null)
+            {
+                throw new KeyNotFoundException("Teacher not found");
+            }
+
+            // Update Teacher details
+            existingTeacher.Father_HusbandName = teacher.Father_HusbandName;
+            existingTeacher.DegreeQualification = teacher.DegreeQualification;
+            existingTeacher.Certification = teacher.Certification;
+            existingTeacher.Salary = teacher.Salary;
+
+            // Update User details if necessary
+            var user = await _context.Users.FindAsync(existingTeacher.UserId);
+            if (user != null)
+            {
+                user.FirstName = teacher.FirstName;
+                user.MiddleName = teacher.MiddleName;
+                user.LastName = teacher.LastName;
+                user.Gender = teacher.Gender;
+                user.NamePrefix = teacher.NamePrefix;
+                user.DOB = teacher.DOB;
+                user.CNIC = teacher.CNIC;
+                user.Occupation = teacher.Occupation;
+
+                // Explicitly mark the user entity as modified
+                _context.Users.Update(user);
+
+                // Log the state of the user entity
+                var userState = _context.Entry(user).State;
+                Console.WriteLine($"User {user.Id} state: {userState}");
+
+                // Log user changes
+                Console.WriteLine($"User {user.Id} updated: {user.FirstName}, {user.LastName}");
+            }
+            else
+            {
+                throw new KeyNotFoundException("User not found");
+            }
+
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteTeacherAsync(string teacherId)
-        {
-            var teacher = await _context.Teachers.FindAsync(teacherId);
-            if (teacher != null)
-            {
-                _context.Teachers.Remove(teacher);
-                await _context.SaveChangesAsync();
-            }
-        }
     }
 }

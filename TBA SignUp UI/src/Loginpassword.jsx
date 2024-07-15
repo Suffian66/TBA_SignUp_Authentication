@@ -26,6 +26,7 @@ import TeacherForm1 from "./Components/TeacherForm1.jsx";
 import TeacherForm2 from "./Components/TeacherForm2.jsx";
 import Bank from "./Components/Bank.jsx";
 import ClassList from "./ClassList.jsx";
+import ClassWiseStudentList from "./ClassWiseStudentList.jsx";
 
 const router = createBrowserRouter([
   {
@@ -178,16 +179,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   path: "/teacher",
-  //   element: <Wrapper />,
-  //   children: [
-  //     {
-  //       index: true,
-  //       element: <Teacher />,
-  //     },
-  //   ],
-  // },           
   {
     path: "/studentprofile/:id",
     element: <Wrapper />,
@@ -255,6 +246,16 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <ClassList />,
+      },
+    ],
+  },         
+  {
+    path: "/classwisestudentlist",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <ClassWiseStudentList />,
       },
     ],
   },         

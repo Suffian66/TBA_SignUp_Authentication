@@ -55,7 +55,8 @@ namespace User.Management.Service.Services
             {
                 var newStudent = students.FirstOrDefault(student => student.StudentId == mapSponsorStudent.StudentId);
                 var newUser = users.FirstOrDefault(user => user.Id == mapSponsorStudent.Id);
-                var classDetail = lookupCategoryDetails.FirstOrDefault(l => l.LookUpCtgDetailId == newStudent.ClassId); // Assuming ClassId is the foreign key
+                var classDetail = lookupCategoryDetails.FirstOrDefault(l => l.LookUpCtgDetailId
+                == newStudent.ClassId); // Assuming ClassId is the foreign key
 
                 if (newStudent != null && newUser != null && classDetail != null)
                 {

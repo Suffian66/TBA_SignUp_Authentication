@@ -29,13 +29,15 @@ const Sidebar = () => {
           <MDBListGroup flush className=" mx-3">
           <div className='row'>
               <div className='col-4 tba-headimg'>
+                <Link to ='/'>
               <img
                 src='/logo.jpg'
                 height='70'
                 width='80'
                 alt=''
                 loading='lazy'
-              />
+                />
+                </Link>
               </div>
               <div className='col-8'>
                 <h2 className='tba-heading fw-bold ms-2 mt-2'>The Beginners Academy</h2>

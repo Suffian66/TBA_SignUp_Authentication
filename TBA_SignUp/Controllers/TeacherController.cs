@@ -59,24 +59,28 @@ namespace User.Management.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdateTeacher(string id, Teacher teacher)
-        //{
-        //    if (id != teacher.TeacherId)
-        //    {
-        //        return BadRequest("Teacher ID mismatch");
-        //    }
-
-        //    await _teacherService.UpdateTeacherAsync(teacher);
-        //    return NoContent();
-        //}
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTeacher(string id)
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateTeacher(int teacherId, [FromBody] UpdateTeacherDto teacher)
         {
-            await _teacherService.DeleteTeacherAsync(id);
-            return NoContent();
+            try
+            {
+                if (teacher != null)
+                {
+                    await _teacherService.UpdateTeacherAsync(teacherId, teacher);
+                    return NoContent();
+                }
+                return BadRequest(new { message = "Error Occur" });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
+
+
     }
 }

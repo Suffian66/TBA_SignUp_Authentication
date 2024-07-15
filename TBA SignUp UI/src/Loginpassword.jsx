@@ -250,7 +250,7 @@ const router = createBrowserRouter([
     ],
   },         
   {
-    path: "/classwisestudentlist",
+    path: "/classwisestudentlist/:className",
     element: <Wrapper />,
     children: [
       {

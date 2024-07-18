@@ -21,15 +21,33 @@ namespace TBA_SMS.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<GetClassListDto>>> GetClassList()
         {
-            var classList = await _classService.GetClassListAsync();
-            return Ok(classList);
+            try
+            {
+                var classList = await _classService.GetClassListAsync();
+                return Ok(classList);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         [HttpGet("[action]")]
         public async Task<ActionResult<List<StudentListDto>>> GetStudentsByClassName(string className)
         {
-            var students = await _classService.GetStudentsByClassNameAsync(className);
-            return Ok(students);
+            try
+            {
+                var students = await _classService.GetStudentsByClassNameAsync(className);
+                return Ok(students);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

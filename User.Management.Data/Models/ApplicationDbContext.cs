@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace User.Management.Data.Models
 {
@@ -15,6 +16,8 @@ namespace User.Management.Data.Models
 
 
         public DbSet<Address> Address { get; set; }
+
+        public DbSet<StudentAddress> StudentAddress { get; set; }
         //public DbSet<CourseDetail> Courses { get; set; }
         public DbSet<Student> Students { get; set; }
         //public DbSet<Subject> Subjects { get; set; }
@@ -94,6 +97,42 @@ namespace User.Management.Data.Models
                 .WithMany()
                 .HasForeignKey(s => s.ResidenceId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Address>()
+                .HasOne(a => a.User)
+                .WithMany()
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Address>()
+                .HasOne(a => a.CountryDetail)
+                .WithMany()
+                .HasForeignKey(a => a.CountryId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Address>()
+                .HasOne(a => a.AddressDetail)
+                .WithMany()
+                .HasForeignKey(a => a.AddressTypeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<StudentAddress>()
+                .HasOne(a => a.Students)
+                .WithMany()
+                .HasForeignKey(a => a.StudentId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<StudentAddress>()
+                .HasOne(a => a.CountryDetail)
+                .WithMany()
+                .HasForeignKey(a => a.CountryId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<StudentAddress>()
+                .HasOne(a => a.AddressDetail)
+                .WithMany()
+                .HasForeignKey(a => a.AddressTypeId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
         private static void SeedRoles(ModelBuilder builder)

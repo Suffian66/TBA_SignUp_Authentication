@@ -1,12 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace User.Management.Data.Models
 {
-    public class Address
+    public class StudentAddress
     {
         [Key]
-        public int AddressId { get; set; }
+        public int StudentAddressId { get; set; }
         public bool AddressPrimary { get; set; }
 
         [Required]
@@ -35,14 +36,9 @@ namespace User.Management.Data.Models
 
         public bool IsActive { get; set; }
 
-        
-        [ForeignKey("User")]
-        public string UserId { get; set; }
-        public virtual ApplicationUser User { get; set; }
-
-        //[ForeignKey("Students")]
-        //public int? StudentId { get; set; }
-        //public virtual Student Students { get; set; }
+        [ForeignKey("Students")]
+        public int StudentId { get; set; }
+        public virtual Student Students { get; set; }
 
         [ForeignKey("CountryId")]
         public int? CountryId { get; set; }

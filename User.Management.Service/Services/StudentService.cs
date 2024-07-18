@@ -55,6 +55,9 @@ namespace User.Management.Service.Services
             var language = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == students.LanguageId);
             var residenceStatus = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == students.ResidenceId);
             var classAttended = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == students.ClassId);
+            var address = _context.StudentAddress.FirstOrDefault(a => a.StudentId == studentId);
+            var country = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == address.CountryId);
+            var addressType = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == address.AddressTypeId);
             var studentsFamily = _context.StudentFamily.Where(x => x.StudentId == studentId).ToList();
 
             if (students != null && gender != null && language != null && residenceStatus != null && classAttended != null)
@@ -76,6 +79,13 @@ namespace User.Management.Service.Services
                     DateOfSchoolLeaving = students.DateOfSchoolLeaving,
                     MedicalNeeds = students.MedicalNeeds,
                     Class = classAttended?.Title,
+                    Address1 = address.Address1,
+                    Address2 = address?.Address2,
+                    City = address?.City,
+                    State = address?.State,
+                    PostalCode = address?.PostalCode,
+                    Country = country?.Title,
+                    AddressType = addressType.Title,
                     StudentFamilies = studentsFamily
                 };
                 return result;

@@ -20,6 +20,13 @@ namespace User.Management.Data.Dto
         public DateTime? DateOfSchoolLeaving { get; set; }
         public string? MedicalNeeds { get; set; }
         public string Class { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string PostalCode { get; set; }
+        public string? Country { get; set; }
+        public string? AddressType { get; set; }
         public List<StudentFamily> StudentFamilies { get; set; }
     }
 }

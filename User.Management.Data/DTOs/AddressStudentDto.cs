@@ -2,9 +2,9 @@
 
 namespace User.Management.Data.Dto
 {
-    public class AddressDto
+    public class AddressStudentDto
     {
-        public int AddressId { get; set; }
+        public int StudentAddressId { get; set; }
         public bool AddressPrimary { get; set; }
         public string Address1 { get; set; }
         public string Address2 { get; set; }
@@ -13,7 +13,6 @@ namespace User.Management.Data.Dto
         public string PostalCode { get; set; }
         public string? Country { get; set; }
         public string? AddressType { get; set; }
-        //public int? StudentId { get; set; }
-        public string Id { get; set; }
+        public int StudentId { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using User.Management.Data.Dto;
 using User.Management.Data.DTOs;
 using User.Management.Data.Models;
 using User.Management.Service.Services;
+using User.Management.Services;
 
 namespace TBA_SignUp.Controllers
 {
@@ -14,11 +15,13 @@ namespace TBA_SignUp.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IStudent _student;
+        private readonly IAddressService _address;
         private readonly ApplicationDbContext _context;
 
-        public StudentController(UserManager<ApplicationUser> userManager, IStudent student, ApplicationDbContext context)
+        public StudentController(UserManager<ApplicationUser> userManager, IStudent student, IAddressService address, ApplicationDbContext context)
         {
             _student = student;
+            _address = address;
             _context = context;
             _userManager = userManager;
         }
@@ -46,6 +49,7 @@ namespace TBA_SignUp.Controllers
             try
             {
                 var student = _student.GetStudentById(studentId);
+                                           
                 if (student == null)
                 {
                     return NotFound();

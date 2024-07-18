@@ -18,14 +18,21 @@ namespace User.Management.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
+        public async Task<ActionResult<IEnumerable<AddressDto>>> GetAllAddressesAsync()
         {
             var addresses = await _addressService.GetAllAddressesAsync();
             return Ok(addresses);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Address>> GetAddress(int id)
+        [HttpGet("[action]")]
+        public async Task<ActionResult<IEnumerable<AddressStudentDto>>> GetAllStudentAddressesAsync()
+        {
+            var addresses = await _addressService.GetAllStudentAddressesAsync();
+            return Ok(addresses);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<Address>> GetAddressById(int id)
         {
             var address = await _addressService.GetAddressByIdAsync(id);
 
@@ -37,21 +44,49 @@ namespace User.Management.Controllers
             return Ok(address);
         }
 
-        [HttpPost]
+        [HttpGet("[action]")]
+        public async Task<ActionResult<StudentAddress>> GetStudentAddressById(int id)
+        {
+            var address = await _addressService.GetStudentAddressByIdAsync(id);
+
+            if (address == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(address);
+        }
+
+        [HttpPost("[action]")]
         public async Task<ActionResult<AddressDto>> CreateAddress(AddressDto address)
         {
             try
             {
                 var createdAddress = await _addressService.CreateAddressAsync(address);
-                return CreatedAtAction(nameof(GetAddress), createdAddress);
-
+                return CreatedAtAction(nameof(GetAddressById), new { id = createdAddress.AddressId }, createdAddress);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult<AddressStudentDto>> CreateStudentAddress(AddressStudentDto addressStudent)
+        {
+            try
+            {
+                var createdAddress = await _addressService.CreateStudentAddressAsync(addressStudent);
+                return CreatedAtAction(nameof(GetStudentAddressById), new { id = createdAddress.StudentAddressId }, createdAddress);
+                
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAddress(int id, Address address)

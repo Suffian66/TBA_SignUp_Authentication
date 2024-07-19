@@ -50,47 +50,49 @@ namespace User.Management.Service.Services
 
         public StudentDto GetStudentById(int studentId)
         {
-            var students = _context.Students.FirstOrDefault(x => x.StudentId == studentId);
-            var gender = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == students.GenderId);
-            var language = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == students.LanguageId);
-            var residenceStatus = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == students.ResidenceId);
-            var classAttended = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == students.ClassId);
+            var student = _context.Students.FirstOrDefault(x => x.StudentId == studentId);
+            if (student == null)
+            {
+                // Handle the case where the student is not found
+                throw new Exception($"Student with ID {studentId} not found");
+            }
+
+            var gender = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == student.GenderId);
+            var language = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == student.LanguageId);
+            var residenceStatus = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == student.ResidenceId);
+            var classAttended = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == student.ClassId);
             var address = _context.StudentAddress.FirstOrDefault(a => a.StudentId == studentId);
-            var country = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == address.CountryId);
-            var addressType = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == address.AddressTypeId);
+            var country = address != null ? _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == address.CountryId) : null;
+            var addressType = address != null ? _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == address.AddressTypeId) : null;
             var studentsFamily = _context.StudentFamily.Where(x => x.StudentId == studentId).ToList();
 
-            if (students != null && gender != null && language != null && residenceStatus != null && classAttended != null)
+            var result = new StudentDto
             {
-                var result = new StudentDto
+                StudentId = student.StudentId,
+                FirstName = student.FirstName,
+                LastName = student.LastName,
+                MiddleName = student.MiddleName,
+                Gender = gender?.Title,
+                DOB = student.DOB,
+                GR_No = student.GR_No,
+                Language = language?.Title,
+                ResidenceStatus = residenceStatus?.Title,
+                DateOfAdmission = student.DateOfAdmission,
+                LastClassAttended = student.LastClassAttended,
+                DateOfSchoolLeaving = student.DateOfSchoolLeaving,
+                MedicalNeeds = student.MedicalNeeds,
+                Class = classAttended?.Title,
+                Address1 = address?.Address1,
+                Address2 = address?.Address2,
+                City = address?.City,
+                State = address?.State,
+                PostalCode = address?.PostalCode,
+                Country = country?.Title,
+                AddressType = addressType?.Title,
+                StudentFamilies = studentsFamily
+            };
 
-                {
-                    StudentId = students.StudentId,
-                    FirstName = students.FirstName,
-                    LastName = students.LastName,
-                    MiddleName = students.MiddleName,
-                    Gender = gender?.Title,
-                    DOB = students.DOB,
-                    GR_No = students.GR_No,
-                    Language = language?.Title,
-                    ResidenceStatus = residenceStatus?.Title,
-                    DateOfAdmission = students.DateOfAdmission,
-                    LastClassAttended = students.LastClassAttended,
-                    DateOfSchoolLeaving = students.DateOfSchoolLeaving,
-                    MedicalNeeds = students.MedicalNeeds,
-                    Class = classAttended?.Title,
-                    Address1 = address.Address1,
-                    Address2 = address?.Address2,
-                    City = address?.City,
-                    State = address?.State,
-                    PostalCode = address?.PostalCode,
-                    Country = country?.Title,
-                    AddressType = addressType.Title,
-                    StudentFamilies = studentsFamily
-                };
-                return result;
-            }
-            return null;
+            return result;
         }
 
         public async Task<int> CreateStudentAsync(AddStudentDto dto)
@@ -152,6 +154,38 @@ namespace User.Management.Service.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> UpdateStudentAsync(int studentId, UpdateStudentDto dto)
+        {
+            var student = await _context.Students.FirstOrDefaultAsync(s => s.StudentId == studentId);
+            if (student == null)
+            {
+                throw new Exception("Student not found");
+            }
+
+            var genderEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.Gender);
+            var languageEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.Language);
+            var residenceEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.ResidenceStatus);
+            var classEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.Class);
+
+
+            student.FirstName = dto.FirstName;
+            student.LastName = dto.LastName;
+            student.MiddleName = dto.MiddleName;
+            student.GenderId = genderEntity?.LookUpCtgDetailId;
+            student.DOB = dto.DOB;
+            student.GR_No = dto.GR_No;
+            student.LanguageId = languageEntity?.LookUpCtgDetailId;
+            student.ResidenceId = residenceEntity?.LookUpCtgDetailId;
+            student.DateOfAdmission = dto.DateOfAdmission;
+            student.LastClassAttended = dto.LastClassAttended;
+            student.DateOfSchoolLeaving = dto.DateOfSchoolLeaving;
+            student.MedicalNeeds = dto.MedicalNeeds;
+            student.ClassId = classEntity?.LookUpCtgDetailId;
+
+            _context.Students.Update(student);
+            await _context.SaveChangesAsync();
+            return true;
+        }
 
     }
 }

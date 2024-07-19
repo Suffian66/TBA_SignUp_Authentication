@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using User.Management.Data.Dto;
 using User.Management.Data.DTOs;
 using User.Management.Data.Models;
@@ -49,7 +48,7 @@ namespace TBA_SignUp.Controllers
             try
             {
                 var student = _student.GetStudentById(studentId);
-                                           
+
                 if (student == null)
                 {
                     return NotFound();
@@ -77,5 +76,23 @@ namespace TBA_SignUp.Controllers
             }
         }
 
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateStudent(int studentId, [FromBody] UpdateStudentDto dto)
+        {
+            try
+            {
+                var result = await _student.UpdateStudentAsync(studentId, dto);
+                if (result)
+                {
+                    return Ok();
+                }
+                return BadRequest("Failed to update student");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

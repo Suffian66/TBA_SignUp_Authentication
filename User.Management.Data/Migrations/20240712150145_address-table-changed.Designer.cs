@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using User.Management.Data.Models;
 
@@ -11,9 +12,10 @@ using User.Management.Data.Models;
 namespace User.Management.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240712150145_address-table-changed")]
+    partial class addresstablechanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,35 +53,35 @@ namespace User.Management.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c5b3bef0-7b50-4941-be78-fb8fd1c3e327",
+                            Id = "2274975c-f2c3-4def-b916-c3cc2c6947d6",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "e3811bef-7f4c-417b-83ad-ca1ca8bb852a",
+                            Id = "d5a8ae0c-6800-48ff-84bf-36e9ce0f42ba",
                             ConcurrencyStamp = "2",
                             Name = "Sponsor",
                             NormalizedName = "Sponsor"
                         },
                         new
                         {
-                            Id = "53945762-8991-4ace-9aaa-7390a60d4bc0",
+                            Id = "08c7e062-3184-4c26-b105-01632a30c6b8",
                             ConcurrencyStamp = "3",
                             Name = "Teacher",
                             NormalizedName = "Teacher"
                         },
                         new
                         {
-                            Id = "9a46655c-1323-4472-a33a-6e36cebd010e",
+                            Id = "06929b14-2c00-4b3f-b007-02f3f6260c75",
                             ConcurrencyStamp = "4",
                             Name = "Student",
                             NormalizedName = "Student"
                         },
                         new
                         {
-                            Id = "a3d54f8b-67af-4c9c-8632-50a7aec92486",
+                            Id = "10074091-c28d-4c51-931e-fb1eddaf6bab",
                             ConcurrencyStamp = "5",
                             Name = "AssistanceTeacher",
                             NormalizedName = "AssistantTeacher"
@@ -206,6 +208,7 @@ namespace User.Management.Data.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Address2")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -233,6 +236,7 @@ namespace User.Management.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("PostalCode")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -635,77 +639,6 @@ namespace User.Management.Data.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("User.Management.Data.Models.StudentAddress", b =>
-                {
-                    b.Property<int>("StudentAddressId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentAddressId"), 1L, 1);
-
-                    b.Property<string>("Address1")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Address2")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<bool>("AddressPrimary")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("AddressTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int?>("CountryId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UpdatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("StudentAddressId");
-
-                    b.HasIndex("AddressTypeId");
-
-                    b.HasIndex("CountryId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("StudentAddress");
-                });
-
             modelBuilder.Entity("User.Management.Data.Models.StudentFamily", b =>
                 {
                     b.Property<int>("StudentFamilyId")
@@ -991,31 +924,6 @@ namespace User.Management.Data.Migrations
                     b.Navigation("LanguageDetail");
 
                     b.Navigation("ResidenceDetail");
-                });
-
-            modelBuilder.Entity("User.Management.Data.Models.StudentAddress", b =>
-                {
-                    b.HasOne("User.Management.Data.Models.LookUpCategoryDetail", "AddressDetail")
-                        .WithMany()
-                        .HasForeignKey("AddressTypeId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("User.Management.Data.Models.LookUpCategoryDetail", "CountryDetail")
-                        .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("User.Management.Data.Models.Student", "Students")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("AddressDetail");
-
-                    b.Navigation("CountryDetail");
-
-                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("User.Management.Data.Models.StudentFamily", b =>

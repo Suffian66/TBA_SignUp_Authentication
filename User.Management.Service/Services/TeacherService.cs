@@ -21,6 +21,8 @@ namespace User.Management.Services
         public async Task<TeacherDto?> GetTeacherByIdAsync(int teacherId)
         {
             var teacherDetails = _context.Teachers.FirstOrDefault(x => x.TeacherId == teacherId);
+            var user = _context.Users.FirstOrDefault(x => x.Id == teacherDetails.UserId);
+            var address = _context.Address.Include(a => a.CountryDetail).Include(a => a.AddressDetail).FirstOrDefault(a => a.UserId == teacherDetails.UserId);
 
 
             if (teacherDetails != null)
@@ -42,6 +44,13 @@ namespace User.Management.Services
                     DegreeQualification = teacherDetails.DegreeQualification,
                     Certification = teacherDetails.Certification,
                     Salary = teacherDetails.Salary,
+                    Address1 = address?.Address1,
+                    Address2 = address?.Address2,
+                    City = address?.City,
+                    State = address?.State,
+                    PostalCode = address?.PostalCode,
+                    Country = address?.CountryDetail?.Title,
+                    AddressType = address?.AddressDetail?.Title,
                 };
                 return result;
             }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace User.Management.Data.DTOs
 {
-    public class SponsorDto
+    public class UpdateSponsorDto
     {
-        public string Id { get; set; }
+        public string? Id { get; set; }
         public string? FirstName { get; set; }
         public string? MiddleName { get; set; }
         public string? LastName { get; set; }
@@ -24,5 +24,9 @@ namespace User.Management.Data.DTOs
         public string? PostalCode { get; set; }
         public string? Country { get; set; }
         public string? AddressType { get; set; }
+        //public int CountryId { get; set; }
+        //public int AddressTypeId { get; set; }
+
+
     }
 }

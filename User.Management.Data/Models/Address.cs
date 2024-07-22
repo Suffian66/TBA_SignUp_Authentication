@@ -11,21 +11,21 @@ namespace User.Management.Data.Models
 
         [Required]
         [MaxLength(255)]
-        public string Address1 { get; set; }
+        public string? Address1 { get; set; }
 
         [MaxLength(255)]
-        public string Address2 { get; set; }
+        public string? Address2 { get; set; }
 
         [Required]
         [MaxLength(100)]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         [Required]
         [MaxLength(100)]
-        public string State { get; set; }
+        public string? State { get; set; }
 
         [MaxLength(20)]
-        public string PostalCode { get; set; }
+        public string? PostalCode { get; set; }
 
         public int? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }

@@ -14,6 +14,7 @@ namespace User.Management.Service.Services
         public StudentService(ApplicationDbContext context)
         {
             _context = context;
+
         }
 
         public async Task<IEnumerable<StudentDto>> GetAllStudents()
@@ -154,7 +155,7 @@ namespace User.Management.Service.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> UpdateStudentAsync(int studentId, UpdateStudentDto dto)
+        public async Task<UpdateStudentDto> UpdateStudentAsync(int studentId, UpdateStudentDto dto)
         {
             var student = await _context.Students.FirstOrDefaultAsync(s => s.StudentId == studentId);
             if (student == null)
@@ -166,7 +167,6 @@ namespace User.Management.Service.Services
             var languageEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.Language);
             var residenceEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.ResidenceStatus);
             var classEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.Class);
-
 
             student.FirstName = dto.FirstName;
             student.LastName = dto.LastName;
@@ -182,9 +182,33 @@ namespace User.Management.Service.Services
             student.MedicalNeeds = dto.MedicalNeeds;
             student.ClassId = classEntity?.LookUpCtgDetailId;
 
-            _context.Students.Update(student);
+            //_context.Students.Update(student);
             await _context.SaveChangesAsync();
-            return true;
+            return dto;
+        }
+        public async Task<UpdateStudentFamilyDto> UpdateStudentFamilyAsync(int studentId, UpdateStudentFamilyDto updateStudentFamilyDto)
+        {
+            // Fetch the student family entity based on studentId and family member name
+            var studentFamily = await _context.StudentFamily
+                .FirstOrDefaultAsync(sf => sf.StudentId == studentId && sf.FamilyMemberName == updateStudentFamilyDto.FamilyMemberName);
+
+            if (studentFamily == null)
+            {
+                // Handle the case where the family member is not found
+                return null;
+            }
+
+            // Update the student family details
+            studentFamily.FamilyRelation = updateStudentFamilyDto.FamilyRelation;
+            studentFamily.Qualification = updateStudentFamilyDto.Qualification;
+            studentFamily.PersonOccupation = updateStudentFamilyDto.PersonOccupation;
+            studentFamily.PersonIncome = updateStudentFamilyDto.PersonIncome;
+
+            // Save the changes
+            //_context.StudentFamily.Update(studentFamily);
+            _context.SaveChangesAsync();
+
+            return updateStudentFamilyDto;
         }
 
     }

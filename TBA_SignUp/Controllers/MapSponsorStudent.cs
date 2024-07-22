@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using User.Management.Data.DTOs;
-using User.Management.Data.Models;
 using User.Management.Service.Services;
 
 namespace TBA_SignUp.Controllers
@@ -59,6 +57,27 @@ namespace TBA_SignUp.Controllers
             catch (Exception ex)
             {
                 // Log the exception (you can use a logging framework for this)
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+        [HttpPut("{id}")]
+        public IActionResult UpdateMapSponsorStudent(int id, [FromBody] MapSponsorStudentDto mapSponsorStd)
+        {
+            if (mapSponsorStd == null || id == 0)
+            {
+                return BadRequest("Invalid data.");
+            }
+            try
+            {
+                var updatedMapSponsorStudent = _mapSponsorStudent.UpdateMapSponsorStudent(id, mapSponsorStd);
+                return Ok(updatedMapSponsorStudent);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }

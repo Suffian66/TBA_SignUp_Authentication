@@ -16,13 +16,16 @@ namespace TBA_SignUp.Controllers
         private readonly IStudent _student;
         private readonly IAddressService _address;
         private readonly ApplicationDbContext _context;
+        private readonly IStudent _studentfamily;
 
-        public StudentController(UserManager<ApplicationUser> userManager, IStudent student, IAddressService address, ApplicationDbContext context)
+
+        public StudentController(UserManager<ApplicationUser> userManager, IStudent student, IAddressService address, ApplicationDbContext context, IStudent studentfamily)
         {
             _student = student;
             _address = address;
             _context = context;
             _userManager = userManager;
+            _studentfamily = studentfamily;
         }
 
 
@@ -83,9 +86,9 @@ namespace TBA_SignUp.Controllers
             try
             {
                 var result = await _student.UpdateStudentAsync(studentId, dto);
-                if (result)
+                if (result != null)
                 {
-                    return Ok();
+                    return Ok(result);
                 }
                 return BadRequest("Failed to update student");
             }
@@ -94,5 +97,28 @@ namespace TBA_SignUp.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateStudentFamily(int studentId, [FromBody] UpdateStudentFamilyDto updateStudentFamilyDto)
+        {
+            var result = await _studentfamily.UpdateStudentFamilyAsync(studentId, updateStudentFamilyDto);
+            try
+            {
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return NotFound();
+        }
+
+
+
     }
 }

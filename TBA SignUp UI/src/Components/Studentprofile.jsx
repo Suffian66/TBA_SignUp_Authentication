@@ -3,33 +3,20 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { PersonFill } from "react-bootstrap-icons";
-import { useGetStudentByIdQuery } from "../services/Studentlist";
-
+import { useGetStudentByIdQuery, useUpdateStudentMutation } from "../services/Studentlist";
 import { useAddMapSponsorStudentMutation } from "../services/MapSponsor";
 import { useState } from "react";
 import { useGetCategoryDetailQuery } from "../services/LookUp";
 
-function Studentprofile() {
+function StudentProfile() {
   const { id: studentId } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const sponsorId = queryParams.get("sponsorId");
   const navigate = useNavigate();
-
-  // const { id } = useParams();
   const { data, error, isLoading } = useGetStudentByIdQuery(studentId);
-  const {
-    data: dataFrequency,
-    error: frequencyError,
-    isLoading: frequencyIsLoading,
-  } = useGetCategoryDetailQuery(["Donation Frequency", ""], {});
-  const {
-    data: dataChannel,
-    error: channelError,
-    isLoading: channelIsLoading,
-  } = useGetCategoryDetailQuery(["Donation Channel", ""], {});
-  console.log("dataFrequency:", dataFrequency); // Check the data structure
-
+  const { data: dataFrequency, error: frequencyError, isLoading: frequencyIsLoading } = useGetCategoryDetailQuery(["Donation Frequency", ""], {});
+  const { data: dataChannel, error: channelError, isLoading: channelIsLoading } = useGetCategoryDetailQuery(["Donation Channel", ""], {});
   const [formData, setFormData] = useState({
     donationAmount: "",
     donationFrequency: "Monthly",
@@ -38,16 +25,10 @@ function Studentprofile() {
     donationSourceAccount: "",
     donationDestinationAccount: "",
     notes: "",
-    studentId: studentId, // Set studentId from URL params
-    sponsorId: sponsorId, // Set sponsorId from query params
+    studentId: studentId,
+    sponsorId: sponsorId,
   });
-
-  const [addMapSponsorStudent, { isLoading: isAdding, isError, isSuccess }] =
-    useAddMapSponsorStudentMutation();
-
-  // useEffect(() => {
-  //     console.log('dataFrequency:', dataFrequency);
-  // }, [dataFrequency]);
+  const [addMapSponsorStudent, { isLoading: isAdding, isError, isSuccess }] = useAddMapSponsorStudentMutation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,17 +50,13 @@ function Studentprofile() {
       donationDestinationAccount: formData.donationDestinationAccount,
       notes: formData.notes,
       studentId: formData.studentId,
-      Id: formData.sponsorId, // Ensure Id is correctly mapped from sponsorId
+      Id: formData.sponsorId,
     };
 
     try {
       const { data, error } = await addMapSponsorStudent(payload);
 
-      console.log("MapSponsorStudent added:", data);
-      console.log("MapSponsorStudent error:", error);
-
       if (data) {
-        // Reset form fields after successful submission
         setFormData({
           donationAmount: "",
           donationFrequency: "",
@@ -96,7 +73,7 @@ function Studentprofile() {
         navigate(`/mapSponsorStudentList?sponsorId=${formData.sponsorId}`);
       }
 
-      if (error.status === 400) {
+      if (error && error.status === 400) {
         alert(error?.data?.message);
       }
     } catch (error) {
@@ -104,12 +81,10 @@ function Studentprofile() {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  if (!data || Object.keys(data).length === 0)
-    return <div>No student found</div>;
+  if (isLoading || frequencyIsLoading || channelIsLoading) return <div>Loading...</div>;
+  if (error || frequencyError || channelError) return <div>Error: {error.message}</div>;
+  if (!data || Object.keys(data).length === 0) return <div>No student found</div>;
 
-  // Extracting student details
   const {
     firstName,
     middleName,
@@ -127,22 +102,14 @@ function Studentprofile() {
     studentFamilies,
   } = data;
 
-  // Extract family members from $values array
-  const familyMembers =
-    studentFamilies && studentFamilies.$values ? studentFamilies.$values : [];
+  const familyMembers = studentFamilies && studentFamilies.$values ? studentFamilies.$values : [];
   const getCategoryDetailsByTitle = (data, title) => {
     const categoryObject = data?.$values.find((item) => item.title === title);
     return categoryObject?.lookupCategoryDetail?.$values || [];
   };
 
-  const donationFrequencies = getCategoryDetailsByTitle(
-    dataFrequency,
-    "Donation Frequency"
-  );
-  const donationChannels = getCategoryDetailsByTitle(
-    dataChannel,
-    "Donation Channel"
-  );
+  const donationFrequencies = getCategoryDetailsByTitle(dataFrequency, "Donation Frequency");
+  const donationChannels = getCategoryDetailsByTitle(dataChannel, "Donation Channel");
 
   return (
     <>
@@ -152,7 +119,7 @@ function Studentprofile() {
             <Form.Label>
               <PersonFill size={40} className="ms-2" />
             </Form.Label>
-            <Form.Label className="myprofiletxt ms-2 ">
+            <Form.Label className="myprofiletxt ms-2">
               <h2>Student's Profile</h2>
             </Form.Label>
           </Form.Group>
@@ -161,51 +128,54 @@ function Studentprofile() {
           <h4 className="ms-2 textcolor">Personal Information</h4>
           <div className="row ms-2">
             <div className="col-3 divcolor fw-bold">G.R. No</div>
-            <div className="col-3 divcolor ">{gR_No}</div>
+            <div className="col-3 divcolor">{gR_No}</div>
             <div className="col-3 divcolor fw-bold">Class</div>
             <div className="col-3 divcolor">{studentClass}</div>
           </div>
           <div className="row ms-2">
-            <div className="col-3 divcolor fw-bold">First/Middle Name</div>
-            <div className="col-3 divcolor ">
-              {firstName} {middleName}
-            </div>
-            <div className="col-3 divcolor fw-bold">Last Name</div>
-            <div className="col-3 divcolor">{lastName}</div>
+            <div className="col-3 divcolor fw-bold">First Name</div>
+            <div className="col-3 divcolor">{firstName}</div>
+            <div className="col-3 divcolor fw-bold">Middle Name</div>
+            <div className="col-3 divcolor">{middleName}</div>
           </div>
           <div className="row ms-2">
-            <div className="col-3 divcolor fw-bold">D.O.B</div>
+            <div className="col-3 divcolor fw-bold">Last Name</div>
+            <div className="col-3 divcolor">{lastName}</div>
+            <div className="col-3 divcolor fw-bold">Gender</div>
+            <div className="col-3 divcolor">{gender}</div>
+          </div>
+          <div className="row ms-2">
+            <div className="col-3 divcolor fw-bold">Date of Birth</div>
             <div className="col-3 divcolor">{dob}</div>
-
             <div className="col-3 divcolor fw-bold">Date of Admission</div>
             <div className="col-3 divcolor">{dateOfAdmission}</div>
           </div>
           <div className="row ms-2">
-            <div className="col-3 divcolor fw-bold">Date of School Leaving</div>
-            <div className="col-3 divcolor ">{dateOfSchoolLeaving}</div>
             <div className="col-3 divcolor fw-bold">Last Class Attended</div>
             <div className="col-3 divcolor">{lastClassAttended}</div>
+            <div className="col-3 divcolor fw-bold">Date of School Leaving</div>
+            <div className="col-3 divcolor">{dateOfSchoolLeaving}</div>
           </div>
           <div className="row ms-2">
-            <div className="col-3 divcolor fw-bold">Gender</div>
-            <div className="col-3 divcolor">{gender}</div>
-            <div className="col-3 divcolor fw-bold">Any Medical Needs</div>
+            <div className="col-3 divcolor fw-bold">Medical Needs</div>
             <div className="col-3 divcolor">{medicalNeeds}</div>
-          </div>
-          <div className="row ms-2">
             <div className="col-3 divcolor fw-bold">Language</div>
             <div className="col-3 divcolor">{language}</div>
+          </div>
+          <div className="row ms-2">
             <div className="col-3 divcolor fw-bold">Residence Status</div>
             <div className="col-3 divcolor">{residenceStatus}</div>
           </div>
-          <div className="row ms-2">
-            <div className="col-3 divcolor fw-bold">Address</div>
-            <div className="col-9 divcolor"></div>
+          <div className="row mt-4 ms-2">
+            <div className="col-3">
+              <Link to={`/studentupdate/${studentId}`} className="btn btn-primary">
+                Edit Profile
+              </Link>
+            </div>
           </div>
         </div>
-
-        {/* ............Family Info........ */}
-        {familyMembers.length > 0 && (
+      </div>
+      {familyMembers.length > 0 && (
           <div className="mt-2 mb-5 ps-3 pe-5">
             <h4 className="ms-2 textcolor">Family Details</h4>
             <div className="row ms-2 text-center">
@@ -215,7 +185,6 @@ function Studentprofile() {
               <div className="col-3 divcolor fw-bold">Occupation</div>
               <div className="col-2 divcolor fw-bold">Income</div>
             </div>
-
             {familyMembers.map((familyMember, index) => (
               <div key={index} className="row ms-2 text-center">
                 <div className="col-1 divcolor ">{index + 1}</div>
@@ -235,125 +204,115 @@ function Studentprofile() {
             ))}
           </div>
         )}
-        {/* ............Progress........ */}
-        <hr />
-        <div className="mt-2 mb-5 ps-3 pe-5 pb-2">
-          <h4 className="ms-2 mb-3 textcolor">Sponsor This Student</h4>
-          <form onSubmit={handleSubmit}>
-            <div className="row text-center">
-              <div className="col-3 ms-2">
-                <select
-                  className="form-select"
-                  name="donationFrequency"
-                  // className='form-select'
-                  value={formData.donationFrequency}
-                  onChange={handleChange}
-                  required
-                >
-                  {/* <option value=''>Select Donation Frequency</option> */}
-                  {donationFrequencies.map((frequency, index) => (
-                    <option key={index} value={frequency}>
-                      {frequency}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="col-3 divcolor">
-                <input
-                  type="number"
-                  name="donationAmount"
-                  value={formData.donationAmount}
-                  onChange={handleChange}
-                  className="form-control"
-                  placeholder="Amount"
-                  required
-                />
-              </div>
-              <div className="col-1 divcolor mt-1">
-                <label htmlFor="">Start Date</label>
-              </div>
-              <div className="col-2 divcolor">
-                <input
-                  type="date"
-                  name="donationStartDate"
-                  value={formData.donationStartDate}
-                  onChange={handleChange}
-                  className="form-control"
-                  required
-                />
-              </div>
-              <div className="col-2 divcolor">
-                <select
-                  name="donationChannel"
-                  className="form-select"
-                  value={formData.dataChannel}
-                  onChange={handleChange}
-                  required
-                >
-                  {/* <option value=''>Select Donation Channel</option> */}
-                  {donationChannels.map((channel, index) => (
-                    <option key={index} value={channel}>
-                      {channel}
-                    </option>
-                  ))}
-                </select>
-              </div>
+      <div className="profilediv ms-2 mt-5 me-2">
+        <form onSubmit={handleSubmit}>
+          <h4 className="ms-2 mt-3 mb-4 textcolor">Add to Sponsorship</h4>
+          <div className="row ms-2">
+            <div className="col-3 divcolor fw-bold">Donation Amount</div>
+            <div className="col-3 divcolor">
+              <input
+                type="text"
+                name="donationAmount"
+                value={formData.donationAmount}
+                onChange={handleChange}
+                className="form-control"
+              />
             </div>
-
-            <div className="row mt-4 text-center">
-              <div className="col-3 divcolor ms-2">
-                <input
-                  type="text"
-                  name="donationSourceAccount"
-                  value={formData.donationSourceAccount}
-                  onChange={handleChange}
-                  className="form-control"
-                  placeholder="Source Account"
-                  required
-                />
-              </div>
-              <div className="col-3 divcolor">
-                <input
-                  type="text"
-                  name="donationDestinationAccount"
-                  value={formData.donationDestinationAccount}
-                  onChange={handleChange}
-                  className="form-control"
-                  placeholder="Destination Account"
-                  required
-                />
-              </div>
-              <div className="col-5 divcolor">
-                <textarea
-                  name="notes"
-                  value={formData.notes}
-                  onChange={handleChange}
-                  className="form-control"
-                  placeholder="Notes"
-                />
-              </div>
+            <div className="col-3 divcolor fw-bold">Donation Frequency</div>
+            <div className="col-3 divcolor">
+              <select
+                name="donationFrequency"
+                value={formData.donationFrequency}
+                onChange={handleChange}
+                className="form-control"
+              >
+                <option value="">Select Frequency</option>
+                {donationFrequencies.map((item) => (
+                  <option key={item.lookupValueId} value={item.title}>
+                    {item.title}
+                  </option>
+                ))}
+              </select>
             </div>
-
-            <div className="row float-start mt-5 ms-1">
-              <div className="d-flex">
-                <Link to={`/studentlist/${sponsorId ? `${sponsorId}` : ""}`}>
-                  <button className="btn btn-primary btnstudent btn-color me-2">
-                    Back to Lists
-                  </button>
-                </Link>
-                <button
-                  type="submit"
-                  className=" btn btn-primary btnstudent btn-color"
-                >
-                  Add to Sponsor
-                </button>
-              </div>
+          </div>
+          <div className="row ms-2">
+            <div className="col-3 divcolor fw-bold">Donation Start Date</div>
+            <div className="col-3 divcolor">
+              <input
+                type="date"
+                name="donationStartDate"
+                value={formData.donationStartDate}
+                onChange={handleChange}
+                className="form-control"
+              />
             </div>
-          </form>
-        </div>
+            <div className="col-3 divcolor fw-bold">Donation Channel</div>
+            <div className="col-3 divcolor">
+              <select
+                name="donationChannel"
+                value={formData.donationChannel}
+                onChange={handleChange}
+                className="form-control"
+              >
+                <option value="">Select Channel</option>
+                {donationChannels.map((item) => (
+                  <option key={item.lookupValueId} value={item.title}>
+                    {item.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="row ms-2">
+            <div className="col-3 divcolor fw-bold">Donation Source Account</div>
+            <div className="col-3 divcolor">
+              <input
+                type="text"
+                name="donationSourceAccount"
+                value={formData.donationSourceAccount}
+                onChange={handleChange}
+                className="form-control"
+              />
+            </div>
+            <div className="col-3 divcolor fw-bold">Donation Destination Account</div>
+            <div className="col-3 divcolor">
+              <input
+                type="text"
+                name="donationDestinationAccount"
+                value={formData.donationDestinationAccount}
+                onChange={handleChange}
+                className="form-control"
+              />
+            </div>
+          </div>
+          <div className="row ms-2">
+            <div className="col-3 divcolor fw-bold">Notes</div>
+            <div className="col-9 divcolor">
+              <textarea
+                name="notes"
+                value={formData.notes}
+                onChange={handleChange}
+                className="form-control"
+              />
+            </div>
+          </div>
+          <div className="row float-start mt-5 ms-1">
+            <div className="d-flex">
+              <button className="btn btn-success me-2" type="submit">
+                Add Sponsorship
+              </button>
+              <button
+                className="btn btn-secondary"
+                onClick={() => navigate(-1)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </>
   );
 }
 
-export default Studentprofile;
+export default StudentProfile;

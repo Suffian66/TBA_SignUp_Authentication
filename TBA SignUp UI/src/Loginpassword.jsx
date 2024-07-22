@@ -27,6 +27,7 @@ import TeacherForm2 from "./Components/TeacherForm2.jsx";
 import Bank from "./Components/Bank.jsx";
 import ClassList from "./ClassList.jsx";
 import ClassWiseStudentList from "./ClassWiseStudentList.jsx";
+import StudentUpdate from "./Components/StudentUpdate.jsx";
 
 const router = createBrowserRouter([
   {
@@ -258,7 +259,12 @@ const router = createBrowserRouter([
         element: <ClassWiseStudentList />,
       },
     ],
-  },         
+  }, 
+  {
+
+    path:"/studentupdate/:id",
+    element:<StudentUpdate/>,        
+  } 
 ]);
 
 function Loginpassword() {

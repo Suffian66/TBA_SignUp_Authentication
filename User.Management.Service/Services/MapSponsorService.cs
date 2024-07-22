@@ -85,5 +85,28 @@ namespace User.Management.Service.Services
             return result;
         }
 
+        public MapSponsorStudents UpdateMapSponsorStudent(int id, MapSponsorStudentDto mapSponsorStd)
+        {
+            var existingSponsorship = _context.MapSponsorStudents.FirstOrDefault(s => s.MapSponsorStudentsId == id);
+            if (existingSponsorship == null)
+            {
+                throw new InvalidOperationException("Sponsorship not found!");
+            }
+
+            existingSponsorship.StudentsReports = mapSponsorStd.StudentsReports;
+            existingSponsorship.DonationAmount = mapSponsorStd.DonationAmount;
+            existingSponsorship.DonationFrequency = mapSponsorStd.DonationFrequency;
+            existingSponsorship.DonationStartDate = mapSponsorStd.DonationStartDate;
+            existingSponsorship.DonationChannel = mapSponsorStd.DonationChannel;
+            existingSponsorship.DonationSourceAccount = mapSponsorStd.DonationSourceAccount;
+            existingSponsorship.DonationDestinationAccount = mapSponsorStd.DonationDestinationAccount;
+            existingSponsorship.Notes = mapSponsorStd.Notes;
+
+
+            _context.MapSponsorStudents.Update(existingSponsorship);
+            _context.SaveChanges();
+
+            return existingSponsorship;
+        }
     }
 }

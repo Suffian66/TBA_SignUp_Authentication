@@ -10,8 +10,8 @@ namespace User.Management.Service.Services
         StudentDto GetStudentById(int studentId);
         public Task<int> CreateStudentAsync(AddStudentDto dto);
 
-        Task<bool> UpdateStudentAsync(int studentId, UpdateStudentDto dto);
+        Task<UpdateStudentDto> UpdateStudentAsync(int studentId, UpdateStudentDto dto);
 
-
+        Task<UpdateStudentFamilyDto> UpdateStudentFamilyAsync(int studentId, UpdateStudentFamilyDto updateStudentFamilyDto);
     }
 }

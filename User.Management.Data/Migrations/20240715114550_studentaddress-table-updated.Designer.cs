@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using User.Management.Data.Models;
 
@@ -11,9 +12,10 @@ using User.Management.Data.Models;
 namespace User.Management.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240715114550_studentaddress-table-updated")]
+    partial class studentaddresstableupdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,35 +53,35 @@ namespace User.Management.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c5b3bef0-7b50-4941-be78-fb8fd1c3e327",
+                            Id = "b2d7a4eb-d307-49e9-8b55-f044f1f04877",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "e3811bef-7f4c-417b-83ad-ca1ca8bb852a",
+                            Id = "187c8141-5cf6-4f25-b44d-7b0536091fc9",
                             ConcurrencyStamp = "2",
                             Name = "Sponsor",
                             NormalizedName = "Sponsor"
                         },
                         new
                         {
-                            Id = "53945762-8991-4ace-9aaa-7390a60d4bc0",
+                            Id = "b42d99e3-39bd-4c3e-8b90-2e42a73d7701",
                             ConcurrencyStamp = "3",
                             Name = "Teacher",
                             NormalizedName = "Teacher"
                         },
                         new
                         {
-                            Id = "9a46655c-1323-4472-a33a-6e36cebd010e",
+                            Id = "ccc60097-b472-4262-83c4-9080f1ca5100",
                             ConcurrencyStamp = "4",
                             Name = "Student",
                             NormalizedName = "Student"
                         },
                         new
                         {
-                            Id = "a3d54f8b-67af-4c9c-8632-50a7aec92486",
+                            Id = "39e02040-852a-4550-9eb9-4df092bfe82e",
                             ConcurrencyStamp = "5",
                             Name = "AssistanceTeacher",
                             NormalizedName = "AssistantTeacher"
@@ -206,6 +208,7 @@ namespace User.Management.Data.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Address2")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -233,6 +236,7 @@ namespace User.Management.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("PostalCode")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -686,7 +690,8 @@ namespace User.Management.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("StudentId")
+                    b.Property<int?>("StudentId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("UpdatedBy")

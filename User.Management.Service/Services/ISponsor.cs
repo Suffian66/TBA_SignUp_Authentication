@@ -8,5 +8,7 @@ namespace User.Management.Service.Services
     {
         public Task<IEnumerable<SponsorDto>> GetAllSponsors();
         public SponsorDto GetSponsorById(string sponsorId);
+
+        public Task<UpdateSponsorDto> UpdateSponsorAsync(string sponsorId, UpdateSponsorDto updateDto);
     }
 }

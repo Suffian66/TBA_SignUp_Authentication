@@ -56,5 +56,25 @@ namespace TBA_SignUp.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateSponsor(string sponsorId, [FromBody] UpdateSponsorDto updateDto)
+        {
+            if (sponsorId == null)
+            {
+                return BadRequest("Sponsor ID mismatch");
+            }
+
+            var updatedSponsor = await _sponsor.UpdateSponsorAsync(sponsorId, updateDto);
+
+            if (updatedSponsor == null)
+            {
+                return NotFound("Sponsor not found");
+            }
+
+            return Ok(updatedSponsor);
+        }
+
+
     }
 }

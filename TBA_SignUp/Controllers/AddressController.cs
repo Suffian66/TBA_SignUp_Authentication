@@ -24,15 +24,15 @@ namespace User.Management.Controllers
             return Ok(addresses);
         }
 
-        [HttpGet("[action]")]
-        public async Task<ActionResult<IEnumerable<AddressStudentDto>>> GetAllStudentAddressesAsync()
-        {
-            var addresses = await _addressService.GetAllStudentAddressesAsync();
-            return Ok(addresses);
-        }
+        //[HttpGet("[action]")]
+        //public async Task<ActionResult<IEnumerable<AddressStudentDto>>> GetAllStudentAddressesAsync()
+        //{
+        //    var addresses = await _addressService.GetAllStudentAddressesAsync();
+        //    return Ok(addresses);
+        //}
 
         [HttpGet("[action]")]
-        public async Task<ActionResult<Address>> GetAddressById(int id)
+        public async Task<ActionResult<Address>> GetAddressById(string id)
         {
             var address = await _addressService.GetAddressByIdAsync(id);
 
@@ -88,43 +88,43 @@ namespace User.Management.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAddress(int id, Address address)
-        {
-            if (id != address.AddressId)
-            {
-                return BadRequest();
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateAddress(int id, Address address)
+        //{
+        //    if (id != address.AddressId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            try
-            {
-                await _addressService.UpdateAddressAsync(address);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (await _addressService.GetAddressByIdAsync(id) == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _addressService.UpdateAddressAsync(address);
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (await _addressService.GetAddressByIdAsync(userid) == null)
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAddress(int id)
-        {
-            var success = await _addressService.DeleteAddressAsync(id);
-            if (!success)
-            {
-                return NotFound();
-            }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteAddress(int id)
+        //{
+        //    var success = await _addressService.DeleteAddressAsync(id);
+        //    if (!success)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
     }
 }

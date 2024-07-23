@@ -29,6 +29,7 @@ import ClassList from "./ClassList.jsx";
 import ClassWiseStudentList from "./ClassWiseStudentList.jsx";
 import StudentUpdate from "./Components/StudentUpdate.jsx";
 import UpdateStudentFamily from "./Components/UpdateStudentFamily.jsx";
+import StudentAttendance from "./StudentAttandance.jsx";
 
 const router = createBrowserRouter([
   {
@@ -258,6 +259,16 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <ClassWiseStudentList />,
+      },
+    ],
+  }, 
+  {
+    path: "/attendance-student",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <StudentAttendance />,
       },
     ],
   }, 

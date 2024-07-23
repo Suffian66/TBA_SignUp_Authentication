@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using User.Management.Data.Models;
 
@@ -11,9 +12,10 @@ using User.Management.Data.Models;
 namespace User.Management.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240723103213_student-attendance")]
+    partial class studentattendance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,35 +53,35 @@ namespace User.Management.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c5b3bef0-7b50-4941-be78-fb8fd1c3e327",
+                            Id = "e54bf4d0-3fb2-4dbb-9972-14e198eb83b5",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "e3811bef-7f4c-417b-83ad-ca1ca8bb852a",
+                            Id = "0fc0ebb1-238c-4f62-8924-6ffd6f0e4102",
                             ConcurrencyStamp = "2",
                             Name = "Sponsor",
                             NormalizedName = "Sponsor"
                         },
                         new
                         {
-                            Id = "53945762-8991-4ace-9aaa-7390a60d4bc0",
+                            Id = "f53819ed-c1ab-4d13-a0c4-19b87cb34cb5",
                             ConcurrencyStamp = "3",
                             Name = "Teacher",
                             NormalizedName = "Teacher"
                         },
                         new
                         {
-                            Id = "9a46655c-1323-4472-a33a-6e36cebd010e",
+                            Id = "8666e79c-62e2-4010-94e6-74b25d8fc48b",
                             ConcurrencyStamp = "4",
                             Name = "Student",
                             NormalizedName = "Student"
                         },
                         new
                         {
-                            Id = "a3d54f8b-67af-4c9c-8632-50a7aec92486",
+                            Id = "b436283d-91a0-4449-ba5e-24cf32e93d58",
                             ConcurrencyStamp = "5",
                             Name = "AssistanceTeacher",
                             NormalizedName = "AssistantTeacher"
@@ -206,6 +208,7 @@ namespace User.Management.Data.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Address2")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -233,6 +236,7 @@ namespace User.Management.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("PostalCode")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -254,8 +258,6 @@ namespace User.Management.Data.Migrations
                     b.HasKey("AddressId");
 
                     b.HasIndex("AddressTypeId");
-
-                    b.HasIndex("CountryId");
 
                     b.HasIndex("CountryId");
 
@@ -708,6 +710,41 @@ namespace User.Management.Data.Migrations
                     b.ToTable("StudentAddress");
                 });
 
+            modelBuilder.Entity("User.Management.Data.Models.StudentAttendance", b =>
+                {
+                    b.Property<int>("StudentAttendanceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentAttendanceId"), 1L, 1);
+
+                    b.Property<bool>("Attandance")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("AttendanceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ClassDetailLookUpCtgDetailId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentAttendanceId");
+
+                    b.HasIndex("ClassDetailLookUpCtgDetailId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentAttendance");
+                });
+
             modelBuilder.Entity("User.Management.Data.Models.StudentFamily", b =>
                 {
                     b.Property<int>("StudentFamilyId")
@@ -1016,6 +1053,25 @@ namespace User.Management.Data.Migrations
                     b.Navigation("AddressDetail");
 
                     b.Navigation("CountryDetail");
+
+                    b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("User.Management.Data.Models.StudentAttendance", b =>
+                {
+                    b.HasOne("User.Management.Data.Models.LookUpCategoryDetail", "ClassDetail")
+                        .WithMany()
+                        .HasForeignKey("ClassDetailLookUpCtgDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("User.Management.Data.Models.Student", "Students")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClassDetail");
 
                     b.Navigation("Students");
                 });

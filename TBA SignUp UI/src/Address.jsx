@@ -1,72 +1,69 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import {
-  useGetCategoryDetailQuery,
-  useGetCountriesQuery,
-} from "./services/LookUp";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {  useGetCategoryDetailQuery } from "./services/LookUp";
 import { useAddAddressMutation } from "./services/Address";
+import { useAddUserMutation } from "./services/SignUp";
 
 const Address = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const {
-    data: countries,
-    error: countriesError,
-    isLoading: countriesLoading,
-  } = useGetCountriesQuery();
-  const {
-    data: categoryDetails,
-    error: categoryDetailError,
-    isLoading: categoryDetailLoading,
-  } = useGetCategoryDetailQuery(["address"], {});
-  const [
-    addAddress,
-    { isLoading: isAdding, isError: isAddError, error: addAddressError },
-  ] = useAddAddressMutation();
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const {register,handleSubmit, formState: { errors }, } = useForm();
+ 
+  const [addAddress] = useAddAddressMutation();
+  const [addUser] = useAddUserMutation(); 
 
-  if (countriesLoading || categoryDetailLoading) return <div>Loading...</div>;
-  if (countriesError) return <div>Error fetching countries</div>;
-  if (categoryDetailError)
-    return <div>Error fetching categories: {categoryDetailError.message}</div>;
+  const { formData } = state || {};
 
-  const onSubmit = async (formData) => {
+  const { data: countryData, error: countryError, isLoading: countryIsLoading } = useGetCategoryDetailQuery(["Country", ""]);
+  const { data: addressTypeData, error: addressTypeError, isLoading: addressTypeIsLoading } = useGetCategoryDetailQuery(["Address Type", ""]);
+   
+  const getCategoryDetailsByTitle = (data, title) => {
+    const categoryObject = data?.$values?.find((item) => item.title === title);
+    return categoryObject?.lookupCategoryDetail?.$values || [];
+  };
+
+  const countryDetail = getCategoryDetailsByTitle(countryData, "Country");
+  const addressTypeDetail = getCategoryDetailsByTitle(addressTypeData, "Address Type");
+
+  const onSubmit = async (data) => {
+    console.log("onSubmit called with formData:", formData);
+    
+    if (!formData || !formData.userId) {
+      alert("No user data found");
+      return;
+    }
+
     try {
-      const updatedFormData = {
-        ...formData,
+      // Prepare addressPayload with correct IDs
+      const addressPayload = {
+        addressTypeId: data.addressTypeId, // Ensure this is the correct ID
+        addressPrimary: data.addressPrimary,
+        address1: data.address1,
+        address2: data.address2,
+        countryId: data.countryId, // Ensure this is the correct ID
+        city: data.city,
+        state: data.state,
+        postalCode: data.postalCode,
+        userId: formData.userId, // Use userId from formData
         createdBy: 1,
         createdDate: new Date(),
         updatedBy: 1,
         updatedDate: new Date(),
-        isActive: true,
+        isActive: true
       };
-      await addAddress(updatedFormData).unwrap();
+
+      console.log("Address data being sent:", addressPayload);
+      const addressResponse = await addAddress(addressPayload).unwrap();
+
+      console.log("Address added successfully:", addressResponse);
       alert("Address added successfully");
+      navigate("/registerandlogin"); // Navigate to a success page or another desired page
     } catch (err) {
       console.error("Failed to add address:", err);
-      alert("Failed to add address:", err.message);
+      alert(`Failed to add address: ${err.message}`);
     }
   };
 
-  const renderCategoryOptions = (categories) => {
-    if (!Array.isArray(categories)) return null;
-    return categories.map((category) => (
-      <option key={category} value={category}>
-        {category}
-      </option>
-    ));
-  };
-
-  const renderCountryOptions = (countries) => {
-    if (!Array.isArray(countries)) return null;
-    return countries.map((country, index) => (
-      <option key={index} value={country?.title}>
-        {country?.title}
-      </option>
-    ));
-  };
 
   return (
     <>
@@ -92,14 +89,11 @@ const Address = () => {
                               {...register("addressType", { required: true })}
                             >
                               <option value="">Select Address Type</option>
-                              {Array.isArray(categoryDetails) &&
-                                categoryDetails.map((type) => (
-                                  <option
-                                    key={type.lookUpCtgDetailId}
-                                    value={type.title}
-                                  >
-                                    {type.title}
-                                  </option>
+                               
+                                {addressTypeDetail.map((address, index) => (
+                                    <option key={index} value={address}>
+                                        {address}
+                                    </option>
                                 ))}
                             </select>
 
@@ -125,6 +119,7 @@ const Address = () => {
                             placeholder="Address 1"
                             {...register("address1", { required: true })}
                           />
+                          {errors.address1}
                         </div>
                       </div>
 
@@ -145,11 +140,10 @@ const Address = () => {
                               {...register("country", { required: true })}
                             >
                               <option value="">-----Select Country-----</option>
-                              {Array.isArray(countries) &&
-                                countries.map((country, index) => (
-                                  <option key={index} value={country?.title}>
-                                    {country?.title}
-                                  </option>
+                                {countryDetail.map((country, index) => (
+                                    <option key={index} value={country}>
+                                        {country}
+                                    </option>
                                 ))}
                             </select>
                             {errors.country && <p>This field is required</p>}
@@ -191,12 +185,11 @@ const Address = () => {
                         <button
                           className="btn btn-warning btn-lg"
                           type="submit"
-                          disabled={isLoading}
                         >
-                          {isLoading ? "Signing Up..." : "Sign Up"}
+                          Submit
                         </button>
 
-                        {error && <p>Failed to sign up. Please try again.</p>}
+                        {/* {errors && <p>Failed to sign up. Please try again.</p>} */}
                       </div>
                       <div className=" text-end">
                         <Link to="/">

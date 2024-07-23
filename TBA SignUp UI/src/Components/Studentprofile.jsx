@@ -15,8 +15,10 @@ function StudentProfile() {
   const sponsorId = queryParams.get("sponsorId");
   const navigate = useNavigate();
   const { data, error, isLoading } = useGetStudentByIdQuery(studentId);
+  
   const { data: dataFrequency, error: frequencyError, isLoading: frequencyIsLoading } = useGetCategoryDetailQuery(["Donation Frequency", ""], {});
   const { data: dataChannel, error: channelError, isLoading: channelIsLoading } = useGetCategoryDetailQuery(["Donation Channel", ""], {});
+  
   const [formData, setFormData] = useState({
     donationAmount: "",
     donationFrequency: "Monthly",
@@ -99,6 +101,13 @@ function StudentProfile() {
     class: studentClass,
     language,
     residenceStatus,
+    address1,
+    address2,
+    addressType,
+    city,
+    country,
+    state,
+    postalCode,
     studentFamilies,
   } = data;
 
@@ -165,18 +174,61 @@ function StudentProfile() {
           <div className="row ms-2">
             <div className="col-3 divcolor fw-bold">Residence Status</div>
             <div className="col-3 divcolor">{residenceStatus}</div>
+            <div className='col-3 divcolor fw-bold'> Postal Code </div>
+            <div className='col-3 divcolor'>{postalCode}</div>
+
           </div>
-          <div className="row mt-4 ms-2">
-            <div className="col-3">
-              <Link to={`/studentupdate/${studentId}`} className="btn btn-primary">
-                Edit Profile
-              </Link>
-            </div>
-          </div>
+          <div className='row ms-2'>
+                    <div className='col-3 divcolor fw-bold'>
+                        Address 1
+                    </div>
+                    <div className='col-9 divcolor'>
+                        {address1}
+                    </div>
+                </div>
+
+                <div className='row ms-2'>
+                    <div className='col-3 divcolor fw-bold'>
+                        Address 2
+                    </div>
+                    <div className='col-9 divcolor'>
+                        {address2}
+                    </div>
+                </div>
+
+                <div className='row ms-2'>
+                    <div className='col-3 divcolor fw-bold'>
+                        Address Type
+                    </div>
+                    <div className='col-3 divcolor'>
+                        {addressType}
+                    </div>
+                    <div className='col-3 divcolor fw-bold'>
+                        State
+                    </div>
+                    <div className='col-3 divcolor'>
+                        {state}
+                    </div>
+                </div>
+
+                <div className='row ms-2'>
+                    <div className='col-3 divcolor fw-bold'>
+                        City
+                    </div>
+                    <div className='col-3 divcolor'>
+                        {city}
+                    </div>
+                    <div className='col-3 divcolor fw-bold'>
+                        Country
+                    </div>
+                    <div className='col-3 divcolor'>
+                        {country}
+                    </div>
+                </div>
         </div>
-      </div>
+      
       {familyMembers.length > 0 && (
-          <div className="mt-2 mb-5 ps-3 pe-5">
+          <div className=" mt-2 mb-5 ps-3 pe-5">
             <h4 className="ms-2 textcolor">Family Details</h4>
             <div className="row ms-2 text-center">
               <div className="col-1 divcolor fw-bold">S.No</div>
@@ -204,6 +256,15 @@ function StudentProfile() {
             ))}
           </div>
         )}
+
+        <div className="row mt-4 ms-2">
+            <div className="col-3">
+              <Link to={`/studentupdate/${studentId}`} className="btn btn-primary">
+                Edit Profile
+              </Link>
+            </div>
+          </div>
+        </div>
       <div className="profilediv ms-2 mt-5 me-2">
         <form onSubmit={handleSubmit}>
           <h4 className="ms-2 mt-3 mb-4 textcolor">Add to Sponsorship</h4>
@@ -211,7 +272,7 @@ function StudentProfile() {
             <div className="col-3 divcolor fw-bold">Donation Amount</div>
             <div className="col-3 divcolor">
               <input
-                type="text"
+                type="number"
                 name="donationAmount"
                 value={formData.donationAmount}
                 onChange={handleChange}
@@ -227,9 +288,9 @@ function StudentProfile() {
                 className="form-control"
               >
                 <option value="">Select Frequency</option>
-                {donationFrequencies.map((item) => (
-                  <option key={item.lookupValueId} value={item.title}>
-                    {item.title}
+                {donationFrequencies.map((frequency, index) => (
+                  <option key={index.lookupValueId} value={frequency}>
+                    {frequency}
                   </option>
                 ))}
               </select>
@@ -255,9 +316,9 @@ function StudentProfile() {
                 className="form-control"
               >
                 <option value="">Select Channel</option>
-                {donationChannels.map((item) => (
-                  <option key={item.lookupValueId} value={item.title}>
-                    {item.title}
+                {donationChannels.map((frequency, index) => (
+                  <option key={index.lookupValueId} value={frequency}>
+                    {frequency}
                   </option>
                 ))}
               </select>

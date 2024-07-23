@@ -40,10 +40,6 @@ namespace User.Management.Data.Models
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
 
-        //[ForeignKey("Students")]
-        //public int? StudentId { get; set; }
-        //public virtual Student Students { get; set; }
-
         [ForeignKey("CountryId")]
         public int? CountryId { get; set; }
         public virtual LookUpCategoryDetail CountryDetail { get; set; }

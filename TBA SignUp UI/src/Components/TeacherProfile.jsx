@@ -7,6 +7,7 @@ import {
   useGetTeacherByIdQuery,
   useUpdateTeacherMutation,
 } from "../services/Teacher";
+import { useGetAddressByIdQuery } from "../services/Address";
 
 function TeacherProfile() {
   const { id } = useParams();
@@ -111,10 +112,59 @@ function TeacherProfile() {
               <div className="col-3 divcolor">{teacher?.certification}</div>
             </div>
             <div className="row ms-2">
-              
               <div className="col-3 divcolor fw-bold">Salary</div>
               <div className="col-3 divcolor">{teacher?.salary}</div>
+              <div className="col-3 divcolor fw-bold">Postal Code</div>
+              <div className="col-3 divcolor">{teacher?.postalCode}</div>
             </div>
+
+            <div className='row ms-2'>
+                    <div className='col-3 divcolor fw-bold'>
+                        Address 1
+                    </div>
+                    <div className='col-9 divcolor'>
+                        {teacher?.address1}
+                    </div>
+                </div>
+
+                <div className='row ms-2'>
+                    <div className='col-3 divcolor fw-bold'>
+                        Address 2
+                    </div>
+                    <div className='col-9 divcolor'>
+                        {teacher?.address2}
+                    </div>
+                </div>
+
+                <div className='row ms-2'>
+                    <div className='col-3 divcolor fw-bold'>
+                        Address Type
+                    </div>
+                    <div className='col-3 divcolor'>
+                        {teacher?.addressType}
+                    </div>
+                    <div className='col-3 divcolor fw-bold'>
+                        State
+                    </div>
+                    <div className='col-3 divcolor'>
+                        {teacher?.state}
+                    </div>
+                </div>
+
+                <div className='row ms-2'>
+                    <div className='col-3 divcolor fw-bold'>
+                        City
+                    </div>
+                    <div className='col-3 divcolor'>
+                        {teacher?.city}
+                    </div>
+                    <div className='col-3 divcolor fw-bold'>
+                        Country
+                    </div>
+                    <div className='col-3 divcolor'>
+                        {teacher?.country}
+                    </div>
+                </div>
           </div>
         ) : (
           <Form onSubmit={handleSubmit(onSubmit)}>

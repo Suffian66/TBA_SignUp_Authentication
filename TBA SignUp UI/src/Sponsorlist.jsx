@@ -2,20 +2,29 @@ import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Cart } from 'react-bootstrap-icons';
 import { useGetAllSponsorsQuery } from './services/Sponsorlist';
+import { useGetTeacherListQuery } from './services/Teacher';
 
 const Sponsorlist = () => {
-    const { data: sponsorsResponse, error, isLoading } = useGetAllSponsorsQuery();
+    const { data: sponsorsResponse, error: sponsorError, isLoading: sponsorLoading } = useGetAllSponsorsQuery();
+    const { data: teachersResponse, error: teacherError, isLoading: teacherLoading } = useGetTeacherListQuery();
 
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message || 'An error occurred'}</div>;
+    if (sponsorLoading || teacherLoading) return <div>Loading...</div>;
+    if (sponsorError) return <div>Error: {sponsorError.message || 'An error occurred'}</div>;
+    if (teacherError) return <div>Error: {teacherError.message || 'An error occurred'}</div>;
 
-    console.log('Sponsors data:', sponsorsResponse);
+    const sponsors = sponsorsResponse?.$values || [];
+    const teachers = teachersResponse?.$values || [];
 
-    const sponsors = sponsorsResponse && sponsorsResponse.$values ? sponsorsResponse.$values : [];
+    // Extract userIds of teachers
+    const teacherIds = new Set(teachers.map(teacher => teacher.userId));
 
-    if (!Array.isArray(sponsors) || sponsors.length === 0) {
+    // Filter sponsors to exclude those who are also teachers
+    const filteredSponsors = sponsors.filter(sponsor => !teacherIds.has(sponsor.id));
+
+    if (filteredSponsors.length === 0) {
         return <div>No sponsors available</div>;
     }
+
 
     return (
         <>
@@ -45,7 +54,7 @@ const Sponsorlist = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {sponsors.map((sponsor, index) => (
+                                    {filteredSponsors.map((sponsor, index) => (
                                         <tr key={sponsor.id} style={{ height: '40px' }}>
                                             <td>{index + 1}</td>
                                             <td>{sponsor.namePrefix}</td>

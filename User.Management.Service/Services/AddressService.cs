@@ -49,40 +49,6 @@ namespace User.Management.Services
         }
 
 
-        //public async Task<IEnumerable<AddressStudentDto>> GetAllStudentAddressesAsync()
-        //{
-        //    try
-        //    {
-        //        var addresses = await _context.StudentAddress
-        //                                 .Include(a => a.CountryDetail)
-        //                                 .Include(a => a.AddressDetail)
-        //                                 .Include(a => a.Students)
-        //                                 .ToListAsync();
-
-        //        var result = addresses.Select(a => new AddressStudentDto
-        //        {
-        //            StudentAddressId = a.StudentAddressId,
-        //            AddressPrimary = a.AddressPrimary,
-        //            Address1 = a.Address1,
-        //            Address2 = a.Address2,
-        //            Country = a.CountryDetail?.Title,
-        //            AddressType = a.AddressDetail?.Title,
-        //            City = a.City,
-        //            PostalCode = a.PostalCode,
-        //            State = a.State,
-        //            StudentId = a.StudentId
-        //        }).ToList();
-
-        //        return result;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error in GetAllAddressesAsync: {ex.ToString()}");
-        //        throw;
-        //    }
-        //}
-
-
         public async Task<Address?> GetAddressByIdAsync(string id)
         {
             if(id == null)

@@ -36,7 +36,7 @@ const TeacherForm1 = () => {
       <section className="gradient-custom">
         <div className="container py-5 h-100">
           <div className="row justify-content-center align-items-center h-100">
-            <div className="col-12 col-lg-9 col-xl-7">
+            <div className="col-lg-10  studentform">
               <div
                 className="card shadow-2-strong card-registration shadow-lg"
                 style={{ borderRadius: "20px" }}

@@ -72,6 +72,11 @@ function StudentUpdate() {
         language: data.language || "",
         residenceStatus: data.residenceStatus || "",
         country: data.country || "",
+        familyMemberName: data.familyMemberName || "",
+        familyRelation: data.familyRelation || "",
+        qualification: data.qualification || "",
+        personOccupation: data.personOccupation || "",
+        personIncome: data.personIncome || ""
       });
     }
   }, [data]);
@@ -254,6 +259,62 @@ function StudentUpdate() {
                 </option>
               ))}
             </select>
+          </div>
+        </div>
+        <div className="row ms-2">
+          <div className="col-3 divcolor fw-bold">Family Member Name</div>
+          <div className="col-3 divcolor">
+            <input
+              type="text"
+              name="familyMemberName"
+              defaultValue={studentEditData.familyMemberName}
+              onChange={handleEditChange}
+              className="form-control"
+            />
+          </div>
+          <div className="col-3 divcolor fw-bold">Family Relation</div>
+          <div className="col-3 divcolor">
+            <input
+              type="text"
+              name="familyRelation"
+              defaultValue={studentEditData.familyRelation}
+              onChange={handleEditChange}
+              className="form-control"
+            />
+          </div>
+        </div>
+        <div className="row ms-2">
+          <div className="col-3 divcolor fw-bold">Qualification</div>
+          <div className="col-3 divcolor">
+            <input
+              type="text"
+              name="qualification"
+              defaultValue={studentEditData.qualification}
+              onChange={handleEditChange}
+              className="form-control"
+            />
+          </div>
+          <div className="col-3 divcolor fw-bold">Occupation</div>
+          <div className="col-3 divcolor">
+            <input
+              type="text"
+              name="personOccupation"
+              defaultValue={studentEditData.personOccupation}
+              onChange={handleEditChange}
+              className="form-control"
+            />
+          </div>
+        </div>
+        <div className="row ms-2">
+          <div className="col-3 divcolor fw-bold">Income</div>
+          <div className="col-3 divcolor">
+            <input
+              type="number"
+              name="personIncome"
+              defaultValue={studentEditData.personIncome}
+              onChange={handleEditChange}
+              className="form-control"
+            />
           </div>
         </div>
         <div className="row float-start mt-5 ms-1">

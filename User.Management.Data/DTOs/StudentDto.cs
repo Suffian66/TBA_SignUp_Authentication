@@ -1,8 +1,4 @@
-﻿
-
-using User.Management.Data.Models;
-
-namespace User.Management.Data.Dto
+﻿namespace User.Management.Data.Dto
 {
     public class StudentDto
     {
@@ -27,6 +23,10 @@ namespace User.Management.Data.Dto
         public string PostalCode { get; set; }
         public string? Country { get; set; }
         public string? AddressType { get; set; }
-        public List<StudentFamily> StudentFamilies { get; set; }
+        public string FamilyMemberName { get; set; }
+        public string FamilyRelation { get; set; }
+        public string Qualification { get; set; }
+        public string PersonOccupation { get; set; }
+        public int PersonIncome { get; set; }
     }
 }

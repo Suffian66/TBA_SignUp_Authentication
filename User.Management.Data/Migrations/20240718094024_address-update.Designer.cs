@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using User.Management.Data.Models;
 
@@ -11,9 +12,10 @@ using User.Management.Data.Models;
 namespace User.Management.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240718094024_address-update")]
+    partial class addressupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,35 +53,35 @@ namespace User.Management.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c5b3bef0-7b50-4941-be78-fb8fd1c3e327",
+                            Id = "53c2313f-fa8d-401e-876e-857bd5e3bdf3",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "e3811bef-7f4c-417b-83ad-ca1ca8bb852a",
+                            Id = "fe13d603-ff5b-4c38-942d-b23578c4622a",
                             ConcurrencyStamp = "2",
                             Name = "Sponsor",
                             NormalizedName = "Sponsor"
                         },
                         new
                         {
-                            Id = "53945762-8991-4ace-9aaa-7390a60d4bc0",
+                            Id = "010054e8-5f24-41c2-90d5-76b49ef8b359",
                             ConcurrencyStamp = "3",
                             Name = "Teacher",
                             NormalizedName = "Teacher"
                         },
                         new
                         {
-                            Id = "9a46655c-1323-4472-a33a-6e36cebd010e",
+                            Id = "d9a7666d-4baa-4c40-8b05-c5728a49dad9",
                             ConcurrencyStamp = "4",
                             Name = "Student",
                             NormalizedName = "Student"
                         },
                         new
                         {
-                            Id = "a3d54f8b-67af-4c9c-8632-50a7aec92486",
+                            Id = "0a76f359-6b0f-4a34-9e0e-40e6c998f0c9",
                             ConcurrencyStamp = "5",
                             Name = "AssistanceTeacher",
                             NormalizedName = "AssistantTeacher"
@@ -206,6 +208,7 @@ namespace User.Management.Data.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Address2")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -233,6 +236,7 @@ namespace User.Management.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("PostalCode")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -254,8 +258,6 @@ namespace User.Management.Data.Migrations
                     b.HasKey("AddressId");
 
                     b.HasIndex("AddressTypeId");
-
-                    b.HasIndex("CountryId");
 
                     b.HasIndex("CountryId");
 

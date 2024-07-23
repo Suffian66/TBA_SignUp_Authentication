@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace User.Management.Data.Models
 {
@@ -31,6 +30,8 @@ namespace User.Management.Data.Models
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<MapTeacherSubject> MapTeacherSubject { get; set; }
         public DbSet<MapClassSubjectTeacher> MapClassSubjectTeacher { get; set; }
+        public DbSet<StudentAttendance> StudentAttendance { get; set; }
+
 
 
 
@@ -142,8 +143,7 @@ namespace User.Management.Data.Models
                     new IdentityRole() { Name = "Admin", ConcurrencyStamp = "1", NormalizedName = "Admin" },
                     new IdentityRole() { Name = "Sponsor", ConcurrencyStamp = "2", NormalizedName = "Sponsor" },
                     new IdentityRole() { Name = "Teacher", ConcurrencyStamp = "3", NormalizedName = "Teacher" },
-                    new IdentityRole() { Name = "Student", ConcurrencyStamp = "4", NormalizedName = "Student" },
-                    new IdentityRole() { Name = "AssistanceTeacher", ConcurrencyStamp = "5", NormalizedName = "AssistantTeacher" }
+                    new IdentityRole() { Name = "Student", ConcurrencyStamp = "4", NormalizedName = "Student" }
 
                 );
 

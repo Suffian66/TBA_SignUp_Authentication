@@ -12,6 +12,6 @@ namespace User.Management.Service.Services
 
         Task<UpdateStudentDto> UpdateStudentAsync(int studentId, UpdateStudentDto dto);
 
-        Task<UpdateStudentFamilyDto> UpdateStudentFamilyAsync(int studentId, UpdateStudentFamilyDto updateStudentFamilyDto);
+        //Task<UpdateStudentFamilyDto> UpdateStudentFamilyAsync(int studentFamilyId, UpdateStudentFamilyDto updateStudentFamilyDto);
     }
 }

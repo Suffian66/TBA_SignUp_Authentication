@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { PersonFill } from "react-bootstrap-icons";
-import { useGetStudentByIdQuery, useUpdateStudentMutation } from "../services/Studentlist";
+import { useGetStudentByIdQuery } from "../services/Studentlist";
 import { useAddMapSponsorStudentMutation } from "../services/MapSponsor";
 import { useState } from "react";
 import { useGetCategoryDetailQuery } from "../services/LookUp";
@@ -99,10 +99,18 @@ function StudentProfile() {
     class: studentClass,
     language,
     residenceStatus,
-    studentFamilies,
+    familyMemberName,
+    familyRelation,
+    personOccupation,
+    personIncome,
+    qualification,
+    
   } = data;
 
-  const familyMembers = studentFamilies && studentFamilies.$values ? studentFamilies.$values : [];
+  
+  
+
+
   const getCategoryDetailsByTitle = (data, title) => {
     const categoryObject = data?.$values.find((item) => item.title === title);
     return categoryObject?.lookupCategoryDetail?.$values || [];
@@ -166,150 +174,159 @@ function StudentProfile() {
             <div className="col-3 divcolor fw-bold">Residence Status</div>
             <div className="col-3 divcolor">{residenceStatus}</div>
           </div>
-          <div className="row mt-4 ms-2">
-            <div className="col-3">
+         
+        </div>
+    
+      
+      
+    
+        <div className="mt-2 mb-5 ps-3 pe-5">
+          <h4 className="ms-2 textcolor">Family Details</h4>
+          <div className="row ms-2 text-center">
+      
+            <div className="col-3 divcolor fw-bold">Name of Member</div>
+            <div className="col-2 divcolor fw-bold">Relation</div>
+            <div className="col-3 divcolor fw-bold">Occupation</div>
+            <div className="col-2 divcolor fw-bold">Qualification</div>
+            <div className="col-2 divcolor fw-bold">Income</div>
+          </div>
+         
+            <div  className="row ms-2 text-center">
+            
+              <div className="col-3 divcolor">
+                {familyMemberName || "NA"}
+              </div>
+              <div className="col-2 divcolor">
+                {familyRelation}
+              </div>
+              <div className="col-3 divcolor">
+                {personOccupation}
+              </div>
+              <div className="col-2 divcolor">
+                {qualification}
+              </div>
+              <div className="col-2 divcolor">
+                {personIncome}
+              </div>
+            </div>
+            <div className="row mt-4 ms-2">
+            <div className=" justify-content-end d-flex">
               <Link to={`/studentupdate/${studentId}`} className="btn btn-primary">
                 Edit Profile
               </Link>
             </div>
           </div>
         </div>
-      </div>
-      {familyMembers.length > 0 && (
-          <div className="mt-2 mb-5 ps-3 pe-5">
-            <h4 className="ms-2 textcolor">Family Details</h4>
-            <div className="row ms-2 text-center">
-              <div className="col-1 divcolor fw-bold">S.No</div>
-              <div className="col-4 divcolor fw-bold">Name of Member</div>
-              <div className="col-2 divcolor fw-bold">Relation</div>
-              <div className="col-3 divcolor fw-bold">Occupation</div>
-              <div className="col-2 divcolor fw-bold">Income</div>
-            </div>
-            {familyMembers.map((familyMember, index) => (
-              <div key={index} className="row ms-2 text-center">
-                <div className="col-1 divcolor ">{index + 1}</div>
-                <div className="col-4 divcolor ">
-                  {familyMember.familyMemberName || "NA"}
-                </div>
-                <div className="col-2 divcolor ">
-                  {familyMember.familyRelation}
-                </div>
-                <div className="col-3 divcolor ">
-                  {familyMember.personOccupation}
-                </div>
-                <div className="col-2 divcolor ">
-                  {familyMember.personIncome}
-                </div>
+    <hr />
+     </div>
+      <div className="justify-content-end d-flex me-5">
+        <div className="profilediv ms-2 mt-5 me-2">
+          <form onSubmit={handleSubmit}>
+            <h4 className="ms-2 mt-3 mb-4 textcolor">Add to Sponsorship</h4>
+            <div className="row ms-2">
+              <div className="col-3 divcolor fw-bold">Donation Amount</div>
+              <div className="col-3 divcolor">
+                <input
+                  type="text"
+                  name="donationAmount"
+                  value={formData.donationAmount}
+                  onChange={handleChange}
+                  className="form-control"
+                />
               </div>
-            ))}
-          </div>
-        )}
-      <div className="profilediv ms-2 mt-5 me-2">
-        <form onSubmit={handleSubmit}>
-          <h4 className="ms-2 mt-3 mb-4 textcolor">Add to Sponsorship</h4>
-          <div className="row ms-2">
-            <div className="col-3 divcolor fw-bold">Donation Amount</div>
-            <div className="col-3 divcolor">
-              <input
-                type="text"
-                name="donationAmount"
-                value={formData.donationAmount}
-                onChange={handleChange}
-                className="form-control"
-              />
+              <div className="col-3 divcolor fw-bold">Donation Frequency</div>
+              <div className="col-3 divcolor">
+                <select
+                  name="donationFrequency"
+                  value={formData.donationFrequency}
+                  onChange={handleChange}
+                  className="form-control"
+                >
+                  <option value="">Select Frequency</option>
+                  {donationFrequencies.map((item) => (
+                    <option key={item.lookupValueId} value={item.title}>
+                      {item.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-            <div className="col-3 divcolor fw-bold">Donation Frequency</div>
-            <div className="col-3 divcolor">
-              <select
-                name="donationFrequency"
-                value={formData.donationFrequency}
-                onChange={handleChange}
-                className="form-control"
-              >
-                <option value="">Select Frequency</option>
-                {donationFrequencies.map((item) => (
-                  <option key={item.lookupValueId} value={item.title}>
-                    {item.title}
-                  </option>
-                ))}
-              </select>
+            <div className="row ms-2">
+              <div className="col-3 divcolor fw-bold">Donation Start Date</div>
+              <div className="col-3 divcolor">
+                <input
+                  type="date"
+                  name="donationStartDate"
+                  value={formData.donationStartDate}
+                  onChange={handleChange}
+                  className="form-control"
+                />
+              </div>
+              <div className="col-3 divcolor fw-bold">Donation Channel</div>
+              <div className="col-3 divcolor">
+                <select
+                  name="donationChannel"
+                  value={formData.donationChannel}
+                  onChange={handleChange}
+                  className="form-control"
+                >
+                  <option value="">Select Channel</option>
+                  {donationChannels.map((item) => (
+                    <option key={item.lookupValueId} value={item.title}>
+                      {item.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-          </div>
-          <div className="row ms-2">
-            <div className="col-3 divcolor fw-bold">Donation Start Date</div>
-            <div className="col-3 divcolor">
-              <input
-                type="date"
-                name="donationStartDate"
-                value={formData.donationStartDate}
-                onChange={handleChange}
-                className="form-control"
-              />
+            <div className="row ms-2">
+              <div className="col-3 divcolor fw-bold">Donation Source Account</div>
+              <div className="col-3 divcolor">
+                <input
+                  type="text"
+                  name="donationSourceAccount"
+                  value={formData.donationSourceAccount}
+                  onChange={handleChange}
+                  className="form-control"
+                />
+              </div>
+              <div className="col-3 divcolor fw-bold">Donation Destination Account</div>
+              <div className="col-3 divcolor">
+                <input
+                  type="text"
+                  name="donationDestinationAccount"
+                  value={formData.donationDestinationAccount}
+                  onChange={handleChange}
+                  className="form-control"
+                />
+              </div>
             </div>
-            <div className="col-3 divcolor fw-bold">Donation Channel</div>
-            <div className="col-3 divcolor">
-              <select
-                name="donationChannel"
-                value={formData.donationChannel}
-                onChange={handleChange}
-                className="form-control"
-              >
-                <option value="">Select Channel</option>
-                {donationChannels.map((item) => (
-                  <option key={item.lookupValueId} value={item.title}>
-                    {item.title}
-                  </option>
-                ))}
-              </select>
+            <div className="row ms-2">
+              <div className="col-3 divcolor fw-bold">Notes</div>
+              <div className="col-9 divcolor">
+                <textarea
+                  name="notes"
+                  value={formData.notes}
+                  onChange={handleChange}
+                  className="form-control"
+                />
+              </div>
             </div>
-          </div>
-          <div className="row ms-2">
-            <div className="col-3 divcolor fw-bold">Donation Source Account</div>
-            <div className="col-3 divcolor">
-              <input
-                type="text"
-                name="donationSourceAccount"
-                value={formData.donationSourceAccount}
-                onChange={handleChange}
-                className="form-control"
-              />
+            <div className="row float-start mt-5 ms-1">
+              <div className="d-flex">
+                <button className="btn btn-success me-2" type="submit">
+                  Add Sponsorship
+                </button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => navigate(-1)}
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
-            <div className="col-3 divcolor fw-bold">Donation Destination Account</div>
-            <div className="col-3 divcolor">
-              <input
-                type="text"
-                name="donationDestinationAccount"
-                value={formData.donationDestinationAccount}
-                onChange={handleChange}
-                className="form-control"
-              />
-            </div>
-          </div>
-          <div className="row ms-2">
-            <div className="col-3 divcolor fw-bold">Notes</div>
-            <div className="col-9 divcolor">
-              <textarea
-                name="notes"
-                value={formData.notes}
-                onChange={handleChange}
-                className="form-control"
-              />
-            </div>
-          </div>
-          <div className="row float-start mt-5 ms-1">
-            <div className="d-flex">
-              <button className="btn btn-success me-2" type="submit">
-                Add Sponsorship
-              </button>
-              <button
-                className="btn btn-secondary"
-                onClick={() => navigate(-1)}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </>
   );

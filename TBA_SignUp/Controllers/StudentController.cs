@@ -98,25 +98,25 @@ namespace TBA_SignUp.Controllers
             }
         }
 
-        [HttpPut("[action]")]
-        public async Task<IActionResult> UpdateStudentFamily(int studentId, [FromBody] UpdateStudentFamilyDto updateStudentFamilyDto)
-        {
-            var result = await _studentfamily.UpdateStudentFamilyAsync(studentId, updateStudentFamilyDto);
-            try
-            {
-                if (result != null)
-                {
-                    return Ok(result);
-                }
-            }
+        //[HttpPut("[action]")]
+        //public async Task<IActionResult> UpdateStudentFamily(int studentFamilyId, [FromBody] UpdateStudentFamilyDto updateStudentFamilyDto)
+        //{
+        //    var result = await _studentfamily.UpdateStudentFamilyAsync(studentFamilyId, updateStudentFamilyDto);
+        //    try
+        //    {
+        //        if (result != null)
+        //        {
+        //            return Ok(result);
+        //        }
+        //    }
 
-            catch (Exception)
-            {
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
-            return NotFound();
-        }
+        //        throw;
+        //    }
+        //    return NotFound();
+        //}
 
 
 

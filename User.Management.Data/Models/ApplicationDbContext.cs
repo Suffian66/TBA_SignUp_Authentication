@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace User.Management.Data.Models
 {
@@ -31,6 +30,8 @@ namespace User.Management.Data.Models
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<MapTeacherSubject> MapTeacherSubject { get; set; }
         public DbSet<MapClassSubjectTeacher> MapClassSubjectTeacher { get; set; }
+        public DbSet<StudentAttendance> StudentAttendance { get; set; }
+
 
 
 

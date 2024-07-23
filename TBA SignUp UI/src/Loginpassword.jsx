@@ -28,6 +28,7 @@ import Bank from "./Components/Bank.jsx";
 import ClassList from "./ClassList.jsx";
 import ClassWiseStudentList from "./ClassWiseStudentList.jsx";
 import StudentUpdate from "./Components/StudentUpdate.jsx";
+import UpdateStudentFamily from "./Components/UpdateStudentFamily.jsx";
 
 const router = createBrowserRouter([
   {
@@ -264,6 +265,11 @@ const router = createBrowserRouter([
 
     path:"/studentupdate/:id",
     element:<StudentUpdate/>,        
+  } ,
+  {
+
+    path:"/studentfamilyupdate/:studentFamilyId",
+    element:<UpdateStudentFamily/>,        
   } 
 ]);
 

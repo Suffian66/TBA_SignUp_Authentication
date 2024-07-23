@@ -28,6 +28,6 @@ export const Studentlist = createApi({
   })
 });
 
-export const { useGetAllStudentsQuery, useGetStudentByIdQuery, useCreateStudentMutation, useUpdateStudentMutation } = Studentlist;
+export const { useGetAllStudentsQuery, useGetStudentByIdQuery, useCreateStudentMutation, useUpdateStudentMutation, useUpdateStudentFamilyMutation } = Studentlist;
 
 export default Studentlist;

@@ -65,7 +65,7 @@ namespace User.Management.Service.Services
             var address = _context.StudentAddress.FirstOrDefault(a => a.StudentId == studentId);
             var country = address != null ? _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == address.CountryId) : null;
             var addressType = address != null ? _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == address.AddressTypeId) : null;
-            var studentsFamily = _context.StudentFamily.Where(x => x.StudentId == studentId).ToList();
+            var studentsFamily = _context.StudentFamily.FirstOrDefault(x => x.StudentId == studentId);
 
             var result = new StudentDto
             {
@@ -90,7 +90,12 @@ namespace User.Management.Service.Services
                 PostalCode = address?.PostalCode,
                 Country = country?.Title,
                 AddressType = addressType?.Title,
-                StudentFamilies = studentsFamily
+                FamilyMemberName = studentsFamily.FamilyMemberName,
+                FamilyRelation = studentsFamily.FamilyRelation,
+                PersonOccupation = studentsFamily.PersonOccupation,
+                Qualification = studentsFamily.Qualification,
+                PersonIncome = studentsFamily.PersonIncome,
+
             };
 
             return result;
@@ -167,6 +172,7 @@ namespace User.Management.Service.Services
             var languageEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.Language);
             var residenceEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.ResidenceStatus);
             var classEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.Class);
+            var studentFamily = await _context.StudentFamily.FirstOrDefaultAsync(s => s.StudentId == studentId);
 
             student.FirstName = dto.FirstName;
             student.LastName = dto.LastName;
@@ -181,35 +187,41 @@ namespace User.Management.Service.Services
             student.DateOfSchoolLeaving = dto.DateOfSchoolLeaving;
             student.MedicalNeeds = dto.MedicalNeeds;
             student.ClassId = classEntity?.LookUpCtgDetailId;
+            studentFamily.FamilyMemberName = dto.FamilyMemberName;
+            studentFamily.FamilyRelation = dto.FamilyRelation;
+            studentFamily.PersonOccupation = dto.PersonOccupation;
+            studentFamily.PersonIncome = dto.PersonIncome;
+            studentFamily.Qualification = dto.Qualification;
 
             //_context.Students.Update(student);
             await _context.SaveChangesAsync();
             return dto;
         }
-        public async Task<UpdateStudentFamilyDto> UpdateStudentFamilyAsync(int studentId, UpdateStudentFamilyDto updateStudentFamilyDto)
-        {
-            // Fetch the student family entity based on studentId and family member name
-            var studentFamily = await _context.StudentFamily
-                .FirstOrDefaultAsync(sf => sf.StudentId == studentId && sf.FamilyMemberName == updateStudentFamilyDto.FamilyMemberName);
+        //public async Task<UpdateStudentFamilyDto> UpdateStudentFamilyAsync(int studentFamilyId, UpdateStudentFamilyDto updateStudentFamilyDto)
+        //{
+        //    // Fetch the student family entity based on studentId and family member name
+        //    var studentFamily = _context.StudentFamily
+        //        .FirstOrDefault(sf => sf.StudentId == studentFamilyId);
 
-            if (studentFamily == null)
-            {
-                // Handle the case where the family member is not found
-                return null;
-            }
+        //    if (studentFamily == null)
+        //    {
+        //        // Handle the case where the family member is not found
+        //        return null;
+        //    }
 
-            // Update the student family details
-            studentFamily.FamilyRelation = updateStudentFamilyDto.FamilyRelation;
-            studentFamily.Qualification = updateStudentFamilyDto.Qualification;
-            studentFamily.PersonOccupation = updateStudentFamilyDto.PersonOccupation;
-            studentFamily.PersonIncome = updateStudentFamilyDto.PersonIncome;
+        //    // Update the student family details
+        //    studentFamily.FamilyMemberName = updateStudentFamilyDto.FamilyMemberName;
+        //    studentFamily.FamilyRelation = updateStudentFamilyDto.FamilyRelation;
+        //    studentFamily.Qualification = updateStudentFamilyDto.Qualification;
+        //    studentFamily.PersonOccupation = updateStudentFamilyDto.PersonOccupation;
+        //    studentFamily.PersonIncome = updateStudentFamilyDto.PersonIncome;
 
-            // Save the changes
-            //_context.StudentFamily.Update(studentFamily);
-            _context.SaveChangesAsync();
+        //    // Save the changes
+        //    //_context.StudentFamily.Update(studentFamily);
+        //    _context.SaveChangesAsync();
 
-            return updateStudentFamilyDto;
-        }
+        //    return updateStudentFamilyDto;
+        //}
 
     }
 }

@@ -15,7 +15,11 @@
         public DateTime? DateOfSchoolLeaving { get; set; }
         public string? MedicalNeeds { get; set; }
         public string? Class { get; set; }
-
+        public string? FamilyMemberName { get; set; }
+        public string? FamilyRelation { get; set; }
+        public string? Qualification { get; set; }
+        public string? PersonOccupation { get; set; }
+        public int PersonIncome { get; set; }
         //public List<UpdateStudentFamilyDto> StudentFamilies { get; set; }
 
 

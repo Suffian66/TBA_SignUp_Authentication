@@ -11,21 +11,21 @@ namespace User.Management.Data.Models
 
         [Required]
         [MaxLength(255)]
-        public string Address1 { get; set; }
+        public string? Address1 { get; set; }
 
         [MaxLength(255)]
-        public string Address2 { get; set; }
+        public string? Address2 { get; set; }
 
         [Required]
         [MaxLength(100)]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         [Required]
         [MaxLength(100)]
-        public string State { get; set; }
+        public string? State { get; set; }
 
         [MaxLength(20)]
-        public string PostalCode { get; set; }
+        public string? PostalCode { get; set; }
 
         public int? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
@@ -39,10 +39,6 @@ namespace User.Management.Data.Models
         [ForeignKey("User")]
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
-
-        //[ForeignKey("Students")]
-        //public int? StudentId { get; set; }
-        //public virtual Student Students { get; set; }
 
         [ForeignKey("CountryId")]
         public int? CountryId { get; set; }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using User.Management.Data.Dto;
 using User.Management.Data.Models;
@@ -48,43 +49,14 @@ namespace User.Management.Services
         }
 
 
-        public async Task<IEnumerable<AddressStudentDto>> GetAllStudentAddressesAsync()
+        public async Task<Address?> GetAddressByIdAsync(string id)
         {
-            try
+            if(id == null)
             {
-                var addresses = await _context.StudentAddress
-                                         .Include(a => a.CountryDetail)
-                                         .Include(a => a.AddressDetail)
-                                         .Include(a => a.Students)
-                                         .ToListAsync();
-
-                var result = addresses.Select(a => new AddressStudentDto
-                {
-                    StudentAddressId = a.StudentAddressId,
-                    AddressPrimary = a.AddressPrimary,
-                    Address1 = a.Address1,
-                    Address2 = a.Address2,
-                    Country = a.CountryDetail?.Title,
-                    AddressType = a.AddressDetail?.Title,
-                    City = a.City,
-                    PostalCode = a.PostalCode,
-                    State = a.State,
-                    StudentId = a.StudentId
-                }).ToList();
-
-                return result;
+                return null;   
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error in GetAllAddressesAsync: {ex.ToString()}");
-                throw;
-            }
-        }
-
-
-        public async Task<Address> GetAddressByIdAsync(int id)
-        {
-            return await _context.Address.FindAsync(id);
+            var result = _context.Address.FirstOrDefault(x => x.UserId == id);
+            return result;
         }
 
         public async Task<StudentAddress> GetStudentAddressByIdAsync(int id)
@@ -96,8 +68,8 @@ namespace User.Management.Services
 
         public async Task<AddressDto> CreateAddressAsync(AddressDto address)
         {
-            var addressEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == address.AddressType);
-            var countryEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == address.Country);
+            var addressEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.LookUpCtgDetailId == address.AddressTypeId);
+            var countryEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.LookUpCtgDetailId == address.CountryId);
             var userEntity = await _context.Users.FirstOrDefaultAsync(c => c.Id == address.Id);
 
             if (userEntity == null)
@@ -129,8 +101,8 @@ namespace User.Management.Services
 
         public async Task<AddressStudentDto> CreateStudentAddressAsync(AddressStudentDto addressStudent)
         {
-            var addressEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == addressStudent.AddressType);
-            var countryEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == addressStudent.Country);
+            var addressEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.LookUpCtgDetailId == addressStudent.AddressTypeId);
+            var countryEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.LookUpCtgDetailId == addressStudent.CountryId);
             var studentEntity = await _context.Students.FirstOrDefaultAsync(c => c.StudentId == addressStudent.StudentId);
 
             if (studentEntity == null)
@@ -162,24 +134,24 @@ namespace User.Management.Services
 
 
 
-        public async Task<Address> UpdateAddressAsync(Address address)
-        {
-            _context.Entry(address).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return address;
-        }
+        //public async Task<Address> UpdateAddressAsync(Address address)
+        //{
+        //    _context.Entry(address).State = EntityState.Modified;
+        //    await _context.SaveChangesAsync();
+        //    return address;
+        //}
 
-        public async Task<bool> DeleteAddressAsync(int id)
-        {
-            var address = await _context.Address.FindAsync(id);
-            if (address == null)
-            {
-                return false;
-            }
+        //public async Task<bool> DeleteAddressAsync(int id)
+        //{
+        //    var address = await _context.Address.FindAsync(id);
+        //    if (address == null)
+        //    {
+        //        return false;
+        //    }
 
-            _context.Address.Remove(address);
-            await _context.SaveChangesAsync();
-            return true;
-        }
+        //    _context.Address.Remove(address);
+        //    await _context.SaveChangesAsync();
+        //    return true;
+        //}
     }
 }

@@ -7,13 +7,13 @@ namespace User.Management.Services
     {
         Task<IEnumerable<AddressDto>> GetAllAddressesAsync();
 
-        Task<IEnumerable<AddressStudentDto>> GetAllStudentAddressesAsync();
-        Task<Address> GetAddressByIdAsync(int id);
+        //Task<IEnumerable<AddressStudentDto>> GetAllStudentAddressesAsync();
+        Task<Address?> GetAddressByIdAsync(string id);
         Task<StudentAddress> GetStudentAddressByIdAsync(int id);
 
         Task<AddressDto> CreateAddressAsync(AddressDto address);
         Task<AddressStudentDto> CreateStudentAddressAsync(AddressStudentDto addressStudent);
-        Task<Address> UpdateAddressAsync(Address address);
-        Task<bool> DeleteAddressAsync(int id);
+        //Task<Address> UpdateAddressAsync(Address address);
+        //Task<bool> DeleteAddressAsync(int id);
     }
 }

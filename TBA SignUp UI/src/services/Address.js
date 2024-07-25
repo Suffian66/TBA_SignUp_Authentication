@@ -2,11 +2,21 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const AddressApi = createApi({
     reducerPath: 'AddressApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://localhost:7176/api/' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://localhost:7176/api/Address/' }),
     endpoints: (builder) => ({
         addAddress: builder.mutation({
             query: (body) => ({
-                url: 'Address',
+                url: 'CreateAddress',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body,
+            }),
+        }),
+        addStudentAddress: builder.mutation({
+            query: (body) => ({
+                url: 'CreateStudentAddress',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -15,12 +25,11 @@ export const AddressApi = createApi({
             }),
         }),
         getAddressById: builder.query({
-            query: (addressId) => `address/${addressId}`,
-            transformResponse: (response) => response.$values, 
+            query: (id) => `GetAddressById?id=${id}`,
         }),
         }),
 })
 
-export const { useAddAddressMutation, useGetAddressByIdQuery } = AddressApi;
+export const { useAddAddressMutation, useGetAddressByIdQuery, useAddStudentAddressMutation } = AddressApi;
 
 export default AddressApi;

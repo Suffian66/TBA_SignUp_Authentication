@@ -51,35 +51,35 @@ namespace User.Management.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "366dbaff-bf18-4f07-91ad-28bdd3da83e1",
+                            Id = "c5b3bef0-7b50-4941-be78-fb8fd1c3e327",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "8898e053-bd82-4c09-a327-911d4bb5ffaf",
+                            Id = "e3811bef-7f4c-417b-83ad-ca1ca8bb852a",
                             ConcurrencyStamp = "2",
                             Name = "Sponsor",
                             NormalizedName = "Sponsor"
                         },
                         new
                         {
-                            Id = "8e04cbed-e8cd-487e-9316-41a233776e2d",
+                            Id = "53945762-8991-4ace-9aaa-7390a60d4bc0",
                             ConcurrencyStamp = "3",
                             Name = "Teacher",
                             NormalizedName = "Teacher"
                         },
                         new
                         {
-                            Id = "e6c43b64-69c6-40c1-ba8f-261b8bab0393",
+                            Id = "9a46655c-1323-4472-a33a-6e36cebd010e",
                             ConcurrencyStamp = "4",
                             Name = "Student",
                             NormalizedName = "Student"
                         },
                         new
                         {
-                            Id = "fffc5256-5c3a-40da-a80d-f3f9821b332c",
+                            Id = "a3d54f8b-67af-4c9c-8632-50a7aec92486",
                             ConcurrencyStamp = "5",
                             Name = "AssistanceTeacher",
                             NormalizedName = "AssistantTeacher"
@@ -202,51 +202,49 @@ namespace User.Management.Data.Migrations
 
                     b.Property<string>("Address1")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Address2")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<bool>("AddressPrimary")
                         .HasColumnType("bit");
 
-                    b.Property<string>("AddressType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("AddressTypeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CreatedBy")
+                    b.Property<int?>("CountryId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LookUpCountryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("State")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("UpdatedBy")
+                    b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
@@ -255,7 +253,11 @@ namespace User.Management.Data.Migrations
 
                     b.HasKey("AddressId");
 
-                    b.HasIndex("LookUpCountryId");
+                    b.HasIndex("AddressTypeId");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("CountryId");
 
                     b.HasIndex("UserId");
 
@@ -365,38 +367,6 @@ namespace User.Management.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("User.Management.Data.Models.Class", b =>
-                {
-                    b.Property<int>("ClassId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassId"), 1L, 1);
-
-                    b.Property<string>("ClassName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("UpdatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ClassId");
-
-                    b.ToTable("Class");
-                });
-
             modelBuilder.Entity("User.Management.Data.Models.LookUpCategory", b =>
                 {
                     b.Property<int>("LookUpCtgId")
@@ -417,9 +387,6 @@ namespace User.Management.Data.Migrations
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
-
-                    b.Property<int>("Lang")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -475,45 +442,6 @@ namespace User.Management.Data.Migrations
                     b.HasIndex("LookUpCtgId");
 
                     b.ToTable("LookupsCategoryDetail");
-                });
-
-            modelBuilder.Entity("User.Management.Data.Models.LookUpCountry", b =>
-                {
-                    b.Property<int>("LookUpCountryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LookUpCountryId"), 1L, 1);
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Lang")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UpdatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("LookUpCountryId");
-
-                    b.ToTable("LookupsCountry");
                 });
 
             modelBuilder.Entity("User.Management.Data.Models.MapClassSubjectTeacher", b =>
@@ -606,6 +534,9 @@ namespace User.Management.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MapTeacherSubjectId"), 1L, 1);
 
+                    b.Property<int>("ClassDetailLookUpCtgDetailId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ClassId")
                         .HasColumnType("int");
 
@@ -618,7 +549,7 @@ namespace User.Management.Data.Migrations
 
                     b.HasKey("MapTeacherSubjectId");
 
-                    b.HasIndex("ClassId");
+                    b.HasIndex("ClassDetailLookUpCtgDetailId");
 
                     b.HasIndex("Id");
 
@@ -635,7 +566,7 @@ namespace User.Management.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"), 1L, 1);
 
-                    b.Property<int>("ClassId")
+                    b.Property<int?>("ClassId")
                         .HasColumnType("int");
 
                     b.Property<int>("CreatedBy")
@@ -644,27 +575,48 @@ namespace User.Management.Data.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfAdmission")
+                    b.Property<string>("DOB")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateOfAdmission")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateOfSchoolLeaving")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("GR_No")
                         .HasColumnType("int");
 
-                    b.Property<string>("Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("GenderId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("LanguageId")
+                        .HasColumnType("int");
+
                     b.Property<string>("LastClassAttended")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MedicalNeeds")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ResidenceId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
@@ -676,9 +628,84 @@ namespace User.Management.Data.Migrations
 
                     b.HasIndex("ClassId");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("GenderId");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("ResidenceId");
 
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("User.Management.Data.Models.StudentAddress", b =>
+                {
+                    b.Property<int>("StudentAddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentAddressId"), 1L, 1);
+
+                    b.Property<string>("Address1")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Address2")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("AddressPrimary")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("AddressTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("StudentAddressId");
+
+                    b.HasIndex("AddressTypeId");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentAddress");
                 });
 
             modelBuilder.Entity("User.Management.Data.Models.StudentFamily", b =>
@@ -701,6 +728,10 @@ namespace User.Management.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("PersonOccupation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Qualification")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -834,19 +865,25 @@ namespace User.Management.Data.Migrations
 
             modelBuilder.Entity("User.Management.Data.Models.Address", b =>
                 {
-                    b.HasOne("User.Management.Data.Models.LookUpCountry", "LookUpCountry")
+                    b.HasOne("User.Management.Data.Models.LookUpCategoryDetail", "AddressDetail")
                         .WithMany()
-                        .HasForeignKey("LookUpCountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AddressTypeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("User.Management.Data.Models.LookUpCategoryDetail", "CountryDetail")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("User.Management.Data.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("LookUpCountry");
+                    b.Navigation("AddressDetail");
+
+                    b.Navigation("CountryDetail");
 
                     b.Navigation("User");
                 });
@@ -902,9 +939,9 @@ namespace User.Management.Data.Migrations
 
             modelBuilder.Entity("User.Management.Data.Models.MapTeacherSubject", b =>
                 {
-                    b.HasOne("User.Management.Data.Models.Class", "Class")
+                    b.HasOne("User.Management.Data.Models.LookUpCategoryDetail", "ClassDetail")
                         .WithMany()
-                        .HasForeignKey("ClassId")
+                        .HasForeignKey("ClassDetailLookUpCtgDetailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -920,7 +957,7 @@ namespace User.Management.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Class");
+                    b.Navigation("ClassDetail");
 
                     b.Navigation("Subject");
 
@@ -929,21 +966,58 @@ namespace User.Management.Data.Migrations
 
             modelBuilder.Entity("User.Management.Data.Models.Student", b =>
                 {
-                    b.HasOne("User.Management.Data.Models.Class", "Class")
+                    b.HasOne("User.Management.Data.Models.LookUpCategoryDetail", "ClassDetail")
                         .WithMany()
                         .HasForeignKey("ClassId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("User.Management.Data.Models.ApplicationUser", "Users")
+                    b.HasOne("User.Management.Data.Models.LookUpCategoryDetail", "GenderDetail")
                         .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("GenderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("User.Management.Data.Models.LookUpCategoryDetail", "LanguageDetail")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("User.Management.Data.Models.LookUpCategoryDetail", "ResidenceDetail")
+                        .WithMany()
+                        .HasForeignKey("ResidenceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ClassDetail");
+
+                    b.Navigation("GenderDetail");
+
+                    b.Navigation("LanguageDetail");
+
+                    b.Navigation("ResidenceDetail");
+                });
+
+            modelBuilder.Entity("User.Management.Data.Models.StudentAddress", b =>
+                {
+                    b.HasOne("User.Management.Data.Models.LookUpCategoryDetail", "AddressDetail")
+                        .WithMany()
+                        .HasForeignKey("AddressTypeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("User.Management.Data.Models.LookUpCategoryDetail", "CountryDetail")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("User.Management.Data.Models.Student", "Students")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Class");
+                    b.Navigation("AddressDetail");
 
-                    b.Navigation("Users");
+                    b.Navigation("CountryDetail");
+
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("User.Management.Data.Models.StudentFamily", b =>

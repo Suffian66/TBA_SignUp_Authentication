@@ -15,8 +15,8 @@ export const LookUpApi = createApi({
         }),
         getCategoryDetail: builder.query({
             query: (filters) => ({
-                url: `categorydetail`,
-                method: "POST",
+                url: `CategoryDetails`,
+                method: "GET",
                 headers: {
                     'Content-Type': 'application/json'
                 },

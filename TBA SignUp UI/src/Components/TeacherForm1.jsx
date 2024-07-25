@@ -1,42 +1,26 @@
 import { useNavigate } from "react-router-dom";
-import { useAddUserMutation } from "../services/SignUp";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 const TeacherForm1 = () => {
-  const [addUser, { data, error, isLoading }] = useAddUserMutation();
+  const [formData, setFormData] = useState();  
   const navigate = useNavigate();
+  const {register, handleSubmit, formState: { errors }, } = useForm();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-
-    },
-  });
-
-  const onSubmit = async (formData) => {
-    try {
-      const updatedFormData = { ...formData, roles: ["teacher"] };
-      const result = await addUser(updatedFormData).unwrap();
-      console.log("User added successfully:", result);
-
-      // Assuming result contains the created user's data including the ID
-      const userId = result.userId;
-      navigate(`/teacherform2/${userId}`);
-      console.log(userId);
-    } catch (err) {
-      console.error("Failed to add user:", err);
-      alert("Failed to add user:", err);
-    }
+  const onSubmit = async (data) => {
+      const FormData = { ...data, roles: ["teacher"] };
+      console.log("Navigating with state:", FormData);
+      
+      setFormData(FormData);
+      navigate("/teacherform2", { state: { formData: FormData }}); // Passing state to TeacherForm2 component
   };
+
   return (
     <>
       <section className="gradient-custom">
         <div className="container py-5 h-100">
           <div className="row justify-content-center align-items-center h-100">
-            <div className="col-12 col-lg-9 col-xl-7">
+            <div className="col-lg-10  studentform">
               <div
                 className="card shadow-2-strong card-registration shadow-lg"
                 style={{ borderRadius: "20px" }}
@@ -168,7 +152,7 @@ const TeacherForm1 = () => {
                       <button
                         className="btn btn-primary btn-lg"
                         type="submit"
-                        disabled={isLoading}
+                        
                       >
                         Next
                       </button>

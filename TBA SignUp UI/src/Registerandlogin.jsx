@@ -1,41 +1,35 @@
 import { useNavigate } from "react-router-dom";
 import { useAddUserMutation } from "./services/SignUp";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 const Registerandlogin = () => {
-  const [addUser, { data, error, isLoading }] = useAddUserMutation();
-  // const navigate = useNavigate();
+  const [formData, setFormData] = useState();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    defaultValues: {},
+    defaultValues: {
+     
+    },
   });
 
-  const onSubmit = async (formData) => {
-    try {
-      const updatedFormData = { ...formData, roles: ["sponsor"] };
-      await addUser(updatedFormData);
-      alert(updatedFormData,'success ');
-      console.log("User added successfully:", updatedFormData);  
-      // navigate('/address');
-      window.location.reload();
-
-    } 
-    catch (err) {
-      console.error("Failed to add user:", err);
-      alert("Failed to add user:", err);
-    }
+  const onSubmit = (data) => {
+    const formData = { ...data, roles: ["sponsor"] };
+    console.log("Navigating with state:", formData);
+    setFormData(formData);
+    navigate("/address", { state: { formData }}); // Passing state to Address component
   };
-
+  
   return (
     <>
       <section className="gradient-custom">
         <div className="container py-5 h-100">
           <div className="row justify-content-center align-items-center h-100">
-            <div className="col-12 col-lg-9 col-xl-7">
+            <div className=" col-lg-10 studentform">
               <div
                 className="card shadow-2-strong card-registration shadow-lg"
                 style={{ borderRadius: "20px" }}
@@ -167,9 +161,9 @@ const Registerandlogin = () => {
                       <button
                         className="btn btn-primary btn-lg"
                         type="submit"
-                        disabled={isLoading}
+                       
                       >
-                      Submit
+                      Next
                       </button>
                       
                     </div>

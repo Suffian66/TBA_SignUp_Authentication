@@ -10,12 +10,17 @@ export const SponsorlistApi = createApi({
 
         getSponsorById:builder.query({
           query: (sponsorId) => `GetSponsorById?sponsorId=${sponsorId}`
-        })
-      }),
-
-
+        }),
+      updateSponsor: builder.mutation({
+        query: (sponsorId, ...body) => ({
+          url: `UpdateSponsor?sponsorId=${sponsorId}`,
+          method: 'PUT',
+          body,
+        }),
+      })
+    })
 });
 
-export const { useGetAllSponsorsQuery, useGetSponsorByIdQuery } = SponsorlistApi;
+export const { useGetAllSponsorsQuery, useGetSponsorByIdQuery, useUpdateSponsorMutation } = SponsorlistApi;
 
 export default SponsorlistApi;

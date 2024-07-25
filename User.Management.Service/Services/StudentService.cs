@@ -104,14 +104,14 @@ namespace User.Management.Service.Services
         public async Task<int> CreateStudentAsync(AddStudentDto dto)
         {
             // Resolve ClassId from ClassName
-            var residenceEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.ResidenceStatus);
-            var genderEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.Gender);
-            var languageEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.Language);
-            var classEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.Class);
+            var residenceEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.LookUpCtgDetailId == dto.ResidenceId);
+            var genderEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.LookUpCtgDetailId == dto.GenderId);
+            var languageEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.LookUpCtgDetailId == dto.LanguageId);
+            var classEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.LookUpCtgDetailId == dto.ClassId);
 
             if (residenceEntity == null && genderEntity == null && languageEntity == null && classEntity == null)
             {
-                throw new Exception($"Class with name not found");
+                throw new Exception($"Entity Ids not found");
             }
 
             // Create a new student entity

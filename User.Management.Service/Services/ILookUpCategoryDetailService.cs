@@ -7,7 +7,7 @@ namespace User.Management.Service.Services
 
         Task<IEnumerable<LookUpCategoryDetail>> GetFilteredCategoryDetailAsync(IEnumerable<string> filters);
         Task<IEnumerable<LookUpCategoryDetail>> GetAllCategoryDetailAsync();
-        Task<IEnumerable<LookUpCategoryDetail>> GetLookUpCategoryDetailsByCategoryIdAsync(int categoryId);
+        Task<IEnumerable<LookUpCategoryDetail>> GetLookUpCategoryDetails();
 
     }
 }

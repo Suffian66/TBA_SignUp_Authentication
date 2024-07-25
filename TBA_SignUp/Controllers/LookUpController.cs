@@ -107,17 +107,16 @@ namespace User.Management.API.Controllers
             }
         }
 
-        [HttpGet("categorydetail/{categoryId}")]
-        public async Task<ActionResult<IEnumerable<LookUpCategoryDetail>>> GetLookUpCategoryDetailsByCategoryId(int categoryId)
+        [HttpGet("[action]")]
+        public async Task<ActionResult<IEnumerable<LookUpCategoryDetail>>> CategoryDetails()
         {
             try
             {
-                var details = await _lookUpCategoryDetailService.GetLookUpCategoryDetailsByCategoryIdAsync(categoryId);
+                var details = await _lookUpCategoryDetailService.GetLookUpCategoryDetails();
                 return Ok(details);
             }
             catch (ApplicationException ex)
             {
-
                 return StatusCode(500, ex.Message);
             }
         }

@@ -1,13 +1,10 @@
 import { useLocation, useNavigate } from "react-router-dom";
-// import { useAddStudentFamilyMutation } from "../services/Studentlist";
 import { useFieldArray, useForm } from "react-hook-form";
-import { useCreateStudentMutation } from "../services/Studentlist";
 
 const StudentFamily = () => {
   const location = useLocation();
   const { studentData } = location.state; // Get student data from the state
   const navigate = useNavigate();
-  const [createStudent, { isLoading, isSuccess, isError, error }] = useCreateStudentMutation();
 
   const { register, handleSubmit, control, formState: { errors } } = useForm({
     defaultValues: {
@@ -21,19 +18,9 @@ const StudentFamily = () => {
   });
 
   const onSubmit = async (familyData) => {
-    const combinedData = {
-      ...studentData,
-      studentFamilies: familyData.studentFamilies,
-    };
-
-    try {
-      await createStudent(combinedData).unwrap();
-      console.log('Student and family members added successfully');
-      navigate('/studentlist'); // Navigate to a success page or another component
-    } catch (err) {
-      console.error('Failed to add student and family members:', err);
-      alert('Failed to add student and family members. Please check the console for more details.');
-    }
+    const combinedData = { ...studentData, studentFamilies: familyData.studentFamilies };
+      console.log("Navigating with state:", combinedData);
+      navigate("/addressstudent", { state: { formData: combinedData } });
   };
   
     return (
@@ -107,11 +94,9 @@ const StudentFamily = () => {
                       Add Family Member
                     </button>
                     <div className="mt-4 pt-2">
-                      <button className="btn btn-primary btn-lg" type="submit" disabled={isLoading}>
-                        Submit
+                      <button className="btn btn-primary btn-lg" type="submit">
+                        Next
                       </button>
-                      {isSuccess && <p>Family members added successfully!</p>}
-                      {isError && <p>Error: {error?.data?.message}</p>}
                     </div>
                   </form>
                 </div>

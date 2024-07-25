@@ -11,17 +11,16 @@ export const Studentlist = createApi({
       query: (studentId) => `GetStudentById?studentId=${studentId}`
     }),
     createStudent: builder.mutation({
-      query: (newStudent) => ({
+      query: (body) => ({
         url: 'CreateStudent',
         method: 'POST',
-        body: newStudent,
+        body: body,
       }),
     }),
     updateStudent: builder.mutation({
-      query: (data) => ({
+      query: ({ sponsorId, ...body }) => ({
         url: `UpdateStudent`,
         method: 'PUT',
-        params: { studentId: data.id }, // Send studentId as a query parameter
         body: data,
       }),
     }),

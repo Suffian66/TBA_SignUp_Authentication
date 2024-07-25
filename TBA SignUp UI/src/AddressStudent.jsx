@@ -1,22 +1,19 @@
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useGetCategoryDetailQuery } from "./services/LookUp";
-import { useAddAddressMutation } from "./services/Address";
-import { useAddUserMutation } from "./services/SignUp";
-import { useEffect, useState } from "react";
+import { useAddStudentAddressMutation } from "./services/Address";
+import { useCreateStudentMutation } from "./services/Studentlist";
 
-const Address = () => {
-  const { state } = useLocation();
+const AddressStudent = () => {
+  const location = useLocation();
+  const { formData } = location.state;
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }, } = useForm();
 
-  const [addAddress] = useAddAddressMutation();
-  const [addUser] = useAddUserMutation();
-
-  const { formData } = state || {};
+  const [addStudent] = useCreateStudentMutation();
+  const [addAddress] = useAddStudentAddressMutation();
 
   const { data, error } = useGetCategoryDetailQuery();
-  
   const allCategoryDetails = data?.$values || [];
   const addressTypeOptions = allCategoryDetails.filter(item => item.description === "Address Type");
   const countryOptions = allCategoryDetails.filter(item => item.description === "Country");
@@ -25,14 +22,14 @@ const Address = () => {
     console.log("onSubmit called with formData:", formData);
 
     if (!formData) {
-      alert("No user data found");
+      alert("No student data found");
       return;
     }
 
     try {
-      // First, call the addUser API
-      const userResponse = await addUser(formData).unwrap();
-      console.log("User added successfully:", userResponse);
+
+      const studentResponse = await addStudent(formData).unwrap();
+      console.log("Student added successfully:", studentResponse);
 
       const addressPayload = {
         addressTypeId: data.addressType,
@@ -43,7 +40,7 @@ const Address = () => {
         city: data.city,
         state: data.state,
         postalCode: data.postalCode,
-        Id: userResponse.userId, // Use userId from userResponse
+        studentId: studentResponse.studentId, // Use studentId from userResponse
         createdBy: 1,
         createdDate: new Date(),
         updatedBy: 1,
@@ -56,7 +53,7 @@ const Address = () => {
 
       console.log("Address added successfully:", addressResponse);
       alert("Address added successfully");
-      navigate("/registerandlogin"); 
+      navigate("/addstudent"); 
     } catch (err) {
       console.error("Failed to add address:", err);
       alert(`Failed to add address: ${err.message}`);
@@ -70,7 +67,8 @@ const Address = () => {
         <section className="gradient-custom">
           <div className="container py-5 h-100">
             <div className="row justify-content-center align-items-center h-100">
-              <div className="col-12 col-lg-9 col-xl-7">
+              <div className="col-lg-2"></div>
+              <div className="col-lg-9">
                 <div
                   className="card shadow-2-strong card-registration shadow-lg"
                   style={{ borderRadius: "20px" }}
@@ -205,4 +203,4 @@ const Address = () => {
   );
 };
 
-export default Address;
+export default AddressStudent;

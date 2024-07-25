@@ -11,6 +11,8 @@ namespace User.Management.Data.Dto
         public string City { get; set; }
         public string State { get; set; }
         public string PostalCode { get; set; }
+        public int? CountryId { get; set; }
+        public int? AddressTypeId { get; set; }
         public string? Country { get; set; }
         public string? AddressType { get; set; }
         public string Id { get; set; }

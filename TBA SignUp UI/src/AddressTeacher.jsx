@@ -3,20 +3,19 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useGetCategoryDetailQuery } from "./services/LookUp";
 import { useAddAddressMutation } from "./services/Address";
 import { useAddUserMutation } from "./services/SignUp";
-import { useEffect, useState } from "react";
+import { useCreateTeacherMutation } from "./services/Teacher";
 
-const Address = () => {
+const AddressTeacher = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }, } = useForm();
+  const { formData } = state || {};
 
   const [addAddress] = useAddAddressMutation();
   const [addUser] = useAddUserMutation();
-
-  const { formData } = state || {};
+  const [addTeacher] = useCreateTeacherMutation();
 
   const { data, error } = useGetCategoryDetailQuery();
-  
   const allCategoryDetails = data?.$values || [];
   const addressTypeOptions = allCategoryDetails.filter(item => item.description === "Address Type");
   const countryOptions = allCategoryDetails.filter(item => item.description === "Country");
@@ -33,6 +32,12 @@ const Address = () => {
       // First, call the addUser API
       const userResponse = await addUser(formData).unwrap();
       console.log("User added successfully:", userResponse);
+
+      const {Father_HusbandName, DegreeQualification, Certification, Salary} = formData;
+      const teacherData = { Father_HusbandName, DegreeQualification, Certification, Salary, userId: userResponse.userId };
+      console.log("Teacher data being sent:", teacherData)
+      const teacherResponse = await addTeacher(teacherData).unwrap();
+      console.log("Teacher added successfully:", teacherResponse);
 
       const addressPayload = {
         addressTypeId: data.addressType,
@@ -56,7 +61,7 @@ const Address = () => {
 
       console.log("Address added successfully:", addressResponse);
       alert("Address added successfully");
-      navigate("/registerandlogin"); 
+      navigate("/teacherform1"); 
     } catch (err) {
       console.error("Failed to add address:", err);
       alert(`Failed to add address: ${err.message}`);
@@ -205,4 +210,4 @@ const Address = () => {
   );
 };
 
-export default Address;
+export default AddressTeacher;

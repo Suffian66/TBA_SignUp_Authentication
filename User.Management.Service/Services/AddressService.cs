@@ -68,8 +68,8 @@ namespace User.Management.Services
 
         public async Task<AddressDto> CreateAddressAsync(AddressDto address)
         {
-            var addressEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == address.AddressType);
-            var countryEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == address.Country);
+            var addressEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.LookUpCtgDetailId == address.AddressTypeId);
+            var countryEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.LookUpCtgDetailId == address.CountryId);
             var userEntity = await _context.Users.FirstOrDefaultAsync(c => c.Id == address.Id);
 
             if (userEntity == null)
@@ -101,8 +101,8 @@ namespace User.Management.Services
 
         public async Task<AddressStudentDto> CreateStudentAddressAsync(AddressStudentDto addressStudent)
         {
-            var addressEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == addressStudent.AddressType);
-            var countryEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == addressStudent.Country);
+            var addressEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.LookUpCtgDetailId == addressStudent.AddressTypeId);
+            var countryEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.LookUpCtgDetailId == addressStudent.CountryId);
             var studentEntity = await _context.Students.FirstOrDefaultAsync(c => c.StudentId == addressStudent.StudentId);
 
             if (studentEntity == null)

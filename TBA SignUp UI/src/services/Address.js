@@ -14,13 +14,22 @@ export const AddressApi = createApi({
                 body,
             }),
         }),
+        addStudentAddress: builder.mutation({
+            query: (body) => ({
+                url: 'CreateStudentAddress',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body,
+            }),
+        }),
         getAddressById: builder.query({
             query: (id) => `GetAddressById?id=${id}`,
-            // transformResponse: (response) => response.$values, 
         }),
         }),
 })
 
-export const { useAddAddressMutation, useGetAddressByIdQuery } = AddressApi;
+export const { useAddAddressMutation, useGetAddressByIdQuery, useAddStudentAddressMutation } = AddressApi;
 
 export default AddressApi;

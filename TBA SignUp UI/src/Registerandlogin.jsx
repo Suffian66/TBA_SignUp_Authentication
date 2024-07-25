@@ -20,6 +20,7 @@ const Registerandlogin = () => {
   const onSubmit = (data) => {
     const formData = { ...data, roles: ["sponsor"] };
     console.log("Navigating with state:", formData);
+    setFormData(formData);
     navigate("/address", { state: { formData }}); // Passing state to Address component
   };
   

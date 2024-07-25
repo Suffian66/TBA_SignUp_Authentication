@@ -47,17 +47,15 @@ namespace User.Management.Service.Services
         }
 
 
-        public async Task<IEnumerable<LookUpCategoryDetail>> GetLookUpCategoryDetailsByCategoryIdAsync(int categoryId)
+        public async Task<IEnumerable<LookUpCategoryDetail>> GetLookUpCategoryDetails()
         {
             try
             {
-                return await _context.LookupsCategoryDetail
-                                     .Where(detail => detail.LookUpCtgId == categoryId)
-                                     .ToListAsync();
+                return await _context.LookupsCategoryDetail.ToListAsync();
             }
             catch (Exception ex)
             {
-                throw new ApplicationException($"An error occurred while fetching category details for category ID {categoryId}.", ex);
+                throw new ApplicationException($"An error occurred while fetching category details for category ID.", ex);
             }
         }
     }

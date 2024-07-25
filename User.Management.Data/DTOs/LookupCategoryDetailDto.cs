@@ -3,5 +3,6 @@
     public class LookupCategoryDetailDto
     {
         public string Title { get; set; }
+        public int LookUpCtgDetailId { get; set; }
     }
 }

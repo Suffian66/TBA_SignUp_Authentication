@@ -1,28 +1,21 @@
-
 import { useForm } from "react-hook-form";
-import { Link, Navigate, useParams } from "react-router-dom";
-import { useCreateTeacherMutation } from "../services/Teacher";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const TeacherForm2 = () => {
-  const { id } = useParams();
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const [createTeacher, { isLoading, error }] = useCreateTeacherMutation();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { formData } = location.state || {};
 
-  const onSubmit = async (data) => {
-    try {
-      const updatedData = { ...data, userId: id }; // Include the Id in the form data
-      await createTeacher(updatedData).unwrap();
-      alert(updatedData,'Teacher Added Successfully ')
-      console.log('Teacher created successfully');
-      Navigate('/teacherform1')
-     
-    } catch (err) {
-      error(err,'Teacher Creation Failed');
-      console.error('Failed to create teacher:', err);
-    }
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const onSubmit = (data) => {
+    const combinedFormData = { ...formData, ...data };
+    console.log('combinedFormData', combinedFormData);
+    navigate("/addressteacher", { state: { formData: combinedFormData } });
   };
+
   return (
-    <div>
+  
       <section className="gradient-custom">
         <div className="container py-5 h-100">
           <div className="row justify-content-center align-items-center h-100">
@@ -75,11 +68,10 @@ const TeacherForm2 = () => {
                       <button
                         className="btn btn-warning btn-lg"
                         type="submit"
-                        disabled={isLoading}
+                        
                       >
-                        {isLoading ? "Adding ..." : "Save"}
+                        Next
                       </button>
-                      {error && <p>Failed to sign up. Please try again.</p>}
                     </div>
                     <div className="text-end">
                       <Link to="/teacherform1">
@@ -95,7 +87,7 @@ const TeacherForm2 = () => {
           </div>
         </div>
       </section>
-    </div>
+    
   );
 };
 

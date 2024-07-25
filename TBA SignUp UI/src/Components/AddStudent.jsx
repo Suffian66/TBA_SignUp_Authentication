@@ -1,36 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGetCategoryDetailQuery } from '../services/LookUp';
 
 const AddStudent = () => {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState();  
+
   const {register, handleSubmit, formState: { errors }, setValue} = useForm();
-  const { data: dataGender } = useGetCategoryDetailQuery(["Gender", ""], {});
-  const { data: dataLanguage } = useGetCategoryDetailQuery(["Language", ""], {});
-  const { data: dataResidence } = useGetCategoryDetailQuery(["Residence Status", ""], {});
-  const { data: dataClass } = useGetCategoryDetailQuery(["Class", ""], {});
+  
+  const { data, error } = useGetCategoryDetailQuery();
+  
+  const allCategoryDetails = data?.$values || [];
+  const residenceStatusDetails = allCategoryDetails.filter(item => item.description === "Residence");
+  const genderDetails = allCategoryDetails.filter(item => item.description === "Gender");
+  const languageDetails = allCategoryDetails.filter(item => item.description === "Language");
+  const classDetails = allCategoryDetails.filter(item => item.description === "Class");
 
-
-  const categoryData = {
-    gender: dataGender?.$values[0]?.lookupCategoryDetail?.$values || [],
-    language: dataLanguage?.$values[0]?.lookupCategoryDetail?.$values || [],
-    residenceStatus: dataResidence?.$values[0]?.lookupCategoryDetail?.$values || [],
-    class: dataClass?.$values[0]?.lookupCategoryDetail?.$values || []
-  };
-
-  // Set default values for select inputs
-  useEffect(() => {
-    Object.keys(categoryData).forEach(key => {
-      const values = categoryData[key];
-      if (values.length > 0) {
-        setValue(key, values[0]);
-      }
-    });
-  }, [categoryData, setValue]);
-
-  const onSubmit = (formData) => {
-  navigate('/studentfamily', { state: { studentData: formData } });
+  const onSubmit = async (data) => {
+    const formData = { ...data, roles: ["student"] };
+    console.log("Navigating with state:", formData);
+    navigate('/studentfamily', { state: { studentData: formData } });
    
   };
 
@@ -78,10 +68,10 @@ const AddStudent = () => {
                     <div className="col-md-6 mb-4">
                       <select
                         className="form-control form-control-lg"
-                        {...register("gender", { required: true })}
+                        {...register("genderId", { required: true })}
                       >
-                          {categoryData.gender.map((gender, index) => (
-                            <option key={index} value={gender}>{gender}</option>
+                          {genderDetails.map((option, index) => (
+                            <option key={index} value={option.lookUpCtgDetailId}>{option.title}</option>
                           ))}
                       </select>
                       {errors.gender && <p>This field is required</p>}
@@ -112,10 +102,10 @@ const AddStudent = () => {
                     <label>Language</label>
                     <select
                         className="form-control form-control-lg"
-                        {...register("language", { required: true })}
+                        {...register("languageId", { required: true })}
                       >
-                          {categoryData.language.map((language, index) => (
-                            <option key={index} value={language}>{language}</option>
+                          {languageDetails.map((option, index) => (
+                            <option key={index} value={option.lookUpCtgDetailId}>{option.title}</option>
                           ))}
                     </select>
                       {errors.language && <p>This field is required</p>}
@@ -124,10 +114,10 @@ const AddStudent = () => {
                     <label>Residence Status</label>
                       <select
                         className="form-control form-control-lg"
-                        {...register("residenceStatus", { required: true })}
+                        {...register("residenceId", { required: true })}
                       >
-                          {categoryData.residenceStatus.map((residence, index) => (
-                            <option key={index} value={residence}>{residence}</option>
+                          {residenceStatusDetails.map((option, index) => (
+                            <option key={index} value={option.lookUpCtgDetailId}>{option.title}</option>
                           ))}
                       </select>
                       {errors.residenceStatus && <p>This field is required</p>}
@@ -168,8 +158,8 @@ const AddStudent = () => {
                         {...register("lastClassAttended", { required: true })}
                         
                       >
-                          {categoryData.class.map((classes, index) => (
-                            <option key={index} value={classes}>{classes}</option>
+                          {classDetails.map((option, index) => (
+                            <option key={index} value={option.lookUpCtgDetailId}>{option.title}</option>
                           ))}
                       </select>
                     </div>
@@ -179,10 +169,10 @@ const AddStudent = () => {
                     <label>Admission in Class</label>
                     <select
                         className="form-control form-control-lg"
-                        {...register("class", { required: true })}
+                        {...register("classId", { required: true })}
                       >
-                          {categoryData.class.map((classes, index) => (
-                            <option key={index} value={classes}>{classes}</option>
+                          {classDetails.map((option, index) => (
+                            <option key={index} value={option.lookUpCtgDetailId}>{option.title}</option>
                           ))}
                       </select>
                       {errors.className && <p>This field is required</p>}

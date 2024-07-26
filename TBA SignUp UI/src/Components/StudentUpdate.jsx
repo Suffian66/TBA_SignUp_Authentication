@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { useGetStudentByIdQuery, useUpdateStudentMutation } from "../services/Studentlist";
 import { useGetCategoryDetailQuery } from "../services/LookUp";
 import Col from "react-bootstrap/Col";
@@ -11,92 +12,48 @@ function StudentUpdate() {
   const navigate = useNavigate();
   const { data, error, isLoading } = useGetStudentByIdQuery(studentId);
   const [updateStudent, { isLoading: isUpdating }] = useUpdateStudentMutation();
-  const [studentEditData, setStudentEditData] = useState({});
 
-  const { data: genderData, error: genderError, isLoading: genderIsLoading } = useGetCategoryDetailQuery(["Gender", ""]);
-  const { data: countryData, error: countryError, isLoading: countryIsLoading } = useGetCategoryDetailQuery(["Country", ""]);
-  const { data: addressTypeData, error: addressTypeError, isLoading: addressTypeIsLoading } = useGetCategoryDetailQuery(["Address Type", ""]);
+  const { data: categoryData } = useGetCategoryDetailQuery();
+  const allCategoryDetails = categoryData?.$values || [];
+  const genderDetail = allCategoryDetails.filter(item => item.description === "Gender");
+  const countryDetail = allCategoryDetails.filter(item => item.description === "Country");
+  const addressTypeDetail = allCategoryDetails.filter(item => item.description === "Address Type");
 
-  const getCategoryDetailsByTitle = (data, title) => {
-    const categoryObject = data?.$values?.find((item) => item.title === title);
-    return categoryObject?.lookupCategoryDetail?.$values || [];
-  };
+  const { register, handleSubmit, setValue } = useForm();
 
-  const genderDetail = getCategoryDetailsByTitle(genderData, "Gender");
-  const countryDetail = getCategoryDetailsByTitle(countryData, "Country");
-  const addressTypeDetail = getCategoryDetailsByTitle(addressTypeData, "Address Type");
+  useEffect(() => {
+    if (data) {
+      Object.keys(data).forEach(key => {
+        setValue(key, data[key] || "");
+      });
+    }
+  }, [data, setValue]);
 
-  const handleEditChange = (e) => {
-    const { name, value } = e.target;
-    setStudentEditData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleEditSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (data) => {
     try {
-      const payload = { ...studentEditData, id: studentId };
-      const { data, error } = await updateStudent(payload);
-
-      if (error) {
-        console.error("Error updating student profile:", error.message);
-        alert("Failed to update student profile. Please try again.");
-        return;
-      }
-
+      await updateStudent({studentId, data }).unwrap();
       alert("Student profile updated successfully.");
       navigate(`/studentprofile/${studentId}`);
     } catch (error) {
-      console.error("Error updating student profile:", error.message);
       alert("Failed to update student profile. Please try again.");
     }
   };
 
-  useEffect(() => {
-    if (data) {
-      setStudentEditData({
-        gR_No: data.gR_No || "",
-        studentClass: data.class || "",
-        firstName: data.firstName || "",
-        middleName: data.middleName || "",
-        lastName: data.lastName || "",
-        gender: data.gender || "",
-        dob: data.dob || "",
-        dateOfAdmission: data.dateOfAdmission || "",
-        lastClassAttended: data.lastClassAttended || "",
-        dateOfSchoolLeaving: data.dateOfSchoolLeaving || "",
-        medicalNeeds: data.medicalNeeds || "",
-        language: data.language || "",
-        residenceStatus: data.residenceStatus || "",
-        country: data.country || "",
-        familyMemberName: data.familyMemberName || "",
-        familyRelation: data.familyRelation || "",
-        qualification: data.qualification || "",
-        personOccupation: data.personOccupation || "",
-        personIncome: data.personIncome || ""
-      });
-    }
-  }, [data]);
 
-  if (isLoading || genderIsLoading || countryIsLoading || addressTypeIsLoading) return <div>Loading...</div>;
-  if (error || genderError || countryError || addressTypeError) return <div>Error: {error.message}</div>;
+  if (isLoading) return <div>Loading...</div>;
   if (!data || Object.keys(data).length === 0) return <div>No student found</div>;
 
   return (
     <div className="mt-2 mb-5 ps-3 pe-5">
       <h2>Edit Student Profile</h2>
-      <form onSubmit={handleEditSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row ms-2">
           <div className="col-3 divcolor fw-bold">G.R. No</div>
           <div className="col-3 divcolor">
             <input
               type="text"
               name="gR_No"
-              defaultValue={studentEditData.gR_No}
-              onChange={handleEditChange}
+              {...register("gR_No")}
               className="form-control"
             />
           </div>
@@ -105,8 +62,7 @@ function StudentUpdate() {
             <input
               type="text"
               name="studentClass"
-              defaultValue={studentEditData.studentClass}
-              onChange={handleEditChange}
+              {...register("class")}
               className="form-control"
             />
           </div>
@@ -117,8 +73,7 @@ function StudentUpdate() {
             <input
               type="text"
               name="firstName"
-              defaultValue={studentEditData.firstName}
-              onChange={handleEditChange}
+              {...register("firstName")}
               className="form-control"
             />
           </div>
@@ -127,8 +82,7 @@ function StudentUpdate() {
             <input
               type="text"
               name="middleName"
-              defaultValue={studentEditData.middleName}
-              onChange={handleEditChange}
+              {...register("middleName")}
               className="form-control"
             />
           </div>
@@ -139,8 +93,7 @@ function StudentUpdate() {
             <input
               type="text"
               name="lastName"
-              defaultValue={studentEditData.lastName}
-              onChange={handleEditChange}
+              {...register("lastName")}
               className="form-control"
             />
           </div>
@@ -148,14 +101,13 @@ function StudentUpdate() {
           <div className="col-3 divcolor">
             <select
               name="gender"
-              value={studentEditData.gender}
-              onChange={handleEditChange}
+              {...register("gender")}
               className="form-control"
             >
               <option value="">Select Gender</option>
               {genderDetail.map((item, index) => (
-                <option key={index} value={item}>
-                  {item}
+                <option key={index} value={item.title}>
+                  {item.title}
                 </option>
               ))}
             </select>
@@ -167,8 +119,7 @@ function StudentUpdate() {
             <input
               type="date"
               name="dob"
-              defaultValue={studentEditData.dob}
-              onChange={handleEditChange}
+              {...register("dob")}
               className="form-control"
             />
           </div>
@@ -177,8 +128,7 @@ function StudentUpdate() {
             <input
               type="date"
               name="dateOfAdmission"
-              defaultValue={studentEditData.dateOfAdmission}
-              onChange={handleEditChange}
+              {...register("dateOfAdmission")}
               className="form-control"
             />
           </div>
@@ -189,8 +139,7 @@ function StudentUpdate() {
             <input
               type="text"
               name="lastClassAttended"
-              defaultValue={studentEditData.lastClassAttended}
-              onChange={handleEditChange}
+              {...register("lastClassAttended")}
               className="form-control"
             />
           </div>
@@ -199,8 +148,7 @@ function StudentUpdate() {
             <input
               type="date"
               name="dateOfSchoolLeaving"
-              defaultValue={studentEditData.dateOfSchoolLeaving}
-              onChange={handleEditChange}
+              {...register("dateOfSchoolLeaving")}
               className="form-control"
             />
           </div>
@@ -211,8 +159,7 @@ function StudentUpdate() {
             <input
               type="text"
               name="medicalNeeds"
-              defaultValue={studentEditData.medicalNeeds}
-              onChange={handleEditChange}
+              {...register("medicalNeeds")}
               className="form-control"
             />
           </div>
@@ -221,8 +168,7 @@ function StudentUpdate() {
             <input
               type="text"
               name="language"
-              defaultValue={studentEditData.language}
-              onChange={handleEditChange}
+              {...register("language")}
               className="form-control"
             />
           </div>
@@ -232,14 +178,13 @@ function StudentUpdate() {
           <div className="col-3 divcolor">
             <select
               name="residenceStatus"
-              value={studentEditData.residenceStatus}
-              onChange={handleEditChange}
+              {...register("residenceStatus")}
               className="form-control"
             >
               <option value="">Select Address Type</option>
               {addressTypeDetail.map((item, index) => (
-                <option key={index} value={item}>
-                  {item}
+                <option key={index} value={item.title}>
+                  {item.title}
                 </option>
               ))}
             </select>
@@ -248,14 +193,13 @@ function StudentUpdate() {
           <div className="col-3 divcolor">
             <select
               name="country"
-              value={studentEditData.country}
-              onChange={handleEditChange}
+              {...register("country")}
               className="form-control"
             >
               <option value="">Select Country</option>
               {countryDetail.map((item, index) => (
-                <option key={index} value={item}>
-                  {item}
+                <option key={index} value={item.title}>
+                  {item.title}
                 </option>
               ))}
             </select>
@@ -267,8 +211,7 @@ function StudentUpdate() {
             <input
               type="text"
               name="familyMemberName"
-              defaultValue={studentEditData.familyMemberName}
-              onChange={handleEditChange}
+              {...register("familyMemberName")}
               className="form-control"
             />
           </div>
@@ -277,8 +220,7 @@ function StudentUpdate() {
             <input
               type="text"
               name="familyRelation"
-              defaultValue={studentEditData.familyRelation}
-              onChange={handleEditChange}
+              {...register("familyRelation")}
               className="form-control"
             />
           </div>
@@ -289,8 +231,7 @@ function StudentUpdate() {
             <input
               type="text"
               name="qualification"
-              defaultValue={studentEditData.qualification}
-              onChange={handleEditChange}
+              {...register("qualification")}
               className="form-control"
             />
           </div>
@@ -299,8 +240,7 @@ function StudentUpdate() {
             <input
               type="text"
               name="personOccupation"
-              defaultValue={studentEditData.personOccupation}
-              onChange={handleEditChange}
+              {...register("personOccupation")}
               className="form-control"
             />
           </div>
@@ -311,8 +251,7 @@ function StudentUpdate() {
             <input
               type="number"
               name="personIncome"
-              defaultValue={studentEditData.personIncome}
-              onChange={handleEditChange}
+              {...register("personIncome")}
               className="form-control"
             />
           </div>

@@ -10,7 +10,7 @@ import Row from "react-bootstrap/Row";
 function StudentUpdate() {
   const { id: studentId } = useParams();
   const navigate = useNavigate();
-  const { data, error, isLoading } = useGetStudentByIdQuery(studentId);
+  const { data: studentData, error, isLoading } = useGetStudentByIdQuery(studentId);
   const [updateStudent, { isLoading: isUpdating }] = useUpdateStudentMutation();
 
   const { data: categoryData } = useGetCategoryDetailQuery();
@@ -22,16 +22,26 @@ function StudentUpdate() {
   const { register, handleSubmit, setValue } = useForm();
 
   useEffect(() => {
-    if (data) {
-      Object.keys(data).forEach(key => {
-        setValue(key, data[key] || "");
+    if (studentData) {
+      Object.keys(studentData).forEach(key => {
+        setValue(key, studentData[key] || "");
       });
     }
-  }, [data, setValue]);
+  }, [studentData, setValue]);
 
   const onSubmit = async (data) => {
     try {
-      await updateStudent({studentId, data }).unwrap();
+      // Manually construct the payload
+      const payload = {
+        $id: studentData.$id || "1",  // Ensure $id is first
+        studentId,
+        ...data,
+        dateOfAdmission: new Date(data.dateOfAdmission).toISOString(),
+        dateOfSchoolLeaving: new Date(data.dateOfSchoolLeaving).toISOString(),
+        personIncome: parseFloat(data.personIncome),
+      };
+
+      await updateStudent(payload).unwrap();
       alert("Student profile updated successfully.");
       navigate(`/studentprofile/${studentId}`);
     } catch (error) {
@@ -40,8 +50,9 @@ function StudentUpdate() {
   };
 
 
+
   if (isLoading) return <div>Loading...</div>;
-  if (!data || Object.keys(data).length === 0) return <div>No student found</div>;
+  if (!studentData || Object.keys(studentData).length === 0) return <div>No student found</div>;
 
   return (
     <div className="mt-2 mb-5 ps-3 pe-5">
@@ -249,9 +260,78 @@ function StudentUpdate() {
           <div className="col-3 divcolor fw-bold">Income</div>
           <div className="col-3 divcolor">
             <input
-              type="number"
+              type="text"
               name="personIncome"
               {...register("personIncome")}
+              className="form-control"
+            />
+          </div>
+          <div className="col-3 divcolor fw-bold">Postal Code</div>
+          <div className="col-3 divcolor">
+            <input
+              type="text"
+              name="postalCode"
+              {...register("postalCode")}
+              className="form-control"
+            />
+          </div>
+        </div>
+        <div className="row ms-2">
+          <div className="col-3 divcolor fw-bold">Address1</div>
+          <div className="col-3 divcolor">
+            <input
+              type="text"
+              name="address1"
+              {...register("address1")}
+              className="form-control"
+            />
+          </div>
+          <div className="col-3 divcolor fw-bold">Address2</div>
+          <div className="col-3 divcolor">
+            <input
+              type="text"
+              name="address2"
+              {...register("address2")}
+              className="form-control"
+            />
+          </div>
+        </div>
+        <div className="row ms-2">
+          <div className="col-3 divcolor fw-bold">AddressType</div>
+          <div className="col-3 divcolor">
+            <input
+              type="text"
+              name="addressType"
+              {...register("addressType")}
+              className="form-control"
+            />
+          </div>
+          {/* <div className="col-3 divcolor fw-bold">City</div> */}
+          {/* <div className="col-3 divcolor">
+            <input
+              type="text"
+              name="city"
+              {...register("city")}
+              className="form-control"
+            />
+          </div> */}
+        </div>
+        <div className="row ms-2">
+          <div className="col-3 divcolor fw-bold">State</div>
+          <div className="col-3 divcolor">
+            <input
+              type="text"
+              name="state"
+              {...register("state")}
+              className="form-control"
+            />
+          </div>
+          <div className="col-3 divcolor fw-bold">City</div>
+          <div className="col-3 divcolor">
+            <input
+              type="text"
+              name="city"
+              {...register("city")}
               className="form-control"
             />
           </div>

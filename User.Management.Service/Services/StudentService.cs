@@ -160,7 +160,7 @@ namespace User.Management.Service.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateStudentAsync(int studentId, UpdateStudentDto dto)
+        public async Task<UpdateStudentDto> UpdateStudentAsync(int studentId, UpdateStudentDto dto)
         {
             var student = await _context.Students.FirstOrDefaultAsync(s => s.StudentId == studentId);
             if (student == null)
@@ -175,7 +175,6 @@ namespace User.Management.Service.Services
             var studentFamily = await _context.StudentFamily.FirstOrDefaultAsync(s => s.StudentId == studentId);
             var address = _context.StudentAddress.Include(a => a.CountryDetail).Include(a => a.AddressDetail).FirstOrDefault(a => a.StudentId == studentId);
 
-            student.StudentId = studentId;
             student.FirstName = dto?.FirstName;
             student.LastName = dto?.LastName;
             student.MiddleName = dto?.MiddleName;
@@ -204,7 +203,7 @@ namespace User.Management.Service.Services
 
             //_context.Students.Update(student);
             await _context.SaveChangesAsync();
-            return dto.StudentId;
+            return dto;
         }
         //public async Task<UpdateStudentFamilyDto> UpdateStudentFamilyAsync(int studentFamilyId, UpdateStudentFamilyDto updateStudentFamilyDto)
         //{

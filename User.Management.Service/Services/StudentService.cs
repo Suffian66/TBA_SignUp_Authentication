@@ -160,7 +160,7 @@ namespace User.Management.Service.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<UpdateStudentDto> UpdateStudentAsync(int studentId, UpdateStudentDto dto)
+        public async Task<int> UpdateStudentAsync(int studentId, UpdateStudentDto dto)
         {
             var student = await _context.Students.FirstOrDefaultAsync(s => s.StudentId == studentId);
             if (student == null)
@@ -173,29 +173,38 @@ namespace User.Management.Service.Services
             var residenceEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.ResidenceStatus);
             var classEntity = await _context.LookupsCategoryDetail.FirstOrDefaultAsync(c => c.Title == dto.Class);
             var studentFamily = await _context.StudentFamily.FirstOrDefaultAsync(s => s.StudentId == studentId);
+            var address = _context.StudentAddress.Include(a => a.CountryDetail).Include(a => a.AddressDetail).FirstOrDefault(a => a.StudentId == studentId);
 
-            student.FirstName = dto.FirstName;
-            student.LastName = dto.LastName;
-            student.MiddleName = dto.MiddleName;
+            student.StudentId = studentId;
+            student.FirstName = dto?.FirstName;
+            student.LastName = dto?.LastName;
+            student.MiddleName = dto?.MiddleName;
             student.GenderId = genderEntity?.LookUpCtgDetailId;
-            student.DOB = dto.DOB;
+            student.DOB = dto?.DOB;
             student.GR_No = dto.GR_No;
             student.LanguageId = languageEntity?.LookUpCtgDetailId;
             student.ResidenceId = residenceEntity?.LookUpCtgDetailId;
-            student.DateOfAdmission = dto.DateOfAdmission;
-            student.LastClassAttended = dto.LastClassAttended;
-            student.DateOfSchoolLeaving = dto.DateOfSchoolLeaving;
-            student.MedicalNeeds = dto.MedicalNeeds;
+            student.DateOfAdmission = dto?.DateOfAdmission;
+            student.LastClassAttended = dto?.LastClassAttended;
+            student.DateOfSchoolLeaving = dto?.DateOfSchoolLeaving;
+            student.MedicalNeeds = dto?.MedicalNeeds;
             student.ClassId = classEntity?.LookUpCtgDetailId;
-            studentFamily.FamilyMemberName = dto.FamilyMemberName;
-            studentFamily.FamilyRelation = dto.FamilyRelation;
-            studentFamily.PersonOccupation = dto.PersonOccupation;
+            studentFamily.FamilyMemberName = dto?.FamilyMemberName;
+            studentFamily.FamilyRelation = dto?.FamilyRelation;
+            studentFamily.PersonOccupation = dto?.PersonOccupation;
             studentFamily.PersonIncome = dto.PersonIncome;
-            studentFamily.Qualification = dto.Qualification;
+            studentFamily.Qualification = dto?.Qualification;
+            address.Address1 = dto?.Address1;
+            address.Address2 = dto?.Address2;
+            address.City = dto?.City;
+            address.State = dto?.State;
+            address.PostalCode = dto.PostalCode;
+            address.CountryDetail.Title = dto?.Country;
+            address.AddressDetail.Title = dto?.AddressType;
 
             //_context.Students.Update(student);
             await _context.SaveChangesAsync();
-            return dto;
+            return dto.StudentId;
         }
         //public async Task<UpdateStudentFamilyDto> UpdateStudentFamilyAsync(int studentFamilyId, UpdateStudentFamilyDto updateStudentFamilyDto)
         //{

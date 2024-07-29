@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using User.Management.Data.Dto;
 using User.Management.Data.DTOs;
+using User.Management.Data.Migrations;
 using User.Management.Data.Models;
 
 namespace User.Management.Service.Services
@@ -67,7 +68,9 @@ namespace User.Management.Service.Services
         public async Task<UpdateSponsorDto> UpdateSponsorAsync(string sponsorId, UpdateSponsorDto updateDto)
         {
             var user = _context.Users.FirstOrDefault(x => x.Id == sponsorId);
-            var address = _context.Address.Include(a => a.CountryDetail).Include(a => a.AddressDetail).FirstOrDefault(a => a.UserId == sponsorId);
+            var address = _context.Address.FirstOrDefault(x => x.UserId == user.Id);
+            var countryDetail = _context.LookupsCategoryDetail.FirstOrDefault(a => a.LookUpCtgDetailId == address.CountryId);
+            var addressTypeDetail = _context.LookupsCategoryDetail.FirstOrDefault(a => a.LookUpCtgDetailId == address.AddressTypeId);
 
             if (user == null || address == null)
             {
@@ -89,8 +92,8 @@ namespace User.Management.Service.Services
             address.City = updateDto.City;
             address.State = updateDto.State;
             address.PostalCode = updateDto.PostalCode;
-            address.CountryDetail.Title = updateDto.Country;
-            address.AddressDetail.Title = updateDto.AddressType;
+            address.CountryId = updateDto.CountryId;
+            address.AddressTypeId = updateDto.AddressTypeId;
 
             await _context.SaveChangesAsync();
             return updateDto;

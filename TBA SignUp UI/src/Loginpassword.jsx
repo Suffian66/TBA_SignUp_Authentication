@@ -28,6 +28,7 @@ import AddressTeacher from "./AddressTeacher.jsx";
 import AddressStudent from "./AddressStudent.jsx";
 import UpdateStudentFamily from "./Components/UpdateStudentFamily.jsx";
 import StudentAttendance from "./StudentAttandance.jsx";
+import SponsorUpdate from "./Components/SponsorUpdate.jsx";
 import UpdateStudentAttendance from "./Components/UpdateStudentAttandance.jsx";
 
 
@@ -191,7 +192,18 @@ const router = createBrowserRouter([
         element: <Sponsorprofile />,
       },
     ],
-  },          
+  },  
+  {
+    path: "/sponsorupdate/:id",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <SponsorUpdate/>,
+      },
+    ],
+  },  
+
   {
     path: "/mapsponsorstudentlist/",
     element: <Wrapper />,

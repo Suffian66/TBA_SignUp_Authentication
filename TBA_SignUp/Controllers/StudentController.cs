@@ -97,28 +97,5 @@ namespace TBA_SignUp.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-
-        //[HttpPut("[action]")]
-        //public async Task<IActionResult> UpdateStudentFamily(int studentFamilyId, [FromBody] UpdateStudentFamilyDto updateStudentFamilyDto)
-        //{
-        //    var result = await _studentfamily.UpdateStudentFamilyAsync(studentFamilyId, updateStudentFamilyDto);
-        //    try
-        //    {
-        //        if (result != null)
-        //        {
-        //            return Ok(result);
-        //        }
-        //    }
-
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //    return NotFound();
-        //}
-
-
-
     }
 }

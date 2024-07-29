@@ -15,10 +15,6 @@ import Sponsorprofile from "./Components/Sponsorprofile.jsx";
 import MapSponsorStudentList from "./MapSponsorStudentList.jsx";
 import TeacherProfile from "./Components/TeacherProfile.jsx";
 import TeacherList from "./TeacherList.jsx";
-import AddressForm from "./multistepform/AddressForm.jsx";
-import Step2 from "./multistepform/Step2.jsx";
-import Confirmation from "./multistepform/Confirmation.jsx";
-import Success from "./multistepform/Success.jsx";
 import Wrapper from "./Components/Wrapper.jsx";
 import AddStudent from "./Components/AddStudent.jsx";
 import StudentFamily from "./Components/StudentFamily.jsx";
@@ -32,6 +28,8 @@ import AddressTeacher from "./AddressTeacher.jsx";
 import AddressStudent from "./AddressStudent.jsx";
 import UpdateStudentFamily from "./Components/UpdateStudentFamily.jsx";
 import StudentAttendance from "./StudentAttandance.jsx";
+import UpdateStudentAttendance from "./Components/UpdateStudentAttandance.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -291,6 +289,16 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <StudentAttendance />,
+      },
+    ],
+  }, 
+  {
+    path: "/update-attendance-student",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <UpdateStudentAttendance />,
       },
     ],
   }, 

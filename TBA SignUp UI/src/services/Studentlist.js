@@ -18,10 +18,10 @@ export const Studentlist = createApi({
       }),
     }),
     updateStudent: builder.mutation({
-      query: ({ sponsorId, ...body }) => ({
-        url: `UpdateStudent`,
+      query: ({ studentId, ...body }) => ({
+        url: `UpdateStudent?studentId=${studentId}`,
         method: 'PUT',
-        body: data,
+        body,
       }),
     }),
   })

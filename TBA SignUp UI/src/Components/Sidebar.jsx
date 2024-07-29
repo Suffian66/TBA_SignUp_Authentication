@@ -79,6 +79,10 @@ const Sidebar = () => {
                 <MDBIcon fas icon="globe me-3" />
                Class List
               </MDBListGroupItem></Link>
+             <Link to="/attendance-student" className='sidebarlink'> <MDBListGroupItem tag='a' href='#' className='sidebarbtn rounded mb-4'>
+                <MDBIcon fas icon="globe me-3" />
+              Student Attendance
+              </MDBListGroupItem></Link>
 
           </MDBListGroup>
         </div>

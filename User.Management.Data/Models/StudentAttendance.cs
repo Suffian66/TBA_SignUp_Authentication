@@ -14,12 +14,9 @@ namespace User.Management.Data.Models
         public DateTime? AttendanceDate { get; set; }
         public string? Remarks { get; set; }
 
-        [ForeignKey("ClassId")]
+        [ForeignKey("ClassDetail")]
         public int? ClassId { get; set; }
         public virtual LookUpCategoryDetail ClassDetail { get; set; }
-        [ForeignKey("SectionId")]
-        public int? SectionId { get; set; }
-        public virtual LookUpCategoryDetail Section { get; set; }
 
         [ForeignKey("Students")]
         public int StudentId { get; set; }

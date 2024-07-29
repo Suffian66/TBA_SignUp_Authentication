@@ -1,9 +1,10 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Calendar from 'react-calendar';
 import "react-calendar/dist/Calendar.css";
 
-const StudentAttendance = () => {
+const UpdateStudentAttendance = () => {
   const [students, setStudents] = useState([
     { gr_no: 1001, name: 'Savannah Nguyen', present: true, absent: false, leave: false, note: 'Note' },
     { gr_no: 1002, name: 'Brooklyn Simmons', present: true, absent: false, leave: false, note: 'Note' },
@@ -50,7 +51,7 @@ const StudentAttendance = () => {
     { gr_no: 1043, name: 'Henry Collins', present: true, absent: false, leave: false, note: 'Note' },
     { gr_no: 1044, name: 'Scarlett Stewart', present: false, absent: true, leave: false, note: 'Note' },
     { gr_no: 1045, name: 'Sebastian Sanchez', present: true, absent: false, leave: false, note: 'Note' },
-    { gr_no: 1046, name: 'Madison Morris', present: false, absent: true, leave: false, note: 'Note' },
+    { gr_no: 1046, name: 'Madison Morris', present: true, absent: false, leave: false, note: 'Note' },
     { gr_no: 1047, name: 'Elijah Miklesons', present: true, absent: false, leave: false, note: 'Note' },
     { gr_no: 1048, name: 'Abigail Reed', present: false, absent: false, leave: true, note: 'Note' },
     { gr_no: 1049, name: 'Alexander Cook', present: true, absent: false, leave: false, note: 'Note' },
@@ -121,7 +122,7 @@ const StudentAttendance = () => {
     <div className="profilediv">
       <div className="container mt-4">
         <div className="header mb-4">
-          <h2>Student's Attendance ClassName..</h2>
+          <h2>Student's Attendance</h2>
         </div>
         <div className="filters mb-4">
           <div className="row">
@@ -255,7 +256,7 @@ const StudentAttendance = () => {
           </nav>
         </div>
         <div className=' mb-4 me-4 d-flex justify-content-end'>
-          <button className='btn btn-danger'>Save</button>
+          <button className='btn btn-danger'>Edit</button>
         </div>
         <div className="attendance-summary row">
           <div className="col-md-4 mb-3">
@@ -291,4 +292,4 @@ const StudentAttendance = () => {
   );
 };
 
-export default StudentAttendance;
+export default UpdateStudentAttendance;

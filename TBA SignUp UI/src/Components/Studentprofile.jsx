@@ -15,10 +15,12 @@ function StudentProfile() {
   const sponsorId = queryParams.get("sponsorId");
   const navigate = useNavigate();
   const { data, error, isLoading } = useGetStudentByIdQuery(studentId);
-  
-  const { data: dataFrequency, error: frequencyError, isLoading: frequencyIsLoading } = useGetCategoryDetailQuery(["Donation Frequency", ""], {});
-  const { data: dataChannel, error: channelError, isLoading: channelIsLoading } = useGetCategoryDetailQuery(["Donation Channel", ""], {});
-  
+  const { data: categoryData } = useGetCategoryDetailQuery();
+
+  const allCategoryDetails = categoryData?.$values || [];
+  const donationFrequencies = allCategoryDetails.filter(item => item.description === "Donation Frequency");
+  const donationChannels = allCategoryDetails.filter(item => item.description === "Donation Channel");
+ 
   const [formData, setFormData] = useState({
     donationAmount: "",
     donationFrequency: "Monthly",
@@ -79,12 +81,10 @@ function StudentProfile() {
         alert(error?.data?.message);
       }
     } catch (error) {
-      console.error("Error adding MapSponsorStudent:", error.message);
+      // console.error("Error adding MapSponsorStudent:", error.message);
     }
   };
 
-  if (isLoading || frequencyIsLoading || channelIsLoading) return <div>Loading...</div>;
-  if (error || frequencyError || channelError) return <div>Error: {error.message}</div>;
   if (!data || Object.keys(data).length === 0) return <div>No student found</div>;
 
   const {
@@ -106,27 +106,9 @@ function StudentProfile() {
     personOccupation,
     personIncome,
     qualification,
-    address1,
-    address2,
-    addressType,
-    city,
-    country,
-    state,
-    postalCode,
-
+    
   } = data;
 
-  
-  
-
-
-  const getCategoryDetailsByTitle = (data, title) => {
-    const categoryObject = data?.$values.find((item) => item.title === title);
-    return categoryObject?.lookupCategoryDetail?.$values || [];
-  };
-
-  const donationFrequencies = getCategoryDetailsByTitle(dataFrequency, "Donation Frequency");
-  const donationChannels = getCategoryDetailsByTitle(dataChannel, "Donation Channel");
 
   return (
     <>
@@ -182,11 +164,7 @@ function StudentProfile() {
           <div className="row ms-2">
             <div className="col-3 divcolor fw-bold">Residence Status</div>
             <div className="col-3 divcolor">{residenceStatus}</div>
-            <div className='col-3 divcolor fw-bold'> Postal Code </div>
-            <div className='col-3 divcolor'>{postalCode}</div>
-
           </div>
-
          
         </div>
     
@@ -232,87 +210,37 @@ function StudentProfile() {
         </div>
     <hr />
      </div>
-                <div className='row ms-2'>
-                    <div className='col-3 divcolor fw-bold'>
-                        Address 1
-                    </div>
-                    <div className='col-9 divcolor'>
-                        {address1}
-                    </div>
-                </div>
-
-                <div className='row ms-2'>
-                    <div className='col-3 divcolor fw-bold'>
-                        Address 2
-                    </div>
-                    <div className='col-9 divcolor'>
-                        {address2}
-                    </div>
-                </div>
-
-                <div className='row ms-2'>
-                    <div className='col-3 divcolor fw-bold'>
-                        Address Type
-                    </div>
-                    <div className='col-3 divcolor'>
-                        {addressType}
-                    </div>
-                    <div className='col-3 divcolor fw-bold'>
-                        State
-                    </div>
-                    <div className='col-3 divcolor'>
-                        {state}
-                    </div>
-                </div>
-
-                <div className='row ms-2'>
-                    <div className='col-3 divcolor fw-bold'>
-                        City
-                    </div>
-                    <div className='col-3 divcolor'>
-                        {city}
-                    </div>
-                    <div className='col-3 divcolor fw-bold'>
-                        Country
-                    </div>
-                    <div className='col-3 divcolor'>
-                        {country}
-                    </div>
-                </div>
-        </div>
-        </div>
-      <div className="profilediv ms-2 mt-5 me-2">
-        <form onSubmit={handleSubmit}>
-          <h4 className="ms-2 mt-3 mb-4 textcolor">Add to Sponsorship</h4>
-          <div className="row ms-2">
-            <div className="col-3 divcolor fw-bold">Donation Amount</div>
-            <div className="col-3 divcolor">
-              <input
-                type="number"
-                name="donationAmount"
-                value={formData.donationAmount}
-                onChange={handleChange}
-                className="form-control"
-              />
-            </div>
-            <div className="col-3 divcolor fw-bold">Donation Frequency</div>
-            <div className="col-3 divcolor">
-              <select
-                name="donationFrequency"
-                value={formData.donationFrequency}
-                onChange={handleChange}
-                className="form-control"
-              >
-                <option value="">Select Frequency</option>
-                {donationFrequencies.map((frequency, index) => (
-                  <option key={index.lookupValueId} value={frequency}>
-                    {frequency}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-         
+      <div className="justify-content-end d-flex me-5">
+        <div className="profilediv ms-2 mt-5 me-2">
+          <form onSubmit={handleSubmit}>
+            <h4 className="ms-2 mt-3 mb-4 textcolor">Add to Sponsorship</h4>
+            <div className="row ms-2">
+              <div className="col-3 divcolor fw-bold">Donation Amount</div>
+              <div className="col-3 divcolor">
+                <input
+                  type="text"
+                  name="donationAmount"
+                  value={formData.donationAmount}
+                  onChange={handleChange}
+                  className="form-control"
+                />
+              </div>
+              <div className="col-3 divcolor fw-bold">Donation Frequency</div>
+              <div className="col-3 divcolor">
+                <select
+                  name="donationFrequency"
+                  value={formData.donationFrequency}
+                  onChange={handleChange}
+                  className="form-control"
+                >
+                  <option value="">Select Frequency</option>
+                  {donationFrequencies.map((item) => (
+                    <option key={item.lookupValueId} value={item.title}>
+                      {item.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div className="row ms-2">
               <div className="col-3 divcolor fw-bold">Donation Start Date</div>

@@ -2,51 +2,87 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-import { Link, useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 import { PersonFill } from 'react-bootstrap-icons';
 import { useGetSponsorByIdQuery, useUpdateSponsorMutation } from '../services/Sponsorlist';
 import { useGetCategoryDetailQuery } from '../services/LookUp';
+import { Controller, useForm } from 'react-hook-form';
 
-function UpdateSponsor() {
+function SponsorUpdate() {
     const { id: sponsorId } = useParams();
-    const { data: sponsor, error: sponsorError, isLoading: sponsorLoading } = useGetSponsorByIdQuery(sponsorId);
-    const [updateSponsor] = useUpdateSponsorMutation();
-    const { data } = useGetCategoryDetailQuery();
+    const {data: sponsor} = useGetSponsorByIdQuery(sponsorId);
+    const [ updateSponsor ] = useUpdateSponsorMutation();
+    const { data: categoryData } = useGetCategoryDetailQuery();
+    const navigate = useNavigate();
     
-    const [formData, setFormData] = useState({});
-    const allCategoryDetails = data?.$values || [];
-    const genderOptions = allCategoryDetails.filter(item => itemm.description === "Gender");
-    const addressTypeOptions = allCategoryDetails.filter(item => item.description === "Address Type");
-    const countryOptions = allCategoryDetails.filter(item => item.description === "Country"); 
+    const { register, handleSubmit, control, reset } = useForm({
+        defaultValues: {
+            firstName: '',
+            middleName: '',
+            lastName: '',
+            gender: '',
+            dob: '',
+            cnic: '',
+            occupation: '',
+            address1: '',
+            address2: '',
+            postalCode: '',
+            addressType: '',
+            state: '',
+            city: '',
+            country: '',
+        }
+    });
 
     useEffect(() => {
-        if (sponsor) {
-            setFormData(sponsor);
+        if (sponsor && categoryData) {
+            const allCategoryDetails = categoryData.$values || [];
+            const genderOptions = allCategoryDetails.filter(item => item.description === "Gender");
+            const addressTypeOptions = allCategoryDetails.filter(item => item.description === "Address Type");
+            const countryOptions = allCategoryDetails.filter(item => item.description === "Country");
+
+            const genderOption = genderOptions.find(option => option.title.toLowerCase() === sponsor.gender.toLowerCase());
+            const addressTypeOption = addressTypeOptions.find(option => option.title.toLowerCase() === sponsor.addressType.toLowerCase());
+            const countryOption = countryOptions.find(option => option.title.toLowerCase() === sponsor.country.toLowerCase());
+
+            reset({
+                ...sponsor,
+                gender: genderOption ? genderOption.title : '',
+                addressType: addressTypeOption ? addressTypeOption.lookUpCtgDetailId : '',
+                country: countryOption ? countryOption.lookUpCtgDetailId : ''
+            });
         }
-    }, [sponsor]);
+    }, [sponsor, categoryData, reset]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const onSubmit = async (formData) => {
         try {
-            await updateSponsor(formData).unwrap();
+            const payload = {
+                
+                firstName: formData.firstName,
+                middleName: formData.middleName,
+                lastName: formData.lastName,
+                gender: formData.gender,
+                dob: formData.dob,
+                cnic: formData.cnic,
+                occupation: formData.occupation,
+                address1: formData.address1,
+                address2: formData.address2,
+                postalCode: formData.postalCode,
+                addressTypeId: formData.addressType,
+                state: formData.state,
+                city: formData.city,
+                countryId: formData.country,
+            };
+            await updateSponsor({sponsorId, ...payload}).unwrap();
             alert('Sponsor updated successfully');
+            navigate(`/sponsorprofile/${sponsorId ? `${sponsorId}` : ''}`)
+            
         } catch (error) {
             console.error('Failed to update sponsor: ', error);
             alert('Failed to update sponsor');
         }
     };
-
-    if (sponsorLoading) return <div>Loading...</div>;
-    if (sponsorError) return <div>Error: {sponsorError.message}</div>;
 
     return (
         <>
@@ -60,58 +96,52 @@ function UpdateSponsor() {
 
                 <div className='mt-2 mb-5 ps-3 pe-5 dashboardbox profilebox'>
                     <h4 className='ms-2 textcolor'>Personal Information</h4>
-                    <Form onSubmit={handleSubmit}>
+                    <Form onSubmit={handleSubmit(onSubmit)}>
                         <Row className='mb-3'>
                             <Form.Group as={Col}>
                                 <Form.Label>First Name</Form.Label>
                                 <Form.Control
                                     type='text'
-                                    name='firstName'
-                                    value={formData.firstName || ''}
-                                    onChange={handleChange}
+                                    {...register('firstName')}
                                 />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Middle Name</Form.Label>
                                 <Form.Control
                                     type='text'
-                                    name='middleName'
-                                    value={formData.middleName || ''}
-                                    onChange={handleChange}
+                                    {...register('middleName')}
                                 />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Last Name</Form.Label>
                                 <Form.Control
                                     type='text'
-                                    name='lastName'
-                                    value={formData.lastName || ''}
-                                    onChange={handleChange}
+                                    {...register('lastName')}
                                 />
                             </Form.Group>
                         </Row>
                         <Row className='mb-3'>
                             <Form.Group as={Col}>
                                 <Form.Label>Gender</Form.Label>
-                                <Form.Control
-                                    as='select'
+                                <Controller
                                     name='gender'
-                                    value={formData.gender || ''}
-                                    onChange={handleChange}
-                                >
-                                    <option value=''>Select Gender</option>
-                                    {genderOptions.map((option, index) => (
-                                        <option key={index} value={option.lookUpCtgDetailId}>{option.title}</option>
-                                    ))}
-                                </Form.Control>
+                                    control={control}
+                                    defaultValue=''
+                                    render={({ field }) => (
+                                        <Form.Control as='select' {...field}>
+                                            <option value=''>Select Gender</option>
+                                            {categoryData?.$values.filter(item => item.description === "Gender").map((option, index) => (
+                                                <option key={index} value={option.title}>{option.title}</option>
+                                            ))}
+                                        </Form.Control>
+                                    )}
+                                />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Date of Birth</Form.Label>
                                 <Form.Control
-                                    type='date'
-                                    name='dob'
-                                    value={formData.dob || ''}
-                                    onChange={handleChange}
+                                    type='text'
+                                    {...register('dob')}
                                 />
                             </Form.Group>
                         </Row>
@@ -120,18 +150,14 @@ function UpdateSponsor() {
                                 <Form.Label>CNIC</Form.Label>
                                 <Form.Control
                                     type='text'
-                                    name='cnic'
-                                    value={formData.cnic || ''}
-                                    onChange={handleChange}
+                                    {...register('cnic')}
                                 />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Occupation</Form.Label>
                                 <Form.Control
                                     type='text'
-                                    name='occupation'
-                                    value={formData.occupation || ''}
-                                    onChange={handleChange}
+                                    {...register('occupation')}
                                 />
                             </Form.Group>
                         </Row>
@@ -140,18 +166,14 @@ function UpdateSponsor() {
                                 <Form.Label>Address 1</Form.Label>
                                 <Form.Control
                                     type='text'
-                                    name='address1'
-                                    value={formData.address1 || ''}
-                                    onChange={handleChange}
+                                    {...register('address1')}
                                 />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Address 2</Form.Label>
                                 <Form.Control
                                     type='text'
-                                    name='address2'
-                                    value={formData.address2 || ''}
-                                    onChange={handleChange}
+                                    {...register('address2')}
                                 />
                             </Form.Group>
                         </Row>
@@ -160,23 +182,22 @@ function UpdateSponsor() {
                                 <Form.Label>Postal Code</Form.Label>
                                 <Form.Control
                                     type='text'
-                                    name='postalCode'
-                                    value={formData.postalCode || ''}
-                                    onChange={handleChange}
+                                    {...register('postalCode')}
                                 />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Address Type</Form.Label>
-                                <Form.Control
-                                    as='select'
+                                <Controller
                                     name='addressType'
-                                    value={formData.addressType || ''}
-                                    onChange={handleChange}
-                                >
-                                    {addressTypeOptions.map((option, index) => (
-                                      <option key={index} value={option.lookUpCtgDetailId}>{option.title}</option>
-                                    ))}     
-                                </Form.Control>
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Form.Control as='select' {...field}>
+                                             {categoryData?.$values.filter(item => item.description === "Address Type").map((option, index) => (
+                                                <option key={index} value={option.lookUpCtgDetailId}>{option.title}</option>
+                                            ))}
+                                        </Form.Control>
+                                    )}
+                                />
                             </Form.Group>
                         </Row>
                         <Row className='mb-3'>
@@ -184,48 +205,37 @@ function UpdateSponsor() {
                                 <Form.Label>State</Form.Label>
                                 <Form.Control
                                     type='text'
-                                    name='state'
-                                    value={formData.state || ''}
-                                    onChange={handleChange}
+                                    {...register('state')}
                                 />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>City</Form.Label>
                                 <Form.Control
                                     type='text'
-                                    name='city'
-                                    value={formData.city || ''}
-                                    onChange={handleChange}
+                                    {...register('city')}
                                 />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Country</Form.Label>
-                                <Form.Control
-                                    as='select'
+                                <Controller
                                     name='country'
-                                    value={formData.country || ''}
-                                    onChange={handleChange}
-                                >
-                                     {countryOptions.map((option, index) => (
-                                        <option key={index} value={option.lookUpCtgDetailId}>{option.title}</option>
-                                    ))}
-                                </Form.Control>
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Form.Control as='select' {...field}>
+                                            {categoryData?.$values.filter(item => item.description === "Country").map((option, index) => (
+                                                <option key={index} value={option.lookUpCtgDetailId}>{option.title}</option>
+                                            ))}
+                                        </Form.Control>
+                                    )}
+                                />
                             </Form.Group>
                         </Row>
                         <Button type='submit' className='btn btn-primary btn-color'>Update Profile</Button>
                     </Form>
-                </div>
-                <hr />
-                <div className='row float-start mt-5 ms-1'>
-                    <div className='d-flex'>
-                        <Link to='/sponsorlist'><Button className='btn btn-primary btnstudent btn-color me-2'>Back to Lists</Button></Link>
-                        <Link to={`/studentlist/${sponsorId}`}><Button className='btn btn-primary btnstudent btn-color me-2'>Student List</Button></Link>
-                        <Link to={`/mapSponsorStudentList?sponsorId=${sponsorId}`}><Button className='btn btn-primary btnstudent btn-color'>My Sponsor Cart</Button></Link>
-                    </div>
                 </div>
             </div>
         </>
     );
 }
 
-export default UpdateSponsor;
+export default SponsorUpdate;

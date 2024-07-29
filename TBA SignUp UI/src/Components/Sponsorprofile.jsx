@@ -123,7 +123,7 @@ function Sponsorprofile() {
                     </div>
                 </div>
             </div>
-            <Link to='/sponsorupdate'><button className='btn btn-primary ms-3 btn-color'>Update Profile</button></Link>
+            <Link to={`/sponsorupdate/${sponsorId}`}><button className='btn btn-primary ms-3 btn-color'>Update Profile</button></Link>
             <hr />
                          
             <div className='row float-start mt-5 ms-1'>

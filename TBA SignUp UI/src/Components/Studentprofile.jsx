@@ -78,13 +78,16 @@ function StudentProfile() {
       }
 
       if (error && error.status === 400) {
-        alert(error?.data?.message);
+        alert(error?.data?.message || 'Bad Request');
       }
-    } catch (error) {
-      // console.error("Error adding MapSponsorStudent:", error.message);
+    } 
+    catch (error) {
+      console.error("Error adding MapSponsorStudent:", error.message || error);
     }
   };
 
+  // if (isLoading || frequencyIsLoading || channelIsLoading) return <div>Loading...</div>;
+  // if (error || frequencyError || channelError) return <div>Error: {error.message}</div>;
   if (!data || Object.keys(data).length === 0) return <div>No student found</div>;
 
   const {
@@ -108,6 +111,16 @@ function StudentProfile() {
     qualification,
     
   } = data;
+
+  
+  //   const getCategoryDetailsByTitle = (data, title) => {
+  //   const categoryObject = categoryData?.$values.find((item) => item.title === title);
+  //   return categoryObject?.lookupCategoryDetail?.$values || [];
+  // };
+
+  const allCategoryDetails = categoryData.$values || [];
+  const donationFrequencies = allCategoryDetails.filter(item => item.description === "Donation Frequency");
+  const donationChannel = allCategoryDetails.filter(item => item.description === "Donation Channel");
 
 
   return (
@@ -164,10 +177,54 @@ function StudentProfile() {
           <div className="row ms-2">
             <div className="col-3 divcolor fw-bold">Residence Status</div>
             <div className="col-3 divcolor">{residenceStatus}</div>
+            <div className='col-3 divcolor fw-bold'> Postal Code </div>
+            <div className='col-3 divcolor'>{postalCode}</div>
           </div>
-         
-        </div>
-    
+          <div className='row ms-2'>
+                    <div className='col-3 divcolor fw-bold'>
+                        Address 1
+                    </div>
+                    <div className='col-9 divcolor'>
+                        {address1}
+                    </div>
+          </div>
+          <div className='row ms-2'>
+                    <div className='col-3 divcolor fw-bold'>
+                        Address 2
+                    </div>
+                    <div className='col-9 divcolor'>
+                        {address2}
+                    </div>
+         </div>
+         <div className='row ms-2'>
+                    <div className='col-3 divcolor fw-bold'>
+                        Address Type
+                    </div>
+                    <div className='col-3 divcolor'>
+                        {addressType}
+                    </div>
+                    <div className='col-3 divcolor fw-bold'>
+                        State
+                    </div>
+                    <div className='col-3 divcolor'>
+                        {state}
+                    </div>
+                </div>
+                <div className='row ms-2'>
+                    <div className='col-3 divcolor fw-bold'>
+                        City
+                    </div>
+                    <div className='col-3 divcolor'>
+                        {city}
+                    </div>
+                    <div className='col-3 divcolor fw-bold'>
+                        Country
+                    </div>
+                    <div className='col-3 divcolor'>
+                        {country}
+                    </div>
+                </div>
+            </div>
       
       
     
@@ -208,39 +265,49 @@ function StudentProfile() {
             </div>
           </div>
         </div>
+
+        </div>
     <hr />
-     </div>
-      <div className="justify-content-end d-flex me-5">
-        <div className="profilediv ms-2 mt-5 me-2">
-          <form onSubmit={handleSubmit}>
-            <h4 className="ms-2 mt-3 mb-4 textcolor">Add to Sponsorship</h4>
-            <div className="row ms-2">
-              <div className="col-3 divcolor fw-bold">Donation Amount</div>
-              <div className="col-3 divcolor">
-                <input
-                  type="text"
-                  name="donationAmount"
-                  value={formData.donationAmount}
-                  onChange={handleChange}
-                  className="form-control"
-                />
-              </div>
-              <div className="col-3 divcolor fw-bold">Donation Frequency</div>
-              <div className="col-3 divcolor">
-                <select
-                  name="donationFrequency"
-                  value={formData.donationFrequency}
-                  onChange={handleChange}
-                  className="form-control"
-                >
-                  <option value="">Select Frequency</option>
-                  {donationFrequencies.map((item) => (
-                    <option key={item.lookupValueId} value={item.title}>
-                      {item.title}
-                    </option>
-                  ))}
-                </select>
-              </div>
+     
+                        
+      <div className="profilediv ms-2 mt-5 me-2">
+        <form onSubmit={handleSubmit}>
+          <h4 className="ms-2 mt-3 mb-4 textcolor">Add to Sponsorship</h4>
+          <div className="row ms-2">
+            <div className="col-3 divcolor fw-bold">Donation Amount</div>
+            <div className="col-3 divcolor">
+              <input
+                type="number"
+                name="donationAmount"
+                value={formData.donationAmount}
+                onChange={handleChange}
+                className="form-control"
+              />
+            </div>
+            <div className="col-3 divcolor fw-bold">Donation Frequency</div>
+            <div className="col-3 divcolor">
+              <select
+                name="donationFrequency"
+                value={formData.donationFrequency}
+                onChange={handleChange}
+                className="form-control"
+              >
+                <option value="">Select Frequency</option>
+                {donationFrequencies.map((item) => (
+                  <option key={item.lookupValueId} value={item.title}>
+                    {item.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+         
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+         
             </div>
             <div className="row ms-2">
               <div className="col-3 divcolor fw-bold">Donation Start Date</div>
@@ -262,7 +329,7 @@ function StudentProfile() {
                   className="form-control"
                 >
                   <option value="">Select Channel</option>
-                  {donationChannels.map((item) => (
+                  {donationChannel.map((item) => (
                     <option key={item.lookupValueId} value={item.title}>
                       {item.title}
                     </option>
@@ -317,7 +384,6 @@ function StudentProfile() {
               </div>
             </div>
           </form>
-        </div>
       </div>
     </>
   );

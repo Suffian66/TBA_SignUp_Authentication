@@ -11,13 +11,13 @@ export const SponsorlistApi = createApi({
         getSponsorById:builder.query({
           query: (sponsorId) => `GetSponsorById?sponsorId=${sponsorId}`
         }),
-      updateSponsor: builder.mutation({
-        query: (sponsorId, ...body) => ({
-          url: `UpdateSponsor?sponsorId=${sponsorId}`,
-          method: 'PUT',
-          body,
-        }),
-      })
+        updateSponsor: builder.mutation({
+          query: ({ sponsorId, ...updateDto }) => ({
+              url: `UpdateSponsor?sponsorId=${sponsorId}`,
+              method: 'PUT',
+              body: updateDto,
+          }),
+      }),
     })
 });
 

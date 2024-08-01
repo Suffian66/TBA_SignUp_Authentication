@@ -15,6 +15,7 @@ namespace TBA_SignUp.Controllers
             _mapSponsorStudent = mapSponsorStudent;
         }
 
+
         [HttpPost]
         public IActionResult AddMapSponsorStudent([FromBody] MapSponsorStudentDto mapSponsorStd)
 
@@ -60,8 +61,22 @@ namespace TBA_SignUp.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        [HttpPut("{id}")]
-        public IActionResult UpdateMapSponsorStudent(int id, [FromBody] MapSponsorStudentDto mapSponsorStd)
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetMapSponsorStudentById(int studentId)
+        {
+            var result = await _mapSponsorStudent.GetMapSponsorStudentById(studentId);
+
+            if (result == null)
+            {
+                return NotFound("Sponsor student mapping not found");
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPut("[action]")]
+        public IActionResult UpdateMapSponsorStudent(int id, [FromBody] UpdateMapSponsorDto mapSponsorStd)
         {
             if (mapSponsorStd == null || id == 0)
             {
@@ -81,5 +96,24 @@ namespace TBA_SignUp.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpDelete("[action]")]
+        public IActionResult DeleteMapSponsorStudent(int studentId)
+        {
+            try
+            {
+                _mapSponsorStudent.DeleteMapSponsorStudent(studentId);
+                return Ok(new { message = "Student deleted successfully." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while deleting the sponsorship.", details = ex.Message });
+            }
+        }
+
     }
 }

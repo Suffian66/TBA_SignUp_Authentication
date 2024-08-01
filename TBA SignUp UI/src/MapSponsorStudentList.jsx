@@ -1,13 +1,14 @@
 import { Table } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import { Cart } from 'react-bootstrap-icons';
-import { useGetAllMapSponsorStudentsQuery } from './services/MapSponsorStudent';
+import { useDeleteMapSponsorStudentMutation, useGetAllMapSponsorStudentsQuery } from './services/MapSponsorStudent';
 
 const MapSponsorStudentList = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const sponsorId = queryParams.get('sponsorId');
     const { data: sponsorStudentsResponse, error, isLoading } = useGetAllMapSponsorStudentsQuery();
+    const [deleteMapSponsor] = useDeleteMapSponsorStudentMutation();
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message || 'An error occurred'}</div>;
@@ -25,6 +26,18 @@ const MapSponsorStudentList = () => {
     if (!Array.isArray(sponsorStudents)) {
         return <div>No sponsor students available</div>;
     }
+
+    const handleDelete = async (studentId) => {
+        if (window.confirm("Are you sure you want to delete this sponsorship?")) {
+            try {
+                await deleteMapSponsor({studentId}).unwrap();
+                alert('Student deleted successfully from your SponsorCart');
+            } catch (error) {
+                console.error('Failed to delete sponsorship:', error);
+                alert('Failed to delete sponsorship');
+            }
+        }
+    };
 
     return (
         <>
@@ -70,9 +83,20 @@ const MapSponsorStudentList = () => {
                                             <td>{student.donationSourceAccount}</td>
                                             <td>{student.donationDestinationAccount}</td>
                                             <td>
-                                                <Link to="/bank">
-                                                    <button className='btn btn-primary btn-sm lh-2 mt-3'>Click to Pay</button>
+                                            <div className='d-flex justify-content-center'>
+                                                <Link to={`/updateSponsorCart/${student.studentId}/${sponsorId}`}>
+                                                    <button className='btn btn-warning btn-sm lh-2 mt-3 me-1'>Edit</button>
                                                 </Link>
+                                                {/* <Link to=""> */}
+                                                <button
+                                                        className='btn btn-danger btn-sm lh-2 mt-3 me-1'
+                                                        onClick={() => handleDelete(student.studentId)}
+                                                    >Delete</button>
+                                                {/* </Link> */}
+                                                <Link to="/bank">
+                                                    <button className='btn btn-primary btn-sm lh-2 mt-3'>Pay</button>
+                                                </Link>
+                                            </div>
                                             </td>
                                         </tr>
                                     ))}

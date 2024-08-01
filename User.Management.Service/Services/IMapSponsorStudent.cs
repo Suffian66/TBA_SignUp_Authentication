@@ -6,8 +6,10 @@ namespace User.Management.Service.Services
     public interface IMapSponsorStudent
     {
         MapSponsorStudents AddMapSponsorStudent(MapSponsorStudentDto mapsponsorstd);
-
         Task<IEnumerable<MapSponsorAllStudentsDto>> GetAllMapSponsorStudent();
-        MapSponsorStudents UpdateMapSponsorStudent(int id, MapSponsorStudentDto mapSponsorStd);
+        public Task<MapSponsorStudentDto> GetMapSponsorStudentById(int studentId);
+        MapSponsorStudents UpdateMapSponsorStudent(int id, UpdateMapSponsorDto mapSponsorStd);
+
+        void DeleteMapSponsorStudent(int studentId);
     }
 }

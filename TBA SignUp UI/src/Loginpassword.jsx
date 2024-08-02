@@ -32,6 +32,9 @@ import SponsorUpdate from "./Components/SponsorUpdate.jsx";
 import UpdateStudentAttendance from "./Components/UpdateStudentAttandance.jsx";
 import AddStudentAttendance from "./Components/AddStudentAttendance.jsx";
 
+import UpdateSponsorCart from "./Components/UpdateSponsorCart.jsx";
+
+
 
 const router = createBrowserRouter([
   {
@@ -175,6 +178,18 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: "/updatesponsorcart/:studentId/:id",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <UpdateSponsorCart />,
+      },
+    ],
+  },
+
+
+  {
     path: "/studentprofile/:id",
     element: <Wrapper />,
     children: [
@@ -216,7 +231,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/studentprofile/:id",
+    path: "/studentprofile/:id/:sponsorId?",
     element: <Wrapper />,
     children: [
       {
@@ -276,7 +291,7 @@ const router = createBrowserRouter([
     ],
   },         
   {
-    path: "/classlist",
+    path: "/classlist/:id?",
     element: <Wrapper />,
     children: [
       {
@@ -286,7 +301,7 @@ const router = createBrowserRouter([
     ],
   },         
   {
-    path: "/classwisestudentlist/:className",
+    path: "/classwisestudentlist/:id?/:className",
     element: <Wrapper />,
     children: [
       {

@@ -5,6 +5,7 @@ import { Cart } from 'react-bootstrap-icons';
 import { useGetStudentsByClassNameQuery } from './services/ClassList';
 
 const ClassWiseStudentList = () => {
+    const {id: sponsorId} = useParams();
     const { className } = useParams();
     console.log('className', className);
     const { data: studentsArray, error, isLoading } = useGetStudentsByClassNameQuery(className);
@@ -47,7 +48,7 @@ const ClassWiseStudentList = () => {
                                             <td>{student.lastName}</td>
                                             <td>{student.class}</td>
                                             <td>
-                                                <Link to={`/studentprofile/${student.studentId}`}>
+                                                <Link to={`/studentprofile/${student.studentId}?sponsorId=${sponsorId}`}>
                                                     <button className='btn btn-primary'>View Full Profile</button>
                                                 </Link>
                                             </td>

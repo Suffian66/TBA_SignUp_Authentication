@@ -1,8 +1,8 @@
-﻿namespace User.Management.Data.DTOs
+﻿
+namespace User.Management.Data.DTOs
 {
-    public class MapSponsorAllStudentsDto
+    public class UpdateMapSponsorDto
     {
-        //public string? StudentsReports { get; set; }
         public int? DonationAmount { get; set; }
         public string? DonationFrequency { get; set; }
         public DateTime? DonationStartDate { get; set; }
@@ -10,12 +10,9 @@
         public string? DonationSourceAccount { get; set; }
         public string? DonationDestinationAccount { get; set; }
         public string? Notes { get; set; }
+        public string? Class { get; set; }
         public int StudentId { get; set; }
         public string Id { get; set; }
-        public int GR_No { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Class { get; set; }
-
     }
 }
+

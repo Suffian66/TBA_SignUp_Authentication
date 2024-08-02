@@ -129,7 +129,7 @@ function Sponsorprofile() {
             <div className='row float-start mt-5 ms-1'>
                 <div className='d-flex'>
                     <Link to='/sponsorlist'><button className='btn btn-primary btnstudent btn-color me-2'>Back to Lists</button></Link>                        
-                    <Link to={`/studentlist/${sponsorId}`}><button  className=' btn btn-primary btnstudent btn-color me-2'>Student List</button></Link>
+                    <Link to={`/classlist/${sponsorId}`}><button  className=' btn btn-primary btnstudent btn-color me-2'>Class List</button></Link>
                     <Link to={`/mapSponsorStudentList?sponsorId=${sponsorId}`}><button  className=' btn btn-primary btnstudent btn-color'>My Sponsor Cart</button></Link>
                 </div>
             </div>

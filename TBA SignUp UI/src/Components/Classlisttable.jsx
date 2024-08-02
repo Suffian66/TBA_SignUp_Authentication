@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { BarChartLine } from 'react-bootstrap-icons';
 import Table from 'react-bootstrap/Table';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useGetClassListQuery } from "../services/ClassList";
 
 const Classlisttable = () => {
+  const {id: sponsorId} = useParams();
   const { data: classListResponse } = useGetClassListQuery();
 
   const classList = classListResponse?.$values || [];
@@ -39,7 +40,7 @@ const Classlisttable = () => {
                   <td>{classItem.class}</td> 
                   <td>{classItem.studentCount}</td>
                   <td>
-                    <Link to={`/classwisestudentlist/${classItem.class}`}>
+                    <Link to={`/classwisestudentlist/${sponsorId}/${classItem.class}`}>
                       <button className='btn btnclasslist lh-sm'>View Details</button>
                     </Link>
                   </td>

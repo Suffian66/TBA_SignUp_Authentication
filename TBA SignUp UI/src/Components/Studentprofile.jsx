@@ -110,6 +110,7 @@ function StudentProfile() {
     personIncome,
     qualification,
     postalCode,
+
     state,
     city,
     country,
@@ -128,6 +129,7 @@ function StudentProfile() {
   // const allCategoryDetails = categoryData.$values || [];
   // const donationFrequencies = allCategoryDetails.filter(item => item.description === "Donation Frequency");
   // const donationChannel = allCategoryDetails.filter(item => item.description === "Donation Channel");
+
 
 
   return (
@@ -308,8 +310,6 @@ function StudentProfile() {
               </select>
             </div>
           </div>
-
-         
             <div className="row ms-2">
               <div className="col-3 divcolor fw-bold">Donation Start Date</div>
               <div className="col-3 divcolor">

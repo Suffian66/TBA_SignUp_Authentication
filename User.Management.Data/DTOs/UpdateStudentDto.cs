@@ -28,7 +28,6 @@
         public string? Country { get; set; }
         public string? AddressType { get; set; }
 
-        //public List<UpdateStudentFamilyDto> StudentFamilies { get; set; }
 
 
     }

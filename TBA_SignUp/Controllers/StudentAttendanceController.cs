@@ -1,92 +1,99 @@
-﻿//using Microsoft.AspNetCore.Mvc;
-//using User.Management.Data.DTOs;
-//using User.Management.Service.Services;
 
-//namespace User.Management.Controllers
-//{
-//    [Route("api/[controller]")]
-//    [ApiController]
-//    public class StudentAttendanceController : ControllerBase
-//    {
-//        private readonly IStudentAttendance _studentAttendanceService;
+﻿using Microsoft.AspNetCore.Mvc;
+using User.Management.Data.DTOs;
+using User.Management.DTOs;
+using User.Management.Service.Services;
 
-//        public StudentAttendanceController(IStudentAttendance studentAttendanceService)
-//        {
-//            _studentAttendanceService = studentAttendanceService;
-//        }
+namespace User.Management.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class StudentAttendanceController : ControllerBase
+    {
+        private readonly IStudentAttendance _studentAttendanceService;
 
-//        [HttpGet("[action]")]
-//        public async Task<ActionResult<IEnumerable<StudentAttendanceDto>>> GetAllAttendances(int classId, DateTime attendanceDate)
-//        {
-//            try
-//            {
-//                var attendances = await _studentAttendanceService.GetAllAttendancesAsync(classId, attendanceDate);
-//                return Ok(attendances);
-//            }
-//            catch (Exception)
-//            {
+        public StudentAttendanceController(IStudentAttendance studentAttendanceService)
+        {
+            _studentAttendanceService = studentAttendanceService;
+        }
 
-//                throw;
-//            }
+        [HttpGet("[action]")]
+        public async Task<ActionResult<IEnumerable<UpdateStudentAttendanceDto>>> GetAllAttendances(int? classId, DateTime? attendanceDate)
+        {
+            try
+            {
+                var attendances = await _studentAttendanceService.GetAllAttendancesAsync(classId, attendanceDate);
+                return Ok(attendances);
+            }
+            catch (Exception)
+            {
 
-//        }
+                throw;
+            }
 
-//        //[HttpGet("[action]")]
-//        //public async Task<ActionResult<StudentAttendanceDto>> GetAttendanceById(int id)
-//        //{
-//        //    try
-//        //    {
-//        //        var attendance = await _studentAttendanceService.GetAttendanceByIdAsync(id);
-//        //        if (attendance == null) return NotFound();
+        }
 
-//        //        return Ok(attendance);
-//        //    }
-//        //    catch (Exception)
-//        //    {
+        [HttpGet("[action]")]
 
-//        //        throw;
-//        //    }
+        public async Task<IEnumerable<LookupCategoryDetailDto>> GetAllClassesAsync()
+        {
+            try
+            {
+                var classEntities = await _studentAttendanceService.GetAllClassesAsync();
+                return classEntities;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-//        //}
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddAttendance([FromBody] List<AddStudentAttendanceDto> attendanceDto)
+        {
+            if (attendanceDto == null || !attendanceDto.Any())
+            {
+                return BadRequest("The attendanceDtoList field is required and cannot be empty.");
+            }
 
-//        //[HttpPost("[action]")]
-//        //public async Task<IActionResult> AddAttendance([FromBody] StudentAttendanceDto attendanceDto)
-//        //{
-//        //    if (attendanceDto == null)
-//        //    {
-//        //        return BadRequest("The attendanceDto field is required.");
-//        //    }
+            try
+            {
+                var results = new List<AddStudentAttendanceDto>(); // Use the actual return type of AddAttendanceAsync
 
-//        //    try
-//        //    {
-//        //        var result = await _studentAttendanceService.AddAttendanceAsync(attendanceDto);
-//        //        return Ok(result);
-//        //    }
-//        //    catch (Exception ex)
-//        //    {
-//        //        return StatusCode(500, ex.Message); // Internal Server Error
-//        //    }
-//        //}
+                foreach (var attendance in attendanceDto)
+                {
+                    // Perform operations on each attendanceDto
+                    var result = await _studentAttendanceService.AddAttendanceAsync(attendance);
+                    results.Add(result); // Collect each result
+                }
+
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message); // Internal Server Error
+            }
+        }
 
 
-//        //[HttpPut("[action]")]
-//        //public async Task<IActionResult> UpdateAttendance(int id, StudentAttendanceDto attendanceDto)
-//        //{
-//        //    try
-//        //    {
-//        //        if (id != attendanceDto.StudentAttendanceId) return BadRequest();
+        //[HttpPut("[action]")]
+        //public async Task<IActionResult> UpdateAttendance(int id, StudentAttendanceDto attendanceDto)
+        //{
+        //    try
+        //    {
+        //        if (id != attendanceDto.StudentAttendanceId) return BadRequest();
 
-//        //        var updatedAttendance = await _studentAttendanceService.UpdateAttendanceAsync(attendanceDto);
-//        //        if (updatedAttendance == null) return NotFound();
+        //        var updatedAttendance = await _studentAttendanceService.UpdateAttendanceAsync(attendanceDto);
+        //        if (updatedAttendance == null) return NotFound();
 
-//        //        return NoContent();
-//        //    }
-//        //    catch (Exception)
-//        //    {
+        //        return NoContent();
+        //    }
+        //    catch (Exception)
+        //    {
 
-//        //        throw;
-//        //    }
+        //        throw;
+        //    }
 
-//        //}
-//    }
-//}
+        //}
+    }
+}

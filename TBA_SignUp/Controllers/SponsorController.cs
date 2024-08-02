@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using User.Management.Data.Dto;
 using User.Management.Data.DTOs;
 using User.Management.Data.Models;
 using User.Management.Service.Services;

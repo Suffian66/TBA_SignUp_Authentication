@@ -18,8 +18,11 @@ const StudentAttendance = () => {
   // useEffect(() => {
     const handleDateChange = (date) => {
       if (date) {
-        const formattedDate = date.toISOString().split('T')[0];
-        setAttendanceDate(formattedDate);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+      const day = String(date.getDate()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${day}`;
+      setAttendanceDate(formattedDate);
       }
     };
   // }, [date]);

@@ -74,25 +74,38 @@ namespace User.Management.Controllers
             }
         }
 
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateAttendance([FromBody] List<UpdateStudentAttendanceDto> attendanceDtos)
+        {
+            try
+            {
+                if (attendanceDtos == null || !attendanceDtos.Any())
+                {
+                    return BadRequest("No attendance records provided.");
+                }
 
-        //[HttpPut("[action]")]
-        //public async Task<IActionResult> UpdateAttendance(int id, StudentAttendanceDto attendanceDto)
-        //{
-        //    try
-        //    {
-        //        if (id != attendanceDto.StudentAttendanceId) return BadRequest();
+                foreach (var attendanceDto in attendanceDtos)
+                {
+                    if (attendanceDto.StudentAttendanceId <= 0)
+                    {
+                        return BadRequest($"Invalid ID for attendance record: {attendanceDto.StudentAttendanceId}");
+                    }
 
-        //        var updatedAttendance = await _studentAttendanceService.UpdateAttendanceAsync(attendanceDto);
-        //        if (updatedAttendance == null) return NotFound();
+                    var updatedAttendance = await _studentAttendanceService.UpdateAttendanceAsync(attendanceDto);
+                    if (updatedAttendance == null)
+                    {
+                        return NotFound($"Attendance record with ID {attendanceDto.StudentAttendanceId} not found.");
+                    }
+                }
 
-        //        return NoContent();
-        //    }
-        //    catch (Exception)
-        //    {
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (ex)
+                return StatusCode(500, "An error occurred while updating attendance records.");
+            }
+        }
 
-        //        throw;
-        //    }
-
-        //}
     }
 }

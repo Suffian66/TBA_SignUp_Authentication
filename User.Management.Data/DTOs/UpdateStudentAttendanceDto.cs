@@ -8,7 +8,6 @@
         public bool Leave { get; set; }
         public DateTime? AttendanceDate { get; set; }
         public string? Remarks { get; set; }
-        public int? ClassId { get; set; }
-        public int StudentId { get; set; }
+
     }
 }

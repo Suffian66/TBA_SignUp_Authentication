@@ -20,8 +20,8 @@ export const MapSponsorStudentApi = createApi({
         }),
     }),
     deleteMapSponsorStudent: builder.mutation({
-      query: ({studentId}) => ({
-        url: `DeleteMapSponsorStudent?id=${studentId}`,
+      query: ({id}) => ({
+        url: `DeleteMapSponsorStudent?id=${id}`,
         method: 'DELETE'
     }),
     })

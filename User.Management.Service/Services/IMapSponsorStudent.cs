@@ -10,6 +10,6 @@ namespace User.Management.Service.Services
         public Task<MapSponsorStudentDto> GetMapSponsorStudentById(int studentId);
         MapSponsorStudents UpdateMapSponsorStudent(int id, UpdateMapSponsorDto mapSponsorStd);
 
-        void DeleteMapSponsorStudent(int studentId);
+        void DeleteMapSponsorStudent(int id);
     }
 }

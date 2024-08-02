@@ -51,38 +51,31 @@ namespace User.Management.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c5b3bef0-7b50-4941-be78-fb8fd1c3e327",
+                            Id = "82bef80a-552f-4672-bc55-b76f6480e6a5",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "e3811bef-7f4c-417b-83ad-ca1ca8bb852a",
+                            Id = "3565d591-bbbb-48dc-8557-156301e3b47e",
                             ConcurrencyStamp = "2",
                             Name = "Sponsor",
                             NormalizedName = "Sponsor"
                         },
                         new
                         {
-                            Id = "53945762-8991-4ace-9aaa-7390a60d4bc0",
+                            Id = "0f970da4-166e-4b71-8829-9c590c0d3669",
                             ConcurrencyStamp = "3",
                             Name = "Teacher",
                             NormalizedName = "Teacher"
                         },
                         new
                         {
-                            Id = "9a46655c-1323-4472-a33a-6e36cebd010e",
+                            Id = "a44e5ce3-3f27-497e-b06a-32d7efebca04",
                             ConcurrencyStamp = "4",
                             Name = "Student",
                             NormalizedName = "Student"
-                        },
-                        new
-                        {
-                            Id = "a3d54f8b-67af-4c9c-8632-50a7aec92486",
-                            ConcurrencyStamp = "5",
-                            Name = "AssistanceTeacher",
-                            NormalizedName = "AssistantTeacher"
                         });
                 });
 
@@ -254,8 +247,6 @@ namespace User.Management.Data.Migrations
                     b.HasKey("AddressId");
 
                     b.HasIndex("AddressTypeId");
-
-                    b.HasIndex("CountryId");
 
                     b.HasIndex("CountryId");
 
@@ -514,9 +505,6 @@ namespace User.Management.Data.Migrations
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
-                    b.Property<string>("StudentsReports")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("MapSponsorStudentsId");
 
                     b.HasIndex("Id");
@@ -706,6 +694,44 @@ namespace User.Management.Data.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("StudentAddress");
+                });
+
+            modelBuilder.Entity("User.Management.Data.Models.StudentAttendance", b =>
+                {
+                    b.Property<int>("StudentAttendanceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentAttendanceId"), 1L, 1);
+
+                    b.Property<bool>("Absent")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("AttendanceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Leave")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Present")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentAttendanceId");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentAttendance");
                 });
 
             modelBuilder.Entity("User.Management.Data.Models.StudentFamily", b =>
@@ -1016,6 +1042,23 @@ namespace User.Management.Data.Migrations
                     b.Navigation("AddressDetail");
 
                     b.Navigation("CountryDetail");
+
+                    b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("User.Management.Data.Models.StudentAttendance", b =>
+                {
+                    b.HasOne("User.Management.Data.Models.LookUpCategoryDetail", "ClassDetail")
+                        .WithMany()
+                        .HasForeignKey("ClassId");
+
+                    b.HasOne("User.Management.Data.Models.Student", "Students")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClassDetail");
 
                     b.Navigation("Students");
                 });

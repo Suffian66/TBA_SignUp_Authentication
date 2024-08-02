@@ -30,7 +30,7 @@ const MapSponsorStudentList = () => {
     const handleDelete = async (studentId) => {
         if (window.confirm("Are you sure you want to delete this sponsorship?")) {
             try {
-                await deleteMapSponsor({studentId}).unwrap();
+                await deleteMapSponsor({id: studentId}).unwrap();
                 alert('Student deleted successfully from your SponsorCart');
             } catch (error) {
                 console.error('Failed to delete sponsorship:', error);

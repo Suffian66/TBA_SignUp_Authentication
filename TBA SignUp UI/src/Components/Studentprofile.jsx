@@ -110,14 +110,27 @@ function StudentProfile() {
     personIncome,
     qualification,
     postalCode,
-    city,
+
     state,
+    city,
     country,
-    addressType,
     address1,
-    address2
+    address2,
+    addressType
     
   } = data;
+
+  
+  //   const getCategoryDetailsByTitle = (data, title) => {
+  //   const categoryObject = categoryData?.$values.find((item) => item.title === title);
+  //   return categoryObject?.lookupCategoryDetail?.$values || [];
+  // };
+
+  // const allCategoryDetails = categoryData.$values || [];
+  // const donationFrequencies = allCategoryDetails.filter(item => item.description === "Donation Frequency");
+  // const donationChannel = allCategoryDetails.filter(item => item.description === "Donation Channel");
+
+
 
   return (
     <>
@@ -297,7 +310,6 @@ function StudentProfile() {
               </select>
             </div>
           </div>
-
             <div className="row ms-2">
               <div className="col-3 divcolor fw-bold">Donation Start Date</div>
               <div className="col-3 divcolor">

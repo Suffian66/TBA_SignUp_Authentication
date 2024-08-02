@@ -30,6 +30,7 @@ import UpdateStudentFamily from "./Components/UpdateStudentFamily.jsx";
 import StudentAttendance from "./StudentAttandance.jsx";
 import SponsorUpdate from "./Components/SponsorUpdate.jsx";
 import UpdateStudentAttendance from "./Components/UpdateStudentAttandance.jsx";
+import AddStudentAttendance from "./Components/AddStudentAttendance.jsx";
 
 
 const router = createBrowserRouter([
@@ -311,6 +312,16 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <UpdateStudentAttendance />,
+      },
+    ],
+  }, 
+  {
+    path: "/add-attendance-student",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <AddStudentAttendance />,
       },
     ],
   }, 

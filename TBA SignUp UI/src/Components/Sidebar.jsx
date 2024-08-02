@@ -81,7 +81,11 @@ const Sidebar = () => {
               </MDBListGroupItem></Link>
              <Link to="/attendance-student" className='sidebarlink'> <MDBListGroupItem tag='a' href='#' className='sidebarbtn rounded mb-4'>
                 <MDBIcon fas icon="globe me-3" />
-              Student Attendance
+             Get Student Attendance
+              </MDBListGroupItem></Link>
+             <Link to="/add-attendance-student" className='sidebarlink'> <MDBListGroupItem tag='a' href='#' className='sidebarbtn rounded mb-4'>
+                <MDBIcon fas icon="globe me-3" />
+            Add  Student Attendance
               </MDBListGroupItem></Link>
 
           </MDBListGroup>

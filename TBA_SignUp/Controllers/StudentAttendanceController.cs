@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using User.Management.Data.DTOs;
+using User.Management.DTOs;
 using User.Management.Service.Services;
 
 namespace User.Management.Controllers
@@ -16,7 +17,7 @@ namespace User.Management.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<ActionResult<IEnumerable<StudentAttendanceDto>>> GetAllAttendances(int classId, DateTime attendanceDate)
+        public async Task<ActionResult<IEnumerable<UpdateStudentAttendanceDto>>> GetAllAttendances(int? classId, DateTime? attendanceDate)
         {
             try
             {
@@ -31,42 +32,47 @@ namespace User.Management.Controllers
 
         }
 
-        //[HttpGet("[action]")]
-        //public async Task<ActionResult<StudentAttendanceDto>> GetAttendanceById(int id)
-        //{
-        //    try
-        //    {
-        //        var attendance = await _studentAttendanceService.GetAttendanceByIdAsync(id);
-        //        if (attendance == null) return NotFound();
+        [HttpGet("[action]")]
 
-        //        return Ok(attendance);
-        //    }
-        //    catch (Exception)
-        //    {
+        public async Task<IEnumerable<LookupCategoryDetailDto>> GetAllClassesAsync()
+        {
+            try
+            {
+                var classEntities = await _studentAttendanceService.GetAllClassesAsync();
+                return classEntities;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-        //        throw;
-        //    }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddAttendance([FromBody] List<AddStudentAttendanceDto> attendanceDto)
+        {
+            if (attendanceDto == null || !attendanceDto.Any())
+            {
+                return BadRequest("The attendanceDtoList field is required and cannot be empty.");
+            }
 
-        //}
+            try
+            {
+                var results = new List<AddStudentAttendanceDto>(); // Use the actual return type of AddAttendanceAsync
 
-        //[HttpPost("[action]")]
-        //public async Task<IActionResult> AddAttendance([FromBody] StudentAttendanceDto attendanceDto)
-        //{
-        //    if (attendanceDto == null)
-        //    {
-        //        return BadRequest("The attendanceDto field is required.");
-        //    }
+                foreach (var attendance in attendanceDto)
+                {
+                    // Perform operations on each attendanceDto
+                    var result = await _studentAttendanceService.AddAttendanceAsync(attendance);
+                    results.Add(result); // Collect each result
+                }
 
-        //    try
-        //    {
-        //        var result = await _studentAttendanceService.AddAttendanceAsync(attendanceDto);
-        //        return Ok(result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, ex.Message); // Internal Server Error
-        //    }
-        //}
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message); // Internal Server Error
+            }
+        }
 
 
         //[HttpPut("[action]")]

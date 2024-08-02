@@ -109,6 +109,13 @@ function StudentProfile() {
     personOccupation,
     personIncome,
     qualification,
+    postalCode,
+    state,
+    city,
+    country,
+    address1,
+    address2,
+    addressType
     
   } = data;
 
@@ -118,9 +125,9 @@ function StudentProfile() {
   //   return categoryObject?.lookupCategoryDetail?.$values || [];
   // };
 
-  const allCategoryDetails = categoryData.$values || [];
-  const donationFrequencies = allCategoryDetails.filter(item => item.description === "Donation Frequency");
-  const donationChannel = allCategoryDetails.filter(item => item.description === "Donation Channel");
+  // const allCategoryDetails = categoryData.$values || [];
+  // const donationFrequencies = allCategoryDetails.filter(item => item.description === "Donation Frequency");
+  // const donationChannel = allCategoryDetails.filter(item => item.description === "Donation Channel");
 
 
   return (
@@ -301,14 +308,8 @@ function StudentProfile() {
               </select>
             </div>
           </div>
+
          
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-         
-            </div>
             <div className="row ms-2">
               <div className="col-3 divcolor fw-bold">Donation Start Date</div>
               <div className="col-3 divcolor">
@@ -329,7 +330,7 @@ function StudentProfile() {
                   className="form-control"
                 >
                   <option value="">Select Channel</option>
-                  {donationChannel.map((item) => (
+                  {donationChannels.map((item) => (
                     <option key={item.lookupValueId} value={item.title}>
                       {item.title}
                     </option>

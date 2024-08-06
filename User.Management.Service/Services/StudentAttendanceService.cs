@@ -169,7 +169,6 @@ namespace User.Management.Services
                 attendance.AttendanceDate = updateAttendance.AttendanceDate;
                 attendance.Remarks = updateAttendance.Remarks;
 
-
                 _context.StudentAttendance.Update(attendance);
                 await _context.SaveChangesAsync();
 
@@ -177,11 +176,10 @@ namespace User.Management.Services
             }
             catch (Exception ex)
             {
-                // Log exception (ex)
                 throw new Exception($"An error occurred while updating attendance with ID {updateAttendance.StudentAttendanceId}.", ex);
             }
-
         }
+
 
         //public async Task<StudentAttendanceDto> UpdateAttendanceAsync(StudentAttendanceDto attendanceDto)
 

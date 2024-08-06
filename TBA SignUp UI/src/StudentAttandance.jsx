@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Calendar from 'react-calendar';
 import "react-calendar/dist/Calendar.css";
 import { useGetClassListQuery, useGetStudentAttendanceQuery } from './services/Attendance';
+import { Link } from 'react-router-dom';
 
 const StudentAttendance = () => {
   // const [students, setStudents] = useState([]);
@@ -219,30 +220,16 @@ const StudentAttendance = () => {
             </tbody>
           </table>
         </div>
-        {/* <div className="pagination"> */}
-          {/* <nav>
-            <ul className="pagination justify-content-center">
-              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                <button className="page-link" onClick={() => setCurrentPage(currentPage - 1)}>
-                  Previous
-                </button>
-              </li>
-              {[...Array(totalPages)].map((_, i) => (
-                <li key={i} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-                  <button className="page-link" onClick={() => setCurrentPage(i + 1)}>
-                    {i + 1}
-                  </button>
-                </li>
-              ))}
-              <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                <button className="page-link" onClick={() => setCurrentPage(currentPage + 1)}>
-                  Next
-                </button>
-              </li>
-            </ul>
-          </nav> */}
-        </div>
        
+        </div>
+        <div className='d-flex justify-align-items-end justify-content-end me-4'>
+          <Link to= '/update-attendance-student'>
+       <button className='btn btn-danger my-3'
+       >
+        Update Attendance 
+       </button>
+       </Link>
+        </div>
         <div className="attendance-summary row">
           <div className="col-md-4 mb-3">
             <div className="card">

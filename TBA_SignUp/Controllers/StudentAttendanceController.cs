@@ -1,5 +1,5 @@
 
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using User.Management.Data.DTOs;
 using User.Management.DTOs;
 using User.Management.Service.Services;
@@ -74,17 +74,16 @@ namespace User.Management.Controllers
                 return StatusCode(500, ex.Message); // Internal Server Error
             }
         }
-
         [HttpPut("[action]")]
         public async Task<IActionResult> UpdateAttendance([FromBody] List<UpdateStudentAttendanceDto> attendanceDtos)
         {
+            if (attendanceDtos == null || !attendanceDtos.Any())
+            {
+                return BadRequest("No attendance records provided.");
+            }
+
             try
             {
-                if (attendanceDtos == null || !attendanceDtos.Any())
-                {
-                    return BadRequest("No attendance records provided.");
-                }
-
                 foreach (var attendanceDto in attendanceDtos)
                 {
                     if (attendanceDto.StudentAttendanceId <= 0)
@@ -99,14 +98,15 @@ namespace User.Management.Controllers
                     }
                 }
 
-                return NoContent();
+                return NoContent(); // Indicates successful update with no content to return
             }
             catch (Exception ex)
             {
-                // Log the exception (ex)
-                return StatusCode(500, "An error occurred while updating attendance records.");
+                // Log the exception if possible
+                return StatusCode(500, $"An error occurred while updating attendance records: {ex.Message}");
             }
         }
+
 
     }
 }

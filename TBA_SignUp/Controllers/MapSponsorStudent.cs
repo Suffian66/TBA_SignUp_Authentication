@@ -98,11 +98,11 @@ namespace TBA_SignUp.Controllers
         }
 
         [HttpDelete("[action]")]
-        public IActionResult DeleteMapSponsorStudent(int studentId)
+        public IActionResult DeleteMapSponsorStudent(int id)
         {
             try
             {
-                _mapSponsorStudent.DeleteMapSponsorStudent(studentId);
+                _mapSponsorStudent.DeleteMapSponsorStudent(id);
                 return Ok(new { message = "Student deleted successfully." });
             }
             catch (InvalidOperationException ex)

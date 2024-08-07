@@ -19,11 +19,11 @@ namespace User.Management.Data.Models
         public DbSet<StudentAddress> StudentAddress { get; set; }
         //public DbSet<CourseDetail> Courses { get; set; }
         public DbSet<Student> Students { get; set; }
-        //public DbSet<Subject> Subjects { get; set; }
+        
         public DbSet<StudentFamily> StudentFamily { get; set; }
         //public DbSet<Subject> Subjects { get; set; }
         public DbSet<LookUpCategory> LookupsCategory { get; set; }
-        public DbSet<LookUpCategoryDetail> LookupsCategoryDetail { get; set; }
+        public DbSet<> LookupsCategoryDetail { get; set; }
 
         public DbSet<MapSponsorStudents> MapSponsorStudents { get; set; }
 

@@ -84,6 +84,7 @@ builder.Services.AddScoped<IAddressService, AddressService>();
 builder.Services.AddScoped<ISponsor, SponsorService>();
 builder.Services.AddScoped<IClassListService, ClassListService>();
 builder.Services.AddScoped<IStudentAttendance, StudentAttendanceService>();
+
 builder.Services.AddScoped<ITeacherAttendance, TeacherAttendanceService>();
 
 

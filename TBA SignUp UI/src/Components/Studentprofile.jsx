@@ -9,73 +9,73 @@ import { useState } from "react";
 import { useGetCategoryDetailQuery } from "../services/LookUp";
 
 function StudentProfile() {
-  const { id: studentId } = useParams();
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const sponsorId = queryParams.get("sponsorId");
-  const navigate = useNavigate();
-  const { data, error, isLoading } = useGetStudentByIdQuery(studentId);
-  const { data: categoryData } = useGetCategoryDetailQuery();
+    const { id: studentId } = useParams();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const sponsorId = queryParams.get("sponsorId");
+    const navigate = useNavigate();
+    const { data, error, isLoading } = useGetStudentByIdQuery(studentId);
+    const { data: categoryData } = useGetCategoryDetailQuery();
 
-  const allCategoryDetails = categoryData?.$values || [];
-  const donationFrequencies = allCategoryDetails.filter(item => item.description === "Donation Frequency");
-  const donationChannels = allCategoryDetails.filter(item => item.description === "Donation Channel");
- 
-  const [formData, setFormData] = useState({
-    donationAmount: "",
-    donationFrequency: "Monthly",
-    donationStartDate: "",
-    donationChannel: "Cash",
-    donationSourceAccount: "",
-    donationDestinationAccount: "",
-    notes: "",
-    studentId: studentId,
-    sponsorId: sponsorId,
-  });
-  const [addMapSponsorStudent, { isLoading: isAdding, isError, isSuccess }] = useAddMapSponsorStudentMutation();
+    const allCategoryDetails = categoryData?.$values || [];
+    const donationFrequencies = allCategoryDetails.filter(item => item.description === "Donation Frequency");
+    const donationChannels = allCategoryDetails.filter(item => item.description === "Donation Channel");
+  
+    const [formData, setFormData] = useState({
+      donationAmount: "",
+      donationFrequency: "Monthly",
+      donationStartDate: "",
+      donationChannel: "Cash",
+      donationSourceAccount: "",
+      donationDestinationAccount: "",
+      notes: "",
+      studentId: studentId,
+      sponsorId: sponsorId,
+    });
+    const [addMapSponsorStudent, { isLoading: isAdding, isError, isSuccess }] = useAddMapSponsorStudentMutation();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const payload = {
-      donationAmount: formData.donationAmount,
-      donationFrequency: formData.donationFrequency || "Default Frequency",
-      donationStartDate: formData.donationStartDate,
-      donationChannel: formData.donationChannel || "Default Channel",
-      donationSourceAccount: formData.donationSourceAccount,
-      donationDestinationAccount: formData.donationDestinationAccount,
-      notes: formData.notes,
-      studentId: formData.studentId,
-      Id: formData.sponsorId,
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
     };
 
-    try {
-      const { data, error } = await addMapSponsorStudent(payload);
+    const handleSubmit = async (e) => {
+      e.preventDefault();
 
-      if (data) {
-        setFormData({
-          donationAmount: "",
-          donationFrequency: "",
-          donationStartDate: "",
-          donationChannel: "",
-          donationSourceAccount: "",
-          donationDestinationAccount: "",
-          notes: "",
-          studentId: studentId,
-          sponsorId: sponsorId,
-        });
+      const payload = {
+        donationAmount: formData.donationAmount,
+        donationFrequency: formData.donationFrequency || "Default Frequency",
+        donationStartDate: formData.donationStartDate,
+        donationChannel: formData.donationChannel || "Default Channel",
+        donationSourceAccount: formData.donationSourceAccount,
+        donationDestinationAccount: formData.donationDestinationAccount,
+        notes: formData.notes,
+        studentId: formData.studentId,
+        Id: formData.sponsorId,
+      };
 
-        alert("Student is successfully added to sponsor");
-        navigate(`/mapSponsorStudentList?sponsorId=${formData.sponsorId}`);
-      }
+      try {
+        const { data, error } = await addMapSponsorStudent(payload);
+
+        if (data) {
+          setFormData({
+            donationAmount: "",
+            donationFrequency: "",
+            donationStartDate: "",
+            donationChannel: "",
+            donationSourceAccount: "",
+            donationDestinationAccount: "",
+            notes: "",
+            studentId: studentId,
+            sponsorId: sponsorId,
+          });
+
+          alert("Student is successfully added to sponsor");
+          navigate(`/mapSponsorStudentList?sponsorId=${formData.sponsorId}`);
+        }
 
       if (error && error.status === 400) {
         alert(error?.data?.message || 'Bad Request');

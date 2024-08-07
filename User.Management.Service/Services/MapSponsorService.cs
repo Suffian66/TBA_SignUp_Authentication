@@ -148,9 +148,9 @@ namespace User.Management.Service.Services
 
             return existingSponsorship;
         }
-        public void DeleteMapSponsorStudent(int studentId)
+        public void DeleteMapSponsorStudent(int id)
         {
-            var existingSponsorship = _context.MapSponsorStudents.FirstOrDefault(s => s.StudentId == studentId);
+            var existingSponsorship = _context.MapSponsorStudents.FirstOrDefault(s => s.StudentId == id);
             if (existingSponsorship == null)
             {
                 throw new InvalidOperationException("Sponsorship not found!");

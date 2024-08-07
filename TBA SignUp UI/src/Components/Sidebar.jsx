@@ -32,7 +32,7 @@ const Sidebar = () => {
                 <Link to ='/'>
               <img
                 src='/logo.jpg'
-                height='70'
+                height='60'
                 width='80'
                 alt=''
                 loading='lazy'
@@ -40,12 +40,12 @@ const Sidebar = () => {
                 </Link>
               </div>
               <div className='col-8'>
-                <h2 className='tba-heading fw-bold ms-2 mt-2'>The Beginners Academy</h2>
+                <h3 className='tba-heading fw-bold ms-2 mt-2'>The Beginners Academy</h3>
               </div>
           </div>
                <span><div className=''></div></span>
             
-            <Link to="/" className='sidebarlink'><MDBListGroupItem tag='a' className='sidebarbtn rounded mb-4 mt-5'>
+            <Link to="/" className='sidebarlink'><MDBListGroupItem tag='a' className='sidebarbtn rounded mb-4 mt-2'>
                 <MDBIcon fas icon="tachometer-alt me-3" />
                 My Dashboard
               </MDBListGroupItem></Link>
@@ -86,6 +86,10 @@ const Sidebar = () => {
              <Link to="/add-attendance-student" className='sidebarlink'> <MDBListGroupItem tag='a' href='#' className='sidebarbtn rounded mb-4'>
                 <MDBIcon fas icon="globe me-3" />
             Add  Student Attendance
+              </MDBListGroupItem></Link>
+             <Link to="/attendance-teacher" className='sidebarlink'> <MDBListGroupItem tag='a' href='#' className='sidebarbtn rounded mb-4'>
+                <MDBIcon fas icon="globe me-3" />
+            Get Teacher Attendance
               </MDBListGroupItem></Link>
 
           </MDBListGroup>

@@ -33,6 +33,7 @@ import UpdateStudentAttendance from "./Components/UpdateStudentAttandance.jsx";
 import AddStudentAttendance from "./Components/AddStudentAttendance.jsx";
 
 import UpdateSponsorCart from "./Components/UpdateSponsorCart.jsx";
+import TeacherAttendance from "./TeacherAttendance.jsx";
 
 
 
@@ -317,6 +318,16 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <StudentAttendance />,
+      },
+    ],
+  }, 
+  {
+    path: "/attendance-teacher",
+    element: <Wrapper />,
+    children: [
+      {
+        index: true,
+        element: <TeacherAttendance />,
       },
     ],
   }, 

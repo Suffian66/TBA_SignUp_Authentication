@@ -1,5 +1,5 @@
 
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using User.Management.Data.DTOs;
 using User.Management.DTOs;
 using User.Management.Service.Services;
@@ -74,26 +74,39 @@ namespace User.Management.Controllers
                 return StatusCode(500, ex.Message); // Internal Server Error
             }
         }
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateAttendance([FromBody] List<UpdateStudentAttendanceDto> attendanceDtos)
+        {
+            if (attendanceDtos == null || !attendanceDtos.Any())
+            {
+                return BadRequest("No attendance records provided.");
+            }
+
+            try
+            {
+                foreach (var attendanceDto in attendanceDtos)
+                {
+                    if (attendanceDto.StudentAttendanceId <= 0)
+                    {
+                        return BadRequest($"Invalid ID for attendance record: {attendanceDto.StudentAttendanceId}");
+                    }
+
+                    var updatedAttendance = await _studentAttendanceService.UpdateAttendanceAsync(attendanceDto);
+                    if (updatedAttendance == null)
+                    {
+                        return NotFound($"Attendance record with ID {attendanceDto.StudentAttendanceId} not found.");
+                    }
+                }
+
+                return NoContent(); // Indicates successful update with no content to return
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if possible
+                return StatusCode(500, $"An error occurred while updating attendance records: {ex.Message}");
+            }
+        }
 
 
-        //[HttpPut("[action]")]
-        //public async Task<IActionResult> UpdateAttendance(int id, StudentAttendanceDto attendanceDto)
-        //{
-        //    try
-        //    {
-        //        if (id != attendanceDto.StudentAttendanceId) return BadRequest();
-
-        //        var updatedAttendance = await _studentAttendanceService.UpdateAttendanceAsync(attendanceDto);
-        //        if (updatedAttendance == null) return NotFound();
-
-        //        return NoContent();
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-
-        //}
     }
 }

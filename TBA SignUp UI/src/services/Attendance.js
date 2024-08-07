@@ -21,10 +21,17 @@ export const attendanceApi = createApi({
                 url: 'AddAttendance',
                 method: 'POST',
                 body,
+            })
+        }),
+        updateStudentAttendance:builder.mutation({
+            query: (body) => ({
+                url: 'UpdateAttendance',
+                method: 'PUT',
+                body,
             }),
         })
     }),
 });
 
-export const { useGetStudentAttendanceQuery, useGetClassListQuery, useAddStudentAttendanceMutation } = attendanceApi;
+export const { useGetStudentAttendanceQuery, useGetClassListQuery, useAddStudentAttendanceMutation, useUpdateStudentAttendanceMutation } = attendanceApi;
 export default attendanceApi;

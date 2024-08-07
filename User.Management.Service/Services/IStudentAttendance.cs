@@ -10,7 +10,7 @@ namespace User.Management.Service.Services
 
 
         Task<AddStudentAttendanceDto> AddAttendanceAsync(AddStudentAttendanceDto attendanceDto);
-        //Task<StudentAttendanceDto> UpdateAttendanceAsync(StudentAttendanceDto attendance);
+        Task<UpdateStudentAttendanceDto> UpdateAttendanceAsync(UpdateStudentAttendanceDto updateAttendance);
 
     }
 }

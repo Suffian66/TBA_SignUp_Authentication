@@ -21,8 +21,9 @@ namespace User.Management.Services
         {
             try
             {
-                // Start with the StudentAttendance table
+
                 var query = _context.StudentAttendance.AsQueryable();
+
 
                 // Filter by classId if provided
                 if (classId.HasValue)
@@ -33,7 +34,7 @@ namespace User.Management.Services
                 // Filter by attendanceDate if provided
                 if (attendanceDate.HasValue)
                 {
-                    query = query.Where(sa => sa.AttendanceDate == attendanceDate.Value.Date);
+                    query = query.Where(sa => sa.AttendanceDate == attendanceDate);
                 }
 
                 // Join with LookupsCategoryDetail to get class title if classId is provided
@@ -117,24 +118,32 @@ namespace User.Management.Services
                 var classAttendance = _context.LookupsCategoryDetail.FirstOrDefault(c => c.LookUpCtgDetailId == attendanceDto.ClassId);
                 //var classExists = await _context.LookupsCategoryDetail.AnyAsync(c => c.LookUpCtgDetailId == attendanceDto.ClassId);
                 var studentExists = await _context.Students.AnyAsync(st => st.StudentId == attendanceDto.StudentId);
+                var existingAttendance = await _context.StudentAttendance
+          .AnyAsync(a => a.StudentId == attendanceDto.StudentId && a.AttendanceDate == attendanceDto.AttendanceDate);
 
-
-                var attendance = new StudentAttendance
+                if (existingAttendance)
                 {
-                    Present = attendanceDto.Present,
-                    Absent = attendanceDto.Absent,
-                    Leave = attendanceDto.Leave,
-                    AttendanceDate = attendanceDto.AttendanceDate,
-                    Remarks = attendanceDto.Remarks,
-                    ClassId = attendanceDto.ClassId,
-                    StudentId = attendanceDto.StudentId,
-                };
+                    throw new InvalidOperationException("Attendance for the student already exists.");
+                }
+                else
+                {
+                    var attendance = new StudentAttendance
+                    {
+                        Present = attendanceDto.Present,
+                        Absent = attendanceDto.Absent,
+                        Leave = attendanceDto.Leave,
+                        AttendanceDate = attendanceDto.AttendanceDate,
+                        Remarks = attendanceDto.Remarks,
+                        ClassId = attendanceDto.ClassId,
+                        StudentId = attendanceDto.StudentId,
+                    };
 
-                _context.StudentAttendance.Add(attendance);
-                await _context.SaveChangesAsync();
+                    _context.StudentAttendance.Add(attendance);
+                    await _context.SaveChangesAsync();
 
-                attendanceDto.StudentAttendanceId = attendance.StudentAttendanceId;
-                return attendanceDto;
+                    attendanceDto.StudentAttendanceId = attendance.StudentAttendanceId;
+                    return attendanceDto;
+                }
             }
             catch (DbUpdateException dbEx) when (dbEx.InnerException is SqlException sqlEx && sqlEx.Number == 547) // Foreign key violation
             {
@@ -147,32 +156,33 @@ namespace User.Management.Services
             }
         }
 
+        public async Task<UpdateStudentAttendanceDto> UpdateAttendanceAsync(UpdateStudentAttendanceDto updateAttendance)
+        {
+            try
+            {
+                var attendance = await _context.StudentAttendance.FindAsync(updateAttendance.StudentAttendanceId);
+                if (attendance == null)
+                    return null;
+
+                attendance.Present = updateAttendance.Present;
+                attendance.Absent = updateAttendance.Absent;
+                attendance.Leave = updateAttendance.Leave;
+                attendance.AttendanceDate = updateAttendance.AttendanceDate;
+                attendance.Remarks = updateAttendance.Remarks;
+
+                _context.StudentAttendance.Update(attendance);
+                await _context.SaveChangesAsync();
+
+                return updateAttendance;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred while updating attendance with ID {updateAttendance.StudentAttendanceId}.", ex);
+            }
+        }
+
+
         //public async Task<StudentAttendanceDto> UpdateAttendanceAsync(StudentAttendanceDto attendanceDto)
-        //{
-        //    try
-        //    {
-        //        var attendance = await _context.StudentAttendance.FindAsync(attendanceDto.StudentAttendanceId);
-        //        if (attendance == null)
-        //            return null;
 
-        //        attendance.Present = attendanceDto.Present;
-        //        attendance.Absent = attendanceDto.Absent;
-        //        attendance.Leave = attendanceDto.Leave;
-        //        attendance.AttendanceDate = attendanceDto.AttendanceDate;
-        //        attendance.Remarks = attendanceDto.Remarks;
-        //        attendance.ClassId = attendanceDto.ClassId;
-        //        attendance.StudentId = attendanceDto.StudentId;
-
-        //        _context.StudentAttendance.Update(attendance);
-        //        await _context.SaveChangesAsync();
-
-        //        return attendanceDto;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log exception (ex)
-        //        throw new Exception($"An error occurred while updating attendance with ID {attendanceDto.StudentAttendanceId}.", ex);
-        //    }
-        //}
     }
 }

@@ -32,7 +32,7 @@ const AddStudentAttendance = () => {
     const formattedData = studentData.map(student => ({
       classId: selectedClassData.lookUpCtgDetailId,  // Ensure classId is correctly set
       studentId: student.studentId,
-      AttendanceDate: new Date().toISOString(),
+      AttendanceDate: new Date().toISOString().split('T')[0],
       present: data[student.studentId]?.present || false,
       absent: data[student.studentId]?.absent || false,
       leave: data[student.studentId]?.leave || false,
@@ -45,8 +45,10 @@ const AddStudentAttendance = () => {
       // const payload = { attendanceDto: formattedData };
       const Addattendanceresponse = await addAttendance(formattedData).unwrap();
       console.log("Add attendance response", Addattendanceresponse);
+      alert("Attendance added successfully");
     } catch (error) {
       console.error("Error adding attendance:", error);
+      alert(`Already Exist!`);
     }
   //   try {
   //     const Addattendanceresponse = await addAttendance({ attendanceDto: formattedData }).unwrap();

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useGetStudentsByClassNameQuery } from '../services/ClassList';
-import { useAddStudentAttendanceMutation, useGetClassListQuery } from '../services/Attendance';
+import {  useGetClassListQuery, useUpdateStudentAttendanceMutation } from '../services/Attendance';
 
 const UpdateStudentAttandance = () => {
   const [selectedClass, setSelectedClass] = useState('');
@@ -11,7 +11,7 @@ const UpdateStudentAttandance = () => {
   const { data: students, isLoading: studentsLoading } = useGetStudentsByClassNameQuery(selectedClass, {
     skip: !selectedClass,
   });
-  const [addAttendance] = useAddStudentAttendanceMutation();
+  const [updateAttendance] = useUpdateStudentAttendanceMutation();
 
   const { handleSubmit, control, setValue, getValues } = useForm();
 
@@ -19,10 +19,19 @@ const UpdateStudentAttandance = () => {
   const studentData = students?.$values || [];
 
   useEffect(() => {
-    console.log("Selected class:", selectedClass);
-  }, [selectedClass]);
+    if (studentData && studentData.length > 0) {
+      studentData.forEach(student => {
+        setValue(`${student.studentId}.present`, student.present);
+        setValue(`${student.studentId}.absent`, student.absent);
+        setValue(`${student.studentId}.leave`, student.leave);
+        setValue(`${student.studentId}.remarks`, student.remarks || '');
+        setValue(`${student.studentId}.studentAttendanceId`, student.studentAttendanceId);
+      });
+    }
+  }, [studentData, setValue]);
 
   const onSubmit = async (data) => {
+    console.log(data);
     if (!selectedClass) {
       console.error("No class selected");
       return;
@@ -33,6 +42,7 @@ const UpdateStudentAttandance = () => {
     const formattedData = studentData.map(student => ({
       classId: selectedClassData.lookUpCtgDetailId,  // Ensure classId is correctly set
       studentId: student.studentId,
+      studentAttendanceId: data[student.studentId]?.studentAttendanceId, 
       AttendanceDate: new Date().toISOString().split('T')[0],
       present: data[student.studentId]?.present || false,
       absent: data[student.studentId]?.absent || false,
@@ -44,8 +54,8 @@ const UpdateStudentAttandance = () => {
     try {
       // Wrap the data in an object with the key "attendanceDto"
       // const payload = { attendanceDto: formattedData };
-      const Addattendanceresponse = await addAttendance(formattedData).unwrap();
-      console.log("Add attendance response", Addattendanceresponse);
+      const updateAttendanceResponse = await updateAttendance(formattedData).unwrap();
+      console.log("Add attendance response", updateAttendanceResponse);
       alert("Attendance added successfully");
     } catch (error) {
       console.error("Error adding attendance:", error);
@@ -204,7 +214,7 @@ const UpdateStudentAttandance = () => {
                 )}
               </tbody>
             </table>
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <button type="submit" className="btn btn-primary">Update Attendance</button>
           </form>
         </div>
       </div>

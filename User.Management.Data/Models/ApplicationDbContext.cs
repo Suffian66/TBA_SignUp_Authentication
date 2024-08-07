@@ -31,6 +31,7 @@ namespace User.Management.Data.Models
         public DbSet<MapTeacherSubject> MapTeacherSubject { get; set; }
         public DbSet<MapClassSubjectTeacher> MapClassSubjectTeacher { get; set; }
         public DbSet<StudentAttendance> StudentAttendance { get; set; }
+        public DbSet<TeacherAttendance> TeacherAttendance { get; set; }
 
 
 

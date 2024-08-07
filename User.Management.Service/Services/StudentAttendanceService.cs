@@ -21,8 +21,9 @@ namespace User.Management.Services
         {
             try
             {
-                // Start with the StudentAttendance table
+
                 var query = _context.StudentAttendance.AsQueryable();
+
 
                 // Filter by classId if provided
                 if (classId.HasValue)

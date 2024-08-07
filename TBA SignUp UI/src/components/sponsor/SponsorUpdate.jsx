@@ -5,9 +5,9 @@ import Button from 'react-bootstrap/Button';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { PersonFill } from 'react-bootstrap-icons';
+import { Controller, useForm } from 'react-hook-form';
 import { useGetSponsorByIdQuery, useUpdateSponsorMutation } from '../../services/api/Sponsorlist';
 import { useGetCategoryDetailQuery } from '../../services/api/LookUp';
-import { Controller, useForm } from 'react-hook-form';
 
 function SponsorUpdate() {
     const { id: sponsorId } = useParams();

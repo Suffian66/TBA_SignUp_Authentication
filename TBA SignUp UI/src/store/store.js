@@ -1,19 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import SignUpApi from "../services/api/SignUp";
-import { Login } from "../services/api/Login";
+import Login from "../services/api/Login";
 import forgotPasswordApi from "../services/api/ForgotPassword";
 import login2FA from "../services/api/Otplogin";
-import { resetPasswordApi } from "../services/api/ResetPassword";
 import AddressApi from "../services/api/Address";
 import Studentlist from "../services/api/Studentlist";
 import TeacherApi from "../services/api/Teacher";
-import MapSponsorApi from "../services/api/MapSponsor";
-import SponsorlistApi from "../services/api/Sponsorlist";
 import MapSponsorStudentApi from "../services/api/MapSponsorStudent";
+import SponsorlistApi from "../services/api/Sponsorlist";
+import MapSponsorApi from "../services/api/MapSponsor";
 import LookUpApi from "../services/api/LookUp";
 import classListApi from "../services/api/ClassList";
 import attendanceApi from "../services/api/Attendance";
+import resetPasswordApi from "../services/api/ResetPassword";
+
 
 
 

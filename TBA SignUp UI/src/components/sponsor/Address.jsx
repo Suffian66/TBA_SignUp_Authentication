@@ -1,9 +1,8 @@
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useGetCategoryDetailQuery } from "./services/LookUp";
-import { useAddAddressMutation } from "./services/Address";
-import { useAddUserMutation } from "./services/SignUp";
-import { useEffect, useState } from "react";
+import { useAddAddressMutation } from "../../services/api/Address";
+import { useAddUserMutation } from "../../services/api/SignUp";
+import { useGetCategoryDetailQuery } from "../../services/api/LookUp";
 
 const Address = () => {
   const { state } = useLocation();

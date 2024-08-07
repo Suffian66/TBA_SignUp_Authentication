@@ -1,7 +1,7 @@
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { useGetconfirmEmailQuery } from './services/EmailConfirm';
+
 
 const ConfirmationEmail = () => {
   const { data, error, isLoading } = useGetconfirmEmailQuery();

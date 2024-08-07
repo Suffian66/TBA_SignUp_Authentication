@@ -4,16 +4,7 @@ export const LookUpApi = createApi({
     reducerPath: 'LookUpApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'https://localhost:7176/api/LookUp/' }),
     endpoints: (builder) => ({
-        getCountries: builder.query({
-            query: () => "countries",
-            url:`countries`,
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            
-        }),
-        getCategoryDetail: builder.query({
+       getCategoryDetail: builder.query({
             query: (filters) => ({
                 url: `CategoryDetails`,
                 method: "GET",
@@ -26,6 +17,6 @@ export const LookUpApi = createApi({
     }),
 });
 
-export const { useGetCountriesQuery, useGetCategoryDetailQuery } = LookUpApi;
+export const {  useGetCategoryDetailQuery } = LookUpApi;
 
 export default LookUpApi;

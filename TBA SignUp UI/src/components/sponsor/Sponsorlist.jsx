@@ -1,10 +1,10 @@
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Cart } from 'react-bootstrap-icons';
-import { useGetAllSponsorsQuery } from '../../services/Sponsorlist';
-import { useGetTeacherListQuery } from '../../services/Teacher';
+import { useGetAllSponsorsQuery } from '../../services/api/Sponsorlist';
+import { useGetTeacherListQuery } from '../../services/api/Teacher';
 
-const Sponsorlist = () => {
+const SponsorList = () => {
     const { data: sponsorsResponse, error: sponsorError, isLoading: sponsorLoading } = useGetAllSponsorsQuery();
     const { data: teachersResponse, error: teacherError, isLoading: teacherLoading } = useGetTeacherListQuery();
 
@@ -82,4 +82,4 @@ const Sponsorlist = () => {
     );
 }
 
-export default Sponsorlist;
+export default SponsorList;

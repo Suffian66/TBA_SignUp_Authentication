@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { useResetPasswordMutation } from "../services/ResetPassword";
 import { Link,  useSearchParams } from "react-router-dom";
+import { useResetPasswordMutation } from "../services/api/ResetPassword";
 
 const ResetPassword = () => {
   const [resetPassword, { error, isLoading }] = useResetPasswordMutation();

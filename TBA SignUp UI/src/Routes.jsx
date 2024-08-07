@@ -1,37 +1,36 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Wrapper from "./Components/common/Wrapper.jsx";
 import Home from "./pages/Home.jsx";
+import TeacherForm1 from "./Components/teacher/TeacherForm1.jsx";
+import TeacherForm2 from "./Components/teacher/TeacherForm2.jsx";
+import Registeration from "./pages/Registeration.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Otplogin from "./pages/Otplogin.jsx";
 import ForgotPassword from "./pages/ForgetPassword.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
-import Address from "./components/sponsor/Address.jsx";
-import Studentlist from "./components/student/StudentList.jsx";
-// import Teacher from "./Teacher.jsx";
-import Studentprofile from "./components/student/Studentprofile.jsx";
-import Sponsorlist from "./components/sponsor/Sponsorlist.jsx";
-import Sponsorprofile from "./components/sponsor/SponsorProfile.jsx";
-import MapSponsorStudentList from "./components/sponsor/MapSponsorStudentList.jsx";
-import TeacherProfile from "./components/teacher/TeacherProfile.jsx";
-import TeacherList from "./components/teacher/TeacherList.jsx";
-import Wrapper from "./components/common/Wrapper.jsx";
-import AddStudent from "./components/student/AddStudent.jsx";
-import StudentFamily from "./components/student/StudentFamily.jsx";
-import TeacherForm1 from "./components/teacher/TeacherForm1.jsx";
-import TeacherForm2 from "./components/teacher/TeacherForm2.jsx";
-import ClassList from "./components/class/ClassList.jsx";
-import ClassWiseStudentList from "./components/class/ClassWiseStudentList.jsx";
-import StudentUpdate from "./components/student/StudentUpdate.jsx";
-import AddressTeacher from "./components/teacher/TeacherAddress.jsx";
-import AddressStudent from "./components/student/StudentAddress.jsx";
-import UpdateStudentFamily from "./components/student/UpdateStudentFamily.jsx";
-import StudentAttendance from "./components/student/StudentAttandance.jsx";
-import SponsorUpdate from "./components/sponsor/SponsorUpdate.jsx";
-import UpdateStudentAttendance from "./components/student/UpdateStudentAttandance.jsx";
-import AddStudentAttendance from "./components/student/AddStudentAttendance.jsx";
-import Registration from "./pages/Registeration.jsx"
+import Address from "./Components/sponsor/Address.jsx";
+import TeacherAddress from "./Components/teacher/TeacherAddress.jsx";
+import StudentAddress from "./Components/student/StudentAddress.jsx";
+import UpdateSponsorCart from "./Components/sponsor/UpdateSponsorCart.jsx";
+import StudentProfile from "./Components/student/Studentprofile.jsx";
+import Sponsorprofile from "./Components/sponsor/SponsorProfile.jsx";
+import SponsorUpdate from "./Components/sponsor/SponsorUpdate.jsx";
+import MapSponsorStudentList from "./Components/sponsor/MapSponsorStudentList.jsx";
+import TeacherList from "./Components/teacher/TeacherList.jsx";
+import TeacherProfile from "./Components/teacher/TeacherProfile.jsx";
+import AddStudent from "./Components/student/AddStudent.jsx";
+import StudentFamily from "./Components/student/StudentFamily.jsx";
+import ClassList from "./Components/class/ClassList.jsx";
+import ClassWiseStudentList from "./Components/class/ClassWiseStudentList.jsx";
+import StudentAttendance from "./Components/student/StudentAttandance.jsx";
+import UpdateStudentAttendance from "./Components/student/UpdateStudentAttandance.jsx";
+import AddStudentAttendance from "./Components/student/AddStudentAttendance.jsx";
+import StudentUpdate from "./Components/student/StudentUpdate.jsx";
+import UpdateStudentFamily from "./Components/student/UpdateStudentFamily.jsx";
+import StudentList from "./Components/student/StudentList.jsx";
+import SponsorList from "./Components/sponsor/Sponsorlist.jsx";
 
-import UpdateSponsorCart from "./components/sponsor/UpdateSponsorCart.jsx";
 
 
 
@@ -72,7 +71,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Registration />
+        element: <Registeration />
       },
     ],
   },
@@ -142,7 +141,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <AddressTeacher />,
+        element: <TeacherAddress />,
       },
     ],
   },
@@ -152,7 +151,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <AddressStudent />,
+        element: <StudentAddress />,
       },
     ],
   },
@@ -162,7 +161,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Studentlist />,
+        element: <StudentList />,
       },
     ],
   },
@@ -172,7 +171,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Sponsorlist />,
+        element: <SponsorList />,
       },
     ],
   },
@@ -194,7 +193,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Studentprofile />,
+        element: <StudentProfile />,
       },
     ],
   },
@@ -229,16 +228,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: "/studentprofile/:id/:sponsorId?",
-    element: <Wrapper />,
-    children: [
-      {
-        index: true,
-        element: <Studentprofile />,
-      },
-    ],
-  },          
+         
   {
     path: "/teacherlist",
     element: <Wrapper />,

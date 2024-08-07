@@ -1,6 +1,7 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
-import { useForgotPasswordMutation } from '../services/ForgotPassword';
 import { useForm } from 'react-hook-form';
+import { useForgotPasswordMutation } from '../services/api/ForgotPassword';
 
 const ForgotPassword = () => {
   const [forgotPassword, { data, error, isLoading }] = useForgotPasswordMutation();

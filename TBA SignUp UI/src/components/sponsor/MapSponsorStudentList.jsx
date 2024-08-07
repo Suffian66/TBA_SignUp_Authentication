@@ -1,7 +1,8 @@
 import { Table } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import { Cart } from 'react-bootstrap-icons';
-import { useDeleteMapSponsorStudentMutation, useGetAllMapSponsorStudentsQuery } from './services/MapSponsorStudent';
+import { useDeleteMapSponsorStudentMutation, useGetAllMapSponsorStudentsQuery } from '../../services/api/MapSponsorStudent';
+
 
 const MapSponsorStudentList = () => {
     const location = useLocation();

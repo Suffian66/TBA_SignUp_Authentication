@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useGetCategoryDetailQuery } from "../../services/LookUp";
-import { useAddAddressMutation } from "../../services/Address";
-import { useAddUserMutation } from "../../services/SignUp";
-import { useCreateTeacherMutation } from "../../services/Teacher";
+import { useAddAddressMutation } from "../../services/api/Address";
+import { useAddUserMutation } from "../../services/api/SignUp";
+import { useCreateTeacherMutation } from "../../services/api/Teacher";
+import { useGetCategoryDetailQuery } from "../../services/api/LookUp";
 
 const TeacherAddress = () => {
   const { state } = useLocation();
@@ -15,7 +15,7 @@ const TeacherAddress = () => {
   const [addUser] = useAddUserMutation();
   const [addTeacher] = useCreateTeacherMutation();
 
-  const { data, error } = useGetCategoryDetailQuery();
+  const { data } = useGetCategoryDetailQuery();
   const allCategoryDetails = data?.$values || [];
   const addressTypeOptions = allCategoryDetails.filter(item => item.description === "Address Type");
   const countryOptions = allCategoryDetails.filter(item => item.description === "Country");

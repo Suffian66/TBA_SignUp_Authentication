@@ -1,9 +1,10 @@
 import { Table } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { Cart } from 'react-bootstrap-icons';
-import { useGetAllStudentsQuery } from '../../services/Studentlist';
+import { useGetAllStudentsQuery } from '../../services/api/Studentlist';
 
-const Studentlist = () => {
+
+const StudentList = () => {
     const { id: sponsorId } = useParams();
     const { data: studentsArray, error, isLoading } = useGetAllStudentsQuery();
 
@@ -67,4 +68,4 @@ const Studentlist = () => {
     );
 }
 
-export default Studentlist;
+export default StudentList;

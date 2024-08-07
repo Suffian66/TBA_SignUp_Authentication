@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useGetCategoryDetailQuery } from "../../services/LookUp";
-import { useAddStudentAddressMutation } from "../../services/Address";
-import { useCreateStudentMutation } from "../../services/Studentlist";
+import { useCreateStudentMutation } from "../../services/api/Studentlist";
+import { useAddStudentAddressMutation } from "../../services/api/Address";
+import { useGetCategoryDetailQuery } from "../../services/api/LookUp";
 
 const StudentAddress = () => {
   const location = useLocation();
@@ -13,7 +13,7 @@ const StudentAddress = () => {
   const [addStudent] = useCreateStudentMutation();
   const [addAddress] = useAddStudentAddressMutation();
 
-  const { data, error } = useGetCategoryDetailQuery();
+  const { data } = useGetCategoryDetailQuery();
   const allCategoryDetails = data?.$values || [];
   const addressTypeOptions = allCategoryDetails.filter(item => item.description === "Address Type");
   const countryOptions = allCategoryDetails.filter(item => item.description === "Country");

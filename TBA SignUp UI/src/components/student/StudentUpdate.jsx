@@ -1,11 +1,8 @@
-import { useState, useEffect } from "react";
+import {  useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useGetStudentByIdQuery, useUpdateStudentMutation } from "../../services/Studentlist";
-import { useGetCategoryDetailQuery } from "../../services/LookUp";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
+import { useGetStudentByIdQuery, useUpdateStudentMutation } from "../../services/api/Studentlist";
+import { useGetCategoryDetailQuery } from "../../services/api/LookUp";
 
 function StudentUpdate() {
   const { id: studentId } = useParams();

@@ -2,7 +2,8 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { Cart } from 'react-bootstrap-icons';
-import { useGetStudentsByClassNameQuery } from '../../services/ClassList';
+import { useGetStudentsByClassNameQuery } from '../../services/api/ClassList';
+
 
 const ClassWiseStudentList = () => {
     const {id: sponsorId} = useParams();

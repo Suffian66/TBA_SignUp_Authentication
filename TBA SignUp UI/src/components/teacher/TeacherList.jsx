@@ -1,7 +1,8 @@
 import { Table } from 'react-bootstrap';
 import { Cart } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
-import { useGetTeacherListQuery } from '../../services/Teacher';
+import { useGetTeacherListQuery } from '../../services/api/Teacher';
+
 
 
 const TeacherList = () => {

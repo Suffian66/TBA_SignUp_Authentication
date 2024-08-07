@@ -1,5 +1,6 @@
 
-import Classlisttable from './Components/Classlisttable'
+import ClassListTable from './ClassListTable';
+
 
 const ClassList = () => {
     return (
@@ -8,7 +9,7 @@ const ClassList = () => {
             <div className="dashboardbody">
                 <div className="row dashboardbox pt-5 pb-5">
                     <div className="col-10 classlist">
-                        <Classlisttable/>
+                        <ClassListTable/>
                     </div>
                 </div>
             </div>

@@ -2,9 +2,10 @@ import { useEffect } from "react";
 import { BarChartLine } from 'react-bootstrap-icons';
 import Table from 'react-bootstrap/Table';
 import { Link, useParams } from 'react-router-dom';
-import { useGetClassListQuery } from "../../services/ClassList";
+import { useGetClassListQuery } from "../../services/api/Attendance";
 
-const Classlisttable = () => {
+
+const ClassListTable = () => {
   const {id: sponsorId} = useParams();
   const { data: classListResponse } = useGetClassListQuery();
 
@@ -54,4 +55,4 @@ const Classlisttable = () => {
   );
 }
 
-export default Classlisttable;
+export default ClassListTable;

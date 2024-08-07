@@ -11,7 +11,6 @@ const StudentAttendance = () => {
   // const [selectAllPresent, setSelectAllPresent] = useState(false);
   // const [selectAllAbsent, setSelectAllAbsent] = useState(false);
   const [date, changeDate] = useState(new Date());
-  const [classId, setClassId] = useState('');
   const [attendanceDate, setAttendanceDate] = useState('');
   const [selectedClass, setSelectedClass] = useState("");
  

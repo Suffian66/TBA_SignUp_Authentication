@@ -3,10 +3,10 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { PersonFill } from "react-bootstrap-icons";
-import { useGetStudentByIdQuery } from "../../services/Studentlist";
-import { useAddMapSponsorStudentMutation } from "../../services/MapSponsor";
 import { useState } from "react";
-import { useGetCategoryDetailQuery } from "../../services/LookUp";
+import { useGetStudentByIdQuery } from "../../services/api/Studentlist";
+import { useGetCategoryDetailQuery } from "../../services/api/LookUp";
+
 
 function StudentProfile() {
   const { id: studentId } = useParams();
@@ -14,7 +14,7 @@ function StudentProfile() {
   const queryParams = new URLSearchParams(location.search);
   const sponsorId = queryParams.get("sponsorId");
   const navigate = useNavigate();
-  const { data, error, isLoading } = useGetStudentByIdQuery(studentId);
+  const { data } = useGetStudentByIdQuery(studentId);
   const { data: categoryData } = useGetCategoryDetailQuery();
 
   const allCategoryDetails = categoryData?.$values || [];

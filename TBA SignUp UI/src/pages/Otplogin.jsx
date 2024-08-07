@@ -1,10 +1,11 @@
 
 import { useForm } from 'react-hook-form';
 import {  useNavigate } from 'react-router-dom';
-import { useUserlogin2FAMutation } from '../services/Otplogin';
+import { useUserlogin2FAMutation } from '../services/api/Otplogin';
+
 
 const Otplogin = () => {
-  const [userlogin2FA, { error, isLoading }] = useUserlogin2FAMutation();
+  const [userlogin2FA, { isLoading }] = useUserlogin2FAMutation();
   const navigate = useNavigate();
 
   const { handleSubmit, register, setError, formState: { errors } } = useForm();

@@ -3,11 +3,8 @@ import { Col, Form, Row, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import { PersonFill } from "react-bootstrap-icons";
 import { useForm } from "react-hook-form";
-import {
-  useGetTeacherByIdQuery,
-  useUpdateTeacherMutation,
-} from "../../services/Teacher";
-import { useGetAddressByIdQuery } from "../../services/Address";
+import { useGetTeacherByIdQuery, useUpdateTeacherMutation } from "../../services/api/Teacher";
+
 
 function TeacherProfile() {
   const { id } = useParams();

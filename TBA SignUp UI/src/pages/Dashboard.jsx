@@ -1,7 +1,7 @@
 import { MDBIcon } from "mdb-react-ui-kit";
+import Sidebar from "../Components/common/Sidebar";
 import Barchart from "../Components/Barchart";
 import Piechart from "../Components/Piechart";
-import Sidebar from "./Components/Sidebar";
 
 
 const Dashboard = () => {
@@ -51,7 +51,7 @@ const Dashboard = () => {
                             <Barchart />
                     </div>
                     <div className="col-4 piechart"> 
-                    <Piechart />
+                    <Piechart/>
                     </div>
                 </div>
             </div>

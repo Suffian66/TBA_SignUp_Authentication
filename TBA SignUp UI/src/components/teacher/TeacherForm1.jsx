@@ -6,6 +6,7 @@ const TeacherForm1 = () => {
   const [formData, setFormData] = useState();  
   const navigate = useNavigate();
   const {register, handleSubmit, formState: { errors }, } = useForm();
+console.log(formData);
 
   const onSubmit = async (data) => {
       const FormData = { ...data, roles: ["teacher"] };

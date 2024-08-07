@@ -3,9 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { Link, useParams } from 'react-router-dom';
 import { PersonFill } from 'react-bootstrap-icons';
-import { useGetSponsorByIdQuery } from '../../services/Sponsorlist';
-import { useGetAddressByIdQuery } from '../../services/Address';
-import { useGetCategoryDetailQuery } from '../../services/LookUp';
+import { useGetSponsorByIdQuery } from '../../services/api/Sponsorlist';
 
 function Sponsorprofile() {
     const { id: sponsorId } = useParams();

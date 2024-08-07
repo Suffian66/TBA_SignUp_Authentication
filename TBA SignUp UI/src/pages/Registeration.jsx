@@ -6,6 +6,7 @@ import { useState } from "react";
 const Registeration = () => {
   const [formData, setFormData] = useState();
   const navigate = useNavigate();
+console.log(formData);
 
   const {
     register,

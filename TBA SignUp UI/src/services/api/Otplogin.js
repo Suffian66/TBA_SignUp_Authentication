@@ -24,6 +24,6 @@ export const login2FA = createApi({
     }),
 });
 
-export const { useLogin2FAQuery, useUserlogin2FAMutation } = login2FA;
+export const {  useUserlogin2FAMutation } = login2FA;
 
 export default login2FA;
